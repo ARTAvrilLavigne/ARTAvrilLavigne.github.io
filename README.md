@@ -1,6 +1,6 @@
-## Welcome to GitHub Pages
+## Java中几种常量池的区分
 
-You can use the [editor on GitHub](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+在java的内存分配中，经常听到很多关于常量池的描述，我开始看的时候也是看的很模糊，网上五花八门的说法简直太多了，最后查阅各种资料，终于算是差不多理清了，很多网上说法都有问题，笔者尝试着来区分一下这几个概念。
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
