@@ -1,0 +1,11 @@
+---
+layout:     post
+title:      "常量指针与指针常量分辨"
+subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
+date:       2016-09-01 10:56:00
+author:     "ARTAvrilLavigne"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - java
+---
+##常量指针与指针常量分辨
