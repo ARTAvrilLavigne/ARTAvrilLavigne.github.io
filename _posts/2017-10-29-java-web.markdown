@@ -10,11 +10,11 @@ tags:
 ---
 ## 图解JSP与Servlet的关系  
 
-    Servlet是Java提供的用于开发Web服务器应用程序的一个组件，运行在服务器端，由Servlet容器所管理，用于生成动态的内容。Servlet是平台独立的Java类，编写一个Servlet，实际上就是按照Servlet规范编写一个Java类。  
+   Servlet是Java提供的用于开发Web服务器应用程序的一个组件，运行在服务器端，由Servlet容器所管理，用于生成动态的内容。Servlet是平台独立的Java类，编写一个Servlet，实际上就是按照Servlet规范编写一个Java类。  
 
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/img/jsp_servlet.png?raw=true)
 
-    如图所示，Java提供一系列接口类（所谓接口类就是类中所有方法只提供方法声明，不提供任何的方法实现，这些类的实现就留给后继者去做。）：Servlet、ServletConfig、Serializable，然后通过多重继承产生一个最通用的Servlet实现类（图中Gerneric Servlet类），接下来，通过一个多重继承与实现，产生一个新的实现类HttpServlet，用户在开发Servlet程序时只需继承这个类，从而产生一个自己的类（图中Hello_Servlet类），然后根据实际开发功能与信息处理需要，去实现该类中的相关方法即可。这就是前面提到的按照Servlet规范编写一个Java类，从而编写一个Servlet。  
+   如图所示，Java提供一系列接口类（所谓接口类就是类中所有方法只提供方法声明，不提供任何的方法实现，这些类的实现就留给后继者去做。）：Servlet、ServletConfig、Serializable，然后通过多重继承产生一个最通用的Servlet实现类（图中Gerneric Servlet类），接下来，通过一个多重继承与实现，产生一个新的实现类HttpServlet，用户在开发Servlet程序时只需继承这个类，从而产生一个自己的类（图中Hello_Servlet类），然后根据实际开发功能与信息处理需要，去实现该类中的相关方法即可。这就是前面提到的按照Servlet规范编写一个Java类，从而编写一个Servlet。  
     至于JSP（JavaServlet Page）从图中可以看出，实际上它也是从Servlet继承而来。只不过它在Servlet当中又添加/修改了一些方法，作了新的封装。具体到Tomcat Web应用服务器中，它通过一个多重继承，分别从Java的HttpJspPage和HttpServlet两个类那里继承和实现一些方法，然后封装一个叫做HttpJspBase的类从而实现了一个通用化的JSP类，用户在开发自己的JSP时，只需要从HttpJspBase继承一个自己的类（如图中Hello_jsp类），然后根据需要去实现相应的方法即可。  
     因此这也是为什么JSP的代码中总是闪现Servlet代码框架影子的原因，其实它们只是为实现同样的功能而进行了不同封装的组件而已，血脉里留着的是一样的血。  
     “既生瑜何生亮？”呵呵，因为JSP确实比Servlet要更胜一筹，所谓“青出于蓝胜于蓝”，既然Sun公司要在Servlet基础上推出JSP技术，那肯定是因为JSP有它更高明的地方。  
