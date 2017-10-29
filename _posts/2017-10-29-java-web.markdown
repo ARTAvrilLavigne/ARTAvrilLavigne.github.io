@@ -1,0 +1,10 @@
+---
+layout:     post
+title:      "图解JSP与Servlet的关系"
+subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
+date:       2017-10-29 22:57:00
+author:     "ARTAvrilLavigne"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - javaee
+---
