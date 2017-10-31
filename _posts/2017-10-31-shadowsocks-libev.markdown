@@ -18,25 +18,25 @@ tags:
 　　github官网地址：https://github.com/shadowsocks/shadowsocks-libev  
 　　在VPS上部署shadowsocks，推荐使用C语言编写的基于libev的shadowsocks-libev的服务端。下面介绍在Linux系统的VPS上安装并配置的方法。由于shadowsocks-libev变动频繁，请以shadowsocks-libev的Github页面的readme为准。  
 ### 3.1、apt-get安装shadowsocks-libev：  
-　　对于Ubuntu 16.10及以上版本则可以直接从Ubuntu的官方repo安装：
-	sudo apt update  
+　　对于Ubuntu 16.10及以上版本则可以直接从Ubuntu的官方repo安装：  
+    sudo apt update   
     sudo apt install shadowsocks-libev  
 　　对于Ubuntu 14.04/16.04 版本需要添加作者的PPA：
     sudo apt-get install software-properties-common -y  
     sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y  
     sudo apt-get update  
-    sudo apt install shadowsocks-libev  
+    sudo apt install shadowsocks-libev  
 ### 3.2、配置与启动服务  
-　　#Edit the configuration file编辑配置文件：  
-    sudo vim /etc/shadowsocks-libev/config.json  
+　　#Edit the configuration file编辑配置文件：  
+    sudo vim /etc/shadowsocks-libev/config.json   
 　　
-　　格式说明：
+　　格式说明：  
 　　{
 　　"server":"租用服务器IP地址",  
 　　"server_port":服务器监听端口(可设为8388),  
 　　"local_port":1080(默认本地端口),  
 　　"password":"密码",  
-　　"method":"aes-256-cfb(可以设置为其它)",  
+　　"method":"aes-256-cfb(可以设置为其它)",  
 　　"timeout":60  
 　　}  
   
