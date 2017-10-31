@@ -22,7 +22,7 @@ tags:
     sudo apt update  
     sudo apt install shadowsocks-libev  
 　　#对于Ubuntu 14.04/16.04 版本需要添加作者的PPA：  
-    sudo apt-get install software-properties-common -y  
+    sudo apt-get install software-properties-common -y  
     sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y  
     sudo apt-get update  
     sudo apt install shadowsocks-libev  
