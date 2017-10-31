@@ -18,11 +18,11 @@ tags:
 　　github官网地址：https://github.com/shadowsocks/shadowsocks-libev  
 　　在VPS上部署shadowsocks，推荐使用C语言编写的基于libev的shadowsocks-libev的服务端。下面介绍在Linux系统的VPS上安装并配置的方法。由于shadowsocks-libev变动频繁，请以shadowsocks-libev的Github页面的readme为准。  
 ### 3.1、apt-get安装shadowsocks-libev：  
-　　#对于Ubuntu 16.10及以上版本则可以直接从Ubuntu的官方repo安装：  
-    sudo apt update   
+　　#对于Ubuntu 16.10及以上版本则可以直接从Ubuntu的官方repo安装：  
+    sudo apt update  
     sudo apt install shadowsocks-libev  
-　　#对于Ubuntu 14.04/16.04 版本需要添加作者的PPA：  
-    sudo apt-get install software-properties-common -y  
+　　#对于Ubuntu 14.04/16.04 版本需要添加作者的PPA：  
+    sudo apt-get install software-properties-common -y  
     sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y  
     sudo apt-get update  
     sudo apt install shadowsocks-libev  
@@ -54,12 +54,13 @@ tags:
     server_linux_amd64 -l :21 -t 127.0.0.1:443 --crypt none --mtu 1200 --nocomp --mode normal --dscp 46 & ss-server -s 0.0.0.0 -p 443 -k passwd -m chacha20 -u  
 　　#Setup your client  
     client_linux_amd64 -l 127.0.0.1:1090 -r <服务器IP>:21 --crypt none --mtu 1200 --nocomp --mode normal --dscp 46 & ss-local -s 127.0.0.1 -p 1090 -k passwd -m chacha20 -l 1080 -b 0.0.0.0 & ss-local -s <服务器IP> -p 443 -k passwd -m chacha20 -l 1080 -U -b 0.0.0.0  
-　　    
+
+
 　　二、设置最大连接数：  
 　　#Security Tips  
 　　#Although shadowsocks-libev can handle thousands of concurrent connections nicely, we still recommend setting up your server's 
 firewall rules to limit connections from each user:  
-　　#Up to 32 connections are enough for normal usage  
+　　#Up to 32 connections are enough for normal usage：  
     iptables -A INPUT -p tcp --syn --dport ${SHADOWSOCKS_PORT} -m connlimit --connlimit-above 32 -j REJECT --reject-with tcp-reset  
 
 
