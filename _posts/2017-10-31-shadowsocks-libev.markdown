@@ -21,7 +21,7 @@ tags:
 　　对于Ubuntu 16.10及以上版本则可以直接从Ubuntu的官方repo安装：  
     sudo apt update   
     sudo apt install shadowsocks-libev  
-　　对于Ubuntu 14.04/16.04 版本需要添加作者的PPA：
+　　对于Ubuntu 14.04/16.04 版本需要添加作者的PPA：  
     sudo apt-get install software-properties-common -y  
     sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y  
     sudo apt-get update  
@@ -40,8 +40,8 @@ tags:
 　　"timeout":60  
 　　}  
   
-　　#Start the service启动服务端：  
-    sudo /etc/init.d/shadowsocks-libev start  
+　　#Start the service启动服务端：  
+　　sudo /etc/init.d/shadowsocks-libev start  
 
 ## 4、开启TCP的BBR拥塞算法加速  
     wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh  
@@ -49,13 +49,13 @@ tags:
     ./bbr.sh  
 
 ## 可选项  
-　　一、使用基于KCP的shadowsocks加速： 
-　　#Setup your server  
+　　一、使用基于KCP的shadowsocks加速：  
+　　#Setup your server  
     server_linux_amd64 -l :21 -t 127.0.0.1:443 --crypt none --mtu 1200 --nocomp --mode normal --dscp 46 & ss-server -s 0.0.0.0 -p 443 -k passwd -m chacha20 -u  
-　　#Setup your client  
+　　#Setup your client  
     client_linux_amd64 -l 127.0.0.1:1090 -r <服务器IP>:21 --crypt none --mtu 1200 --nocomp --mode normal --dscp 46 & ss-local -s 127.0.0.1 -p 1090 -k passwd -m chacha20 -l 1080 -b 0.0.0.0 & ss-local -s <服务器IP> -p 443 -k passwd -m chacha20 -l 1080 -U -b 0.0.0.0  
 　　二、设置最大连接数：  
-　　#Security Tips  
+　　#Security Tips  
     #Although shadowsocks-libev can handle thousands of concurrent connections nicely, we still recommend setting up your server's 
 firewall rules to limit connections from each user:  
     #Up to 32 connections are enough for normal usage  
