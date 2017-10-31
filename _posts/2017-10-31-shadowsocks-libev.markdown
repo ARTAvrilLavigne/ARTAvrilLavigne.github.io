@@ -11,17 +11,17 @@ tags:
 ## 1、租用云服务器  
 　　选择vultr:https://my.vultr.com/  
 　　备注：Vultr是一家提供日本、美国、欧洲等多个国家和地区机房的VPS主机商，硬盘都是采用SSD，VPS主机都是KVM架构，VPS配置最少的内存512MB、硬盘为15GB的VPS只要2.5美元/月（2017.3.2修改），vultr是根据VPS使用小时来计费（0.007/h,折合人民币4分6/小时）的，使用多长时间就算多长时间，计费对应的款。Vultr是KVM系统架构，目前已开通15个机房，比较适合国内的是日本东京（tokyo）,美国洛杉矶（ Los Angeles ），美国西雅图（ Seattle ）这三个机房相对国内线路较好。vultr支持使用支付宝（Alipay）付款。  
-　　我选择的是洛杉矶机房，ubuntu17.10 X64,Server Hostname & Label填写的是avrillavigne,其余均不用填写。  
+　　**我选择的是洛杉矶机房，ubuntu17.10 X64版本,Server Hostname & Label填写的是avrillavigne,其余均不用填写。**  
 ## 2、连接VPS  
 　　使用xshell登录服务器，新建用户对话，填入服务器IP地址，用户名root,密码服务器所给的password。首先进入测试工具地址：http://ping.chinaz.com ping一下服务器IP是否被墙(如果被墙重新删掉换一个服务器IP)。这些都正常的话，出现connection failed连接失败，则关闭windows下的防火墙即可成功登录。  
 ## 3、安装shadowsocks-libev  
 　　github官网地址：https://github.com/shadowsocks/shadowsocks-libev  
 　　在VPS上部署shadowsocks，推荐使用C语言编写的基于libev的shadowsocks-libev的服务端。下面介绍在Linux系统的VPS上安装并配置的方法。由于shadowsocks-libev变动频繁，请以shadowsocks-libev的Github页面的readme为准。  
 ### 3.1、apt-get安装shadowsocks-libev：  
-　　对于Ubuntu 16.10及以上版本则可以直接从Ubuntu的官方repo安装：  
+　　#对于Ubuntu 16.10及以上版本则可以直接从Ubuntu的官方repo安装：  
     sudo apt update   
     sudo apt install shadowsocks-libev  
-　　对于Ubuntu 14.04/16.04 版本需要添加作者的PPA：  
+　　#对于Ubuntu 14.04/16.04 版本需要添加作者的PPA：  
     sudo apt-get install software-properties-common -y  
     sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y  
     sudo apt-get update  
