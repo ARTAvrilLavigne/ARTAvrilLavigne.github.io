@@ -28,10 +28,10 @@ tags:
     sudo apt install shadowsocks-libev  
 ### 3.2、配置与启动服务  
 　　#Edit the configuration file编辑配置文件：  
-    sudo vim /etc/shadowsocks-libev/config.json   
-　　
+    sudo vim /etc/shadowsocks-libev/config.json  
+    
 　　格式说明：  
-　　{
+　　{  
 　　"server":"租用服务器IP地址",  
 　　"server_port":服务器监听端口(可设为8388),  
 　　"local_port":1080(默认本地端口),  
@@ -56,9 +56,9 @@ tags:
     client_linux_amd64 -l 127.0.0.1:1090 -r <服务器IP>:21 --crypt none --mtu 1200 --nocomp --mode normal --dscp 46 & ss-local -s 127.0.0.1 -p 1090 -k passwd -m chacha20 -l 1080 -b 0.0.0.0 & ss-local -s <服务器IP> -p 443 -k passwd -m chacha20 -l 1080 -U -b 0.0.0.0  
 　　二、设置最大连接数：  
 　　#Security Tips  
-    #Although shadowsocks-libev can handle thousands of concurrent connections nicely, we still recommend setting up your server's 
+　　#Although shadowsocks-libev can handle thousands of concurrent connections nicely, we still recommend setting up your server's 
 firewall rules to limit connections from each user:  
-    #Up to 32 connections are enough for normal usage  
+　　#Up to 32 connections are enough for normal usage  
     iptables -A INPUT -p tcp --syn --dport ${SHADOWSOCKS_PORT} -m connlimit --connlimit-above 32 -j REJECT --reject-with tcp-reset  
 
 
