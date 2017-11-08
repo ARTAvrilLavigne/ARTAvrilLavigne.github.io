@@ -82,7 +82,7 @@ featured-condition-size: 0              # A tag will be featured if the size of 
 
 
 # Friends
-my goddess: [
+friends: [
     {
         title: "Avril Lavigne",
         href: "https://www.instagram.com/avrillavigne/"
