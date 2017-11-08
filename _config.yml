@@ -85,15 +85,19 @@ featured-condition-size: 0              # A tag will be featured if the size of 
 friends: [
     {
         title: "Avril Lavigne",
-        href: "#"
-    },{
-        title: "IU",
-        href: "#"
+        href: "https://www.instagram.com/avrillavigne/"
     },{
         title: "佐佐木希",
-        href: "#"
+        href: "https://www.instagram.com/nozomisasaki_official/"
+    },{
+        title: "IU",
+        href: "https://www.instagram.com/dlwlrma/"
     },{
         title: "宋智孝",
-        href: "#"
+        href: "https://www.instagram.com/my_songjihyo/"
+    },{
+        title: "宋慧乔",
+        href: "https://www.instagram.com/kyo1122/"
     }
+    
 ]
