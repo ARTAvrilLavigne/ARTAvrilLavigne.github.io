@@ -16,9 +16,9 @@ tags:
 　　下载ShadowsocksR服务端脚本:  
     wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh  
 　　下载运行后会提示你输入数字来选择要做什么  
-　　输入 1 ，就会开始安装ShadowsocksR服务端，并且会提示你输入Shadowsocks的 端口/密码/加密方式/ 协议/混淆（混淆和协议是通过输入数字选择的） 等参数来添加用户。
+　　输入 1 ，就会开始安装ShadowsocksR服务端，并且会提示你输入Shadowsocks的 端口/密码/加密方式/ 协议/混淆（混淆和协议是通过输入数字选择的） 等参数来添加用户。  
 　　注意：用户名不支持中文，如果输入中文会一直保存下去  
-　　(不输入回车就是默认参数)
+　　(不输入回车就是默认参数)  
 　　用户 : xxxxxxxx  
 　　端口 : 8388  
 　　密码 : password  
@@ -61,6 +61,8 @@ tags:
  
 请输入数字 [1-15]：  
 
+**所有操作只用这个一键脚本即可完成**  
+
 **其中安装BBR在14中可以安装、启动、停止**  
 　　注意：添加/删除/修改用户配置后，无需重启ShadowsocksR服务端，ShadowsocksR服务端会定时读取数据库文件内的信息，不过修改用户配置后，可能要等个十几秒才能应用最新的配置（因为ShadowsocksR不是实时读取数据库的，所以有间隔时间）。  
 　　ShadowsocksR安装后，自动设置为系统服务，所以支持使用服务来启动/停止等操作，同时支持开机启动。  
@@ -70,6 +72,7 @@ tags:
     停止 ShadowsocksR：/etc/init.d/ssrmu stop  
     重启 ShadowsocksR：/etc/init.d/ssrmu restart  
     查看 ShadowsocksR状态：/etc/init.d/ssrmu status  
+    
 　　ShadowsocksR 默认支持UDP转发，服务端无需任何设置  
 
 　　开始BBR加速：  
@@ -80,7 +83,6 @@ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/dou
 
 　　需要重启VPS后，才能开启BBR，是否现在重启 ? [Y/n] : y  
 　　[注意]  重启VPS后，请重新运行脚本查看BBR是否加载成功 bash bbr.sh status  
- 
 　　[信息]  VPS 重启中...  
 　　等待十几秒，VPS启动后，重新通过SSH连接VPS，进入 bbr.sh 脚本的目录，然后执行下面这个命令查看BBR是否加载成功。  
     bash bbr.sh status  
@@ -102,9 +104,9 @@ bash bbr.sh status
 　　『原创』Debian/Ubuntu TCP拥塞控制技术 ——TCP-BBR 一键安装脚本：https://doub.io/wlzy-16/  
 
 　　谷歌学术不能访问问题解决：  
-https://www.polarxiong.com/archives/%E9%80%9A%E8%BF%87VPS%E4%BD%BF%E7%94%A8VPN%E6%88%96ShadowSocks%E8%AE%BF%E9%97%AEGoogle%E6%88%96Google-Schoolar%E5%87%BA%E7%8E%B0%E9%AA%8C%E8%AF%81%E7%A0%81%E7%AD%89%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95.html  
+            https://www.polarxiong.com/archives/%E9%80%9A%E8%BF%87VPS%E4%BD%BF%E7%94%A8VPN%E6%88%96ShadowSocks%E8%AE%BF%E9%97%AEGoogle%E6%88%96Google-Schoolar%E5%87%BA%E7%8E%B0%E9%AA%8C%E8%AF%81%E7%A0%81%E7%AD%89%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95.html  
 
-https://blog.finaltheory.me/note/Solve-Google-Problems.html  
+    https://blog.finaltheory.me/note/Solve-Google-Problems.html  
 
 　　使用过上述网址方法但还是不能访问谷歌学术。只能通过谷歌学术镜像访问：http://ac.scmor.com/
 
