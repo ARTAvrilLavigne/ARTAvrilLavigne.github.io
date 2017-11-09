@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:     digitalocean搭建ShadowsocksR
+title:      "digitalocean搭建ShadowsocksR"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
 date:       2017-11-09 15:23:00
 author:     "ARTAvrilLavigne"
