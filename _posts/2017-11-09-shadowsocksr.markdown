@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "搭建ShadowsocksR"
+title:      "搭建shadowsocksR"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
 date:       2017-11-09 15:23:00
 author:     "ARTAvrilLavigne"
