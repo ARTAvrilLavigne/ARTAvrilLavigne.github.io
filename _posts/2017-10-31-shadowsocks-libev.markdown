@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "vultr搭建shadowsocks"
+title:   vultr搭建shadowsocks
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
 date:       2017-10-31 14:41:00
 author:     "ARTAvrilLavigne"
