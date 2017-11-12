@@ -10,14 +10,14 @@ tags:
 ---
 ## 通常的理解  
 　　w3schools关于这个问题的解答：HTTP方法：GET对比POST列出了一般的理解，比如：  
-1、GET后退按钮/刷新无害，POST数据会被重新提交（浏览器应该告知用户数据会被重新提交）。  
-2、GET书签可收藏，POST为书签不可收藏。  
-3、GET能被缓存，POST不能缓存。  
-4、GET编码类型application/x-www-form-url，POST编码类型encodedapplication/x-www-form-urlencoded 或 multipart/form-data。  
-5、GET历史参数保留在浏览器历史中。POST参数不会保存在浏览器历史中。  
-6、GET对数据长度有限制，当发送数据时，GET方法向URL添加数据；URL 的长度是受限制的（URL 的最大长度是 2048 个字符）。POST无限制。  
-7、GET只允许ASCII字符。POST没有限制。也允许二进制数据。  
-8、与 POST 相比，GET 的安全性较差，因为所发送的数据是 URL 的一部分。在发送密码或其他敏感信息时绝不要使用 GET ！POST 比 GET 更安全，因为参数不会被保存在浏览器历史或 web 服务器日志中。  
+1、GET后退按钮/刷新无害，POST数据会被重新提交（浏览器应该告知用户数据会被重新提交）。  
+2、GET书签可收藏，POST为书签不可收藏。  
+3、GET能被缓存，POST不能缓存。  
+4、GET编码类型application/x-www-form-url，POST编码类型encodedapplication/x-www-form-urlencoded 或 multipart/form-data。  
+5、GET历史参数保留在浏览器历史中。POST参数不会保存在浏览器历史中。  
+6、GET对数据长度有限制，当发送数据时，GET方法向URL添加数据；URL 的长度是受限制的（URL 的最大长度是 2048 个字符）。POST无限制。   
+7、GET只允许ASCII字符。POST没有限制。也允许二进制数据。  
+8、与 POST 相比，GET 的安全性较差，因为所发送的数据是 URL 的一部分。在发送密码或其他敏感信息时绝不要使用 GET ！POST 比 GET 更安全，因为参数不会被保存在浏览器历史或 web 服务器日志中。  
 9、GET的数据在 URL 中对所有人都是可见的。POST的数据不会显示在 URL 中。
 
 　　这个对比整体没什么毛病，但只是给出了一些现象上的区别，但并没有解释为什么，对于这个问题的理解不能就停在这一层。  
