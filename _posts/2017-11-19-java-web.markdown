@@ -33,12 +33,12 @@ tags:
 　　对于以get方式传输的数据，request即使设置了以指定的编码接收数据也是无效的，默认的还是使用ISO8859-1这个字符编码来接收数据，客户端以UTF-8的编码传输数据到服务器端，而服务器端的request对象使用的是ISO8859-1这个字符编码来接收数据，服务器和客户端沟通的编码不一致因此才会产生中文乱码的。解决办法：在接收到数据后，先获取request对象以ISO8859-1字符编码接收到的原始数据的字节数组，然后通过字节数组以指定的编码构建字符串，解决乱码问题。  
 ## 4、以超链接形式传递中文参数的乱码问题  
 　　客户端想传输数据到服务器，可以通过表单提交的形式，也可以通过超链接后面加参数的形式，例如：  
-``<a href="${pageContext.request.contextPath}/webtest/login?username=成都">点击</a> `` 
+``<a href="${pageContext.request.contextPath}/webtest/login?username=成都">点击</a> ``  
 　　点击超链接，数据是以get的方式传输到服务器的，所以接收中文数据时也会产生中文乱码问题，而解决中文乱码问题的方式与上述的以get方式提交表单中文数据乱码处理问题的方式一致，如下所示：  
 String usernamevalue = request.getParameter("username");  
 usernamevalue =new String(usernamevalue.getBytes("ISO8859-1"), "UTF-8");  
 ## 5、总结  
-　　1、如果提交方式为post，只需要在服务器端设置request对象的编码即可，客户端以哪种编码提交的，服务器端的request对象就以对应的编码接收，比如客户端是以UTF-8编码提交的，那么服务器端request对象就以UTF-8编码接收，然后得到中文数据就不会乱码了，步骤如下：  
+　　1、如果提交方式为post，只需要在服务器端设置request对象的编码即可，客户端以哪种编码提交的，服务器端的request对象就以对应的编码接收，比如客户端是以UTF-8编码提交的，那么服务器端request对象就以UTF-8编码接收，然后得到中文数据就不会乱码了，步骤如下：  
 request.setCharacterEncoding("UTF-8");  
 String usernamevalue = request.getParameter("username");  
 　　2、如果提交方式为get，设置request对象的编码是无效的，request对象还是以默认的ISO8859-1编码接收数据，因此要想不乱码，只能在接收到数据后再手工转换，步骤如下：  
