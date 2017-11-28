@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "mysql"
+title:      "mysql知识总结"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
 date:       2017-11-28 11:15:00
 author:     "ARTAvrilLavigne"
@@ -8,25 +8,25 @@ header-img: "img/post-bg-2015.jpg"
 tags:
     - mysql
 ---
-## 1、假设表单内容如下  
-对一张表中的数据进行增删改查操作
-	C:create 创建
-	U:update 修改
-	R:read	 读|检索 查询
-	D:delete 删除
+## 1、mysql  
+对一张表中的数据进行增删改查操作<br>
+	C:create 创建<br>
+	U:update 修改<br>
+	R:read	 读|检索 查询<br>
+	D:delete 删除<br>
 
-数据库:
-	本质上就是一个文件系统.通过标准的sql对数据进行curd操作
+数据库:<br>
+	本质上就是一个文件系统.通过标准的sql对数据进行curd操作<br>
 
-常见的关系型数据库:
-	关系型数据库:
-		存放实体与实体之间的关系的数据库(就是二维表)
-		实体:
-			用户 	订单	商品
-		关系:
-			用户拥有订单
-			订单包含商品
-	非关系型数据库:存放的是对象(redis) NO-sql(not only sql)
+常见的关系型数据库:<br>
+	关系型数据库:<br>
+		存放实体与实体之间的关系的数据库(就是二维表)<br>
+		实体:<br>
+			用户 	订单	商品<br>
+		关系:<br>
+			用户拥有订单<br>
+			订单包含商品<br>
+	非关系型数据库:存放的是对象(redis) NO-sql(not only sql)<br>
 	
 	软件名		厂商		特点
 	mysql		oracle		开源的数据库
