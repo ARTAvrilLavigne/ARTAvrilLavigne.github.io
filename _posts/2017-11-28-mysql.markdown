@@ -116,7 +116,8 @@ DDL:数据定义语言<br>
 			查看当前数据库下所有表: show tables;
 			查看表结构:desc 表名;
 			查看建表语句:show create table 表名;
-/////////////////////////////////////////////////<br>
+
+
 DML:数据操作语言<br>
 　　　　　　操作对象:记录(行)<br>
 　　　　　　关键词:insert update delete<br>
@@ -153,7 +154,8 @@ DML:数据操作语言<br>
 			delete from 表名 [where 条件];
 		例如:
 			delete from user where id = '2';
-///////////////////////////////////<br>
+
+
 DQL:数据查询语言<br>
 　　　　　　　　关键词:select<br>
 　　　　　　　　格式:<br>
@@ -260,7 +262,8 @@ DQL:数据查询语言<br>
 				where和having区别:
 					1.where 是对分组前的数据进行过滤 ;having 是对分组后的数据进行过滤 
 					2.where 后面不能使用聚合函数,having可以
-/////////////////////////////////<br>
+
+
 数据类型:(了解)<br>
 java　　　　　　　　　　mysql<br>
 byte　　　　　　　　　　tinyint<br>
