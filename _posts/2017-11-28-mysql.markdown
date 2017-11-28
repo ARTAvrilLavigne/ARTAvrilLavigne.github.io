@@ -272,7 +272,7 @@ char/String　　　　　　varchar(★)|char<br>
 　　　　　　　　　　　　　　　　varchar:可变长度 mysql的方言  varchar(20):  存放abc 只会占用三个<br>
 　　　　　　　　　　　　　　　　char:固定长度 char(20) 存放abc 占用20个<br>
 boolean　　　　　　　　tinyint|int 代替<br>
-float|double　　　　　 float|double<br>
+float|double　　　　　float|double<br>
 　　　　　　　　　　　　　　　　　　注意:<br>
 　　　　　　　　　　　　　　　　　　double(5,2):该小数长度为5个,小数占2个  最大值:999.99<br>
 
