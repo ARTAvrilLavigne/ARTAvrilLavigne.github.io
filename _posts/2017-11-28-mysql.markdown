@@ -9,24 +9,24 @@ tags:
     - mysql
 ---
 ## 1、mysql  
-对一张表中的数据进行增删改查操作<br>
-	C:create 创建<br>
-	U:update 修改<br>
-	R:read	 读|检索 查询<br>
-	D:delete 删除<br>
+对一张表中的数据进行增删改查操作:<br>
+　　C:create 创建<br>
+　　U:update 修改<br>
+　　R:read   读|检索 查询<br>
+　　D:delete 删除<br>
 
 数据库:<br>
-	本质上就是一个文件系统.通过标准的sql对数据进行curd操作<br>
+　　本质上就是一个文件系统.通过标准的sql对数据进行curd操作<br>
 
 常见的关系型数据库:<br>
-	关系型数据库:<br>
-		存放实体与实体之间的关系的数据库(就是二维表)<br>
-		实体:<br>
-			用户 	订单	商品<br>
-		关系:<br>
-			用户拥有订单<br>
-			订单包含商品<br>
-	非关系型数据库:存放的是对象(redis) NO-sql(not only sql)<br>
+　　关系型数据库:<br>
+　　　　存放实体与实体之间的关系的数据库(就是二维表)<br>
+　　　　　　实体:<br>
+　　　　　　　　　　用户 	订单	商品<br>
+　　　　　　关系:<br>
+　　　　　　　　　　用户拥有订单<br>
+　　　　　　　　　　订单包含商品<br>
+　　非关系型数据库:存放的是对象(redis) NO-sql(not only sql)<br>
 	
 	软件名		厂商		特点
 	mysql		oracle		开源的数据库
@@ -35,53 +35,55 @@ tags:
 	sqlserver	微软		中大型的收费的数据库
 	sybase		sybase(powerdesigner)
 
-安装了数据库管理系统的计算机称之为数据库服务器
-	服务器:给别人提供提供服务器(软件服务器)
-我们可以通过标准的sql在服务器创建数据库(database)
-有了数据库之后,就可以在数据库上创建表了
-有了表之后,就可以在里面存放数据了.
-SQL:
-	结构化查询语句
-	作用:
-		管理数据库.
-sql的分类:
-	DDL:数据定义语言
-		操作对象:数据库和表
-		关键词:create alter drop
-	DML:数据操作语言
-		操作对象:记录
-	DQL:数据查询语言(非官方)
-	DCL:数据控制语言
-		操作对象:用户 事务 权限
+安装了数据库管理系统的计算机称之为数据库服务器<br>
+　　　　服务器:给别人提供提供服务器(软件服务器)<br>
+我们可以通过标准的sql在服务器创建数据库(database)<br>
+有了数据库之后,就可以在数据库上创建表了<br>
+有了表之后,就可以在里面存放数据了.<br>
+SQL:<br>
+	结构化查询语句<br>
+	作用:<br>
+		管理数据库.<br>
+sql的分类:<br>
+	DDL:数据定义语言<br>
+		操作对象:数据库和表<br>
+		关键词:create alter drop<br>
+	DML:数据操作语言<br>
+		操作对象:记录<br>
+	DQL:数据查询语言(非官方)<br>
+	DCL:数据控制语言<br>
+		操作对象:用户 事务 权限<br>
 
-DDL:数据定义语言
-		操作对象:数据库和表
-		关键词:create alter drop	
-	操作数据库:
-		创建:
-			格式:
-				create database 数据库名称;
-		删除:
-			格式:
-				drop database 数据库名称;
-		常用的命令:
-			查看所有的数据库: show databases;
-	操作表:
-		创建表
-			格式:
-				create table 表名(字段描述,字段描述);
-				字段描述:
-					字段名称 字段类型 [约束]
-				例如:
-					create table user(
-						id int primary key auto_increment,
-						username varchar(20)
-					);
+DDL:数据定义语言<br>
+		操作对象:数据库和表<br>
+		关键词:create alter drop<br>	
+	操作数据库:<br>
+		创建:<br>
+			格式:<br>
+				create database 数据库名称;<br>
+		删除:<br>
+			格式:<br>
+				drop database 数据库名称;<br>
+		常用的命令:<br>
+			查看所有的数据库: show databases;<br>
+	操作表:<br>
+		创建表<br>
+			格式:<br>
+				create table 表名(字段描述,字段描述);<br>
+				字段描述:<br>
+					字段名称 字段类型 [约束]<br>
 					
-					create table user1(
-						id int primary key auto_increment,
-						username varchar(20)
-					);
+		例如:
+					
+			create table user(
+				id int primary key auto_increment,
+				username varchar(20)
+			);
+					
+			create table user1(
+				id int primary key auto_increment,
+				username varchar(20)
+			);
 		修改表
 			格式:
 				alter table 表名 ....
@@ -116,9 +118,10 @@ DDL:数据定义语言
 			查看表结构:desc 表名;
 			查看建表语句:show create table 表名;
 /////////////////////////////////////////////////
-DML:数据操作语言
-	操作对象:记录(行)
-	关键词:insert update delete
+DML:数据操作语言<br>
+	操作对象:记录(行)<br>
+	关键词:insert update delete<br>
+				
 	插入:
 		格式1:
 			insert into 表名 values(字段值1,字段值2...,字段值n);
@@ -126,10 +129,11 @@ DML:数据操作语言
 				默认插入全部字段,
 				必须保证values后面的内容的类型和顺序和表结构中的一致
 				若字段类型为数字,可以省略引号
-			例如:
-          insert into user values(1,'tom');
-          insert into user values('2','tom');
-          insert into user values('3');-- 错误的  
+					
+		例如:
+          		insert into user values(1,'tom');
+         	        insert into user values('2','tom');
+          		insert into user values('3');-- 错误的  
 		
 		格式2:
 			insert into 表名(字段名,字段名1...) values(字段值,字段值1...);
@@ -151,10 +155,10 @@ DML:数据操作语言
 		例如:
 			delete from user where id = '2';
 ///////////////////////////////////
-DQL:数据查询语言
-		关键词:select
-	格式:
-		select ... from 表名 where 条件 group by 分组字段 having 条件 order by 排序字段 ase|desc
+DQL:数据查询语言<br>
+		关键词:select<br>
+	格式:<br>
+		select ... from 表名 where 条件 group by 分组字段 having 条件 order by 排序字段 ase|desc<br>
 	
 	初始化环境:
 		-- 创建商品表
@@ -258,39 +262,39 @@ DQL:数据查询语言
 					1.where 是对分组前的数据进行过滤 ;having 是对分组后的数据进行过滤 
 					2.where 后面不能使用聚合函数,having可以
 /////////////////////////////////
-数据类型:(了解)
-java			mysql		
-byte			tinyint			
-short			smallint
-int			int(★)
-long			bigint
-char/String		varchar(★)|char
-					varchar:可变长度 mysql的方言  varchar(20):  存放abc 只会占用三个
-					char:固定长度 char(20) 存放abc 占用20个
-boolean			tinyint|int 代替
-float|double		float|double
-					注意:
-						double(5,2):该小数长度为5个,小数占2个  最大值:999.99
+数据类型:(了解)<br>
+java			mysql<br>
+byte			tinyint<br>
+short			smallint<br>
+int			int(★)<br>
+long			bigint<br>
+char/String		varchar(★)|char<br>
+				varchar:可变长度 mysql的方言  varchar(20):  存放abc 只会占用三个<br>
+				char:固定长度 char(20) 存放abc 占用20个<br>
+boolean			tinyint|int 代替<br>
+float|double		float|double<br>
+				注意:<br>
+				double(5,2):该小数长度为5个,小数占2个  最大值:999.99<br>
 
 
-java.sql.Date		date 日期
-java.sql.Time		time 时间
-java.sql.Timestamp	timestamp(★) 时间戳 若给定值为null,数据库会把当前的系统时间存放到数据库中
-					datetime(★) 日期+时间
+java.sql.Date		date 日期<br>
+java.sql.Time		time 时间<br>
+java.sql.Timestamp	timestamp(★) 时间戳 若给定值为null,数据库会把当前的系统时间存放到数据库中<br>
+					datetime(★) 日期+时间<br>
 					
-java.sql.Clob(长文本)	mysql的方言(text)
-java.sql.Blob(二进制)	blob
+java.sql.Clob(长文本)	mysql的方言(text)<br>
+java.sql.Blob(二进制)	blob<br>
 //////////////////////////////////
-约束:
-	作用:
-		为了保证数据的有效性和完整性
-	mysql中常用的约束:主键约束(primary key)  唯一约束(unique) 非空约束(not null) 外键约束(foreign key)
-	主键约束:被修饰过的字段唯一非空
-		注意:一张表只能有一个主键,这个主键可以包含多个字段
-		方式1:建表的同时添加约束 格式: 字段名称 字段类型 primary key
-		方式2:建表的同时在约束区域添加约束 
-			所有的字段声明完成之后,就是约束区域了
-			格式: primary key(字段1,字段2)
+约束:<br>
+	作用:<br>
+		为了保证数据的有效性和完整性<br>
+	mysql中常用的约束:主键约束(primary key)  唯一约束(unique) 非空约束(not null) 外键约束(foreign key)<br>
+	主键约束:被修饰过的字段唯一非空<br>
+		注意:一张表只能有一个主键,这个主键可以包含多个字段<br>
+		方式1:建表的同时添加约束 格式: 字段名称 字段类型 primary key<br>
+		方式2:建表的同时在约束区域添加约束 <br>
+			所有的字段声明完成之后,就是约束区域了<br>
+			格式: primary key(字段1,字段2)<br>
 			
 			create table pk01(
 				id int,
@@ -340,7 +344,7 @@ java.sql.Blob(二进制)	blob
 				id int unique,
 				username varchar(20) unique
 			);
-			                      注:VALUE与VALUES都是正确的，经过验证，这两个也是可以混合着用的，只是两者对不同语句插入数量的执行效率各不相同。
+			 	注:VALUE与VALUES都是正确的，经过验证，这两个也是可以混合着用的，只是两者对不同语句插入数量的执行效率各不相同。
 			insert into un value(10,'tom');-- 成功
 			insert into un value(10,'jack');-- 错误 Duplicate entry '10' for key 'id'
 			insert into un value(null,'jack');-- 成功
@@ -374,17 +378,17 @@ java.sql.Blob(二进制)	blob
 			
 			insert into nn values(null,'tom');--  错误的 Column 'id' cannot be null
 ///////////////////////////////
-truncate 清空表 ★
-	格式:
-		truncate 表名; 干掉表,重新创建一张空表
-	和delete from 区别:
-		delete属于DML语句  truncate属于DDL语句
-		delete逐条删除	truncate干掉表,重新创建一张空表
+truncate 清空表 ★<br>
+	格式:<br>
+		truncate 表名; 干掉表,重新创建一张空表<br>
+	和delete from 区别:<br>
+		delete属于DML语句  truncate属于DDL语句<br>
+		delete逐条删除	truncate干掉表,重新创建一张空表<br>
 		
-auto_increment 自增
-	要求:
-		1.被修饰的字段类型支持自增. 一般int
-		2.被修饰的字段必须是一个key 一般是primary key
+auto_increment 自增<br>
+	要求:<br>
+		1.被修饰的字段类型支持自增. 一般int<br>
+		2.被修饰的字段必须是一个key 一般是primary key<br>
 	
 	create table ai01(
 		id varchar(10) auto_increment
@@ -394,25 +398,26 @@ auto_increment 自增
 		id int auto_increment
 	);-- 错误 Incorrect table definition; there can be only one auto column and it must be defined as a key
 ///////////////////////////////
-案例2-创建多表,可以描述出表与表之间的关系
-需求:
-	把网上商城里面用的实体创建成表,并且将他们之间建立关系.
-技术分析:
-	sql
+案例2-创建多表,可以描述出表与表之间的关系<br>
+需求:<br>
+	把网上商城里面用的实体创建成表,并且将他们之间建立关系.<br>
+技术分析:<br>
+	sql<br>
 
 /////////////////////////////////
-网上商城的实体:
-	用户 订单 商品 分类
-常见关系:
-	一对多. 用户和订单  	分类和商品
-	多对多. 订单和商品	学生和课程
-	一对一. 丈夫和妻子	
-ER图可以描述实体于实体之间的关系   实体-联系图(Entity Relationship Diagram)
-	实体用矩形表示
-	属性用椭圆表示
-	关系用菱形表示
+网上商城的实体:<br>
+	用户 订单 商品 分类<br>
+常见关系:<br>
+	一对多. 用户和订单  	分类和商品<br>
+	多对多. 订单和商品	学生和课程<br>
+	一对一. 丈夫和妻子<br>	
+ER图可以描述实体于实体之间的关系   实体-联系图(Entity Relationship Diagram)<br>
+	实体用矩形表示<br>
+	属性用椭圆表示<br>
+	关系用菱形表示<br>
 ////////////////////
-一对多:
+一对多:<br>
+	
 	用户和订单	
 	-- 创建用户表
 	create  table user(
@@ -440,9 +445,10 @@ ER图可以描述实体于实体之间的关系   实体-联系图(Entity Relati
 		在多表中添加一个外键,名称一般为主表的名称_id,字段类型一般和主表的主键的类型保持一致,
 		为了保证数据的有效性和完整性,在多表的外键上添加外键约束即可.
 ////////////////////////
-多对多
+多对多:<br>
 	例子:商品和订单
-		-- 创建商品表
+	
+	-- 创建商品表
 	create table product(
 		id int primary key auto_increment,
 		name varchar(20),
@@ -471,67 +477,68 @@ ER图可以描述实体于实体之间的关系   实体-联系图(Entity Relati
 	外连接
 	子查询
 /////////////////////////////
-笛卡尔积:了解
+	
+	笛卡尔积:了解
 	多张表无条件的联合查询.没有任何意思
 		select a.*,b.* from a,b;
 		
-内连接:★
+	内连接:★
 	格式1:显式的内连接
-		select a.*,b.* from a [inner] join b on ab的连接条件
+			select a.*,b.* from a [inner] join b on ab的连接条件
 	格式2:隐式的内连接
-		select a.*,b.* from a,b where ab的连接条件
-外连接:★
-	左外连接:★
-		select a.*,b.* from a left [outer] join b on 连接条件;
+			select a.*,b.* from a,b where ab的连接条件
+	外连接:★
+		左外连接:★
+			select a.*,b.* from a left [outer] join b on 连接条件;
 		意思:
 			先展示join左边的(a)表的所有数据,根据条件关联查询 join右边的表(b),符合条件则展示出来,不符合以null值展示.
-	右外连接:
-		select a.*,b.* from b right [outer] join a on 连接条件;
+		右外连接:
+			select a.*,b.* from b right [outer] join a on 连接条件;
 		意思:
 			先展示jion右边的表(a)表的所有数据,根据条件关联查询join左边的表(b),符合条件则展示出来,不符合以null值展示.
-子查询:★
-	一个查询依赖另一个查询.
+	子查询:★
+		一个查询依赖另一个查询.
 	
 
 
-练习:
-	查询用户的订单,没有订单的用户不显示
-		隐式内连接:
-			select user.*,orders.* from user ,orders where user.id=orders.user_id;
-		显示内连接
-			select user.*,orders.* from user join orders on user.id=orders.user_id;
-	查询所有用户的订单详情
-		左外连接: user在左
-			select user.*,orders.* from user left join orders on user.id=orders.user_id;
-	查询所有订单的用户详情
-		右外连接:orders 在右
-			select orders.*,user.* from user right join orders on user.id=orders.user_id;
+	练习:
+		查询用户的订单,没有订单的用户不显示
+			隐式内连接:
+				select user.*,orders.* from user ,orders where user.id=orders.user_id;
+			显示内连接
+				select user.*,orders.* from user join orders on user.id=orders.user_id;
+		查询所有用户的订单详情
+			左外连接: user在左
+				select user.*,orders.* from user left join orders on user.id=orders.user_id;
+		查询所有订单的用户详情
+			右外连接:orders 在右
+				select orders.*,user.* from user right join orders on user.id=orders.user_id;
 			
-练习:
-	查看用户为张三的订单详情
-		1.先查询张三的id
-			select id from User where username = '张三';// 3
-		2.select * from orders where user_id = ?;
+	练习:
+		查看用户为张三的订单详情
+			1.先查询张三的id
+				select id from User where username = '张三';// 3
+			2.	select * from orders where user_id = ?;
 		
-		两个合二为一
-			select * from orders where user_id = (select id from User where username = '张三');
-	查询出订单的价格大于300的所有用户信息。
-		1.先查询出订单价格>300的用户的id
-			select user_id from orders where price >300;//(3,3,5,null)
-		2.select * from user where id in(3,3,5,null);
+			两个合二为一
+				select * from orders where user_id = (select id from User where username = '张三');
+		查询出订单的价格大于300的所有用户信息。
+			1.先查询出订单价格>300的用户的id
+				select user_id from orders where price >300;//(3,3,5,null)
+			2.	select * from user where id in(3,3,5,null);
 		
-		两个合二为一:
-			select * from user where id in(select user_id from orders where price >300);
-	查询订单价格大于300的订单信息及相关用户的信息。
-		内连接:
-			select orders.*,user.* from orders,user where user.id=orders.user_id  and orders.price>300 ;
+			两个合二为一:
+				select * from user where id in(select user_id from orders where price >300);
+		查询订单价格大于300的订单信息及相关用户的信息。
+			内连接:
+				select orders.*,user.* from orders,user where user.id=orders.user_id  and orders.price>300 ;
 		
-		子查询:	是将一个查询的结果作为一张临时表		
-			select user.*,tmp.* from user,(select * from orders where price>300) as tmp where user.id=tmp.user_id;
+			子查询:是将一个查询的结果作为一张临时表		
+				select user.*,tmp.* from user,(select * from orders where price>300) as tmp where user.id=tmp.user_id;
 	
-	给表起别名
-		格式: 表 [as] 别名
-		//////////////////////////////////////////////////////////
+		给表起别名
+			格式: 表 [as] 别名
+
 //////////////////////////////////////////////////////////
 
 	初始化数据:
