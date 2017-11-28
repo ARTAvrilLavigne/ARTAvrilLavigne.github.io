@@ -315,9 +315,7 @@ java.sql.Blob(二进制)　　　　　　blob<br>
 				primary key (id)
 			);-- 错误的 一张表只能有一个主键
 			
-
-
- 			create table pk01(
+			create table pk01(
 				id int,
 				username varchar(20),
 				primary key (id,username)
@@ -379,7 +377,8 @@ java.sql.Blob(二进制)　　　　　　blob<br>
 			);
 			
 			insert into nn values(null,'tom');--  错误的 Column 'id' cannot be null
-///////////////////////////////<br>
+
+
 truncate 清空表 ★<br>
 　　　　格式:<br>
 　　　　　　　　　　truncate 表名; 干掉表,重新创建一张空表<br>
