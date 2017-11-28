@@ -263,32 +263,32 @@ DQL:数据查询语言<br>
 					2.where 后面不能使用聚合函数,having可以
 /////////////////////////////////<br>
 数据类型:(了解)<br>
-java			mysql<br>
-byte			tinyint<br>
-short			smallint<br>
-int			int(★)<br>
-long			bigint<br>
-char/String		varchar(★)|char<br>
+java　　　　　　　　　　mysql<br>
+byte　　　　　　　　　　tinyint<br>
+short　　　　　　　　　 smallint<br>
+int　　　　　　　　　　 int(★)<br>
+long　　　　　　　　　　bigint<br>
+char/String　　　　　　varchar(★)|char<br>
 　　　　　　　　　　　　　　　　varchar:可变长度 mysql的方言  varchar(20):  存放abc 只会占用三个<br>
 　　　　　　　　　　　　　　　　char:固定长度 char(20) 存放abc 占用20个<br>
-boolean			tinyint|int 代替<br>
-float|double		float|double<br>
+boolean　　　　　　　　tinyint|int 代替<br>
+float|double　　　　　 float|double<br>
 　　　　　　　　　　　　　　　　　　注意:<br>
 　　　　　　　　　　　　　　　　　　double(5,2):该小数长度为5个,小数占2个  最大值:999.99<br>
 
 
-java.sql.Date		date 日期<br>
-java.sql.Time		time 时间<br>
-java.sql.Timestamp	timestamp(★) 时间戳 若给定值为null,数据库会把当前的系统时间存放到数据库中<br>
+java.sql.Date　　　　　　　　　　date 日期<br>
+java.sql.Time　　　　　　　　　　time 时间<br>
+java.sql.Timestamp　　　　　　　 timestamp(★) 时间戳 若给定值为null,数据库会把当前的系统时间存放到数据库中<br>
 　　　　　　　　　　　　　　　　　　　　　　datetime(★) 日期+时间<br>
 					
-java.sql.Clob(长文本)	mysql的方言(text)<br>
-java.sql.Blob(二进制)	blob<br>
+java.sql.Clob(长文本)　　　　　　mysql的方言(text)<br>
+java.sql.Blob(二进制)　　　　　　blob<br>
 //////////////////////////////////<br>
 约束:<br>
 　　　　　　作用:<br>
 　　　　　　　　　　为了保证数据的有效性和完整性<br>
-　　　　mysql中常用的约束:主键约束(primary key)  唯一约束(unique) 非空约束(not null) 外键约束(foreign key)<br>
+　　　　mysql中常用的约束:主键约束(primary key)、唯一约束(unique)、非空约束(not null)、外键约束(foreign key)<br>
 　　　　主键约束:被修饰过的字段唯一非空<br>
 　　　　　　　　注意:一张表只能有一个主键,这个主键可以包含多个字段<br>
 　　　　　　　　方式1:建表的同时添加约束 格式: 字段名称 字段类型 primary key<br>
