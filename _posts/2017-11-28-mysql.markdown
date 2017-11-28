@@ -37,41 +37,41 @@ tags:
 
 安装了数据库管理系统的计算机称之为数据库服务器<br>
 　　　　服务器:给别人提供提供服务器(软件服务器)<br>
-我们可以通过标准的sql在服务器创建数据库(database)<br>
-有了数据库之后,就可以在数据库上创建表了<br>
-有了表之后,就可以在里面存放数据了.<br>
+　　我们可以通过标准的sql在服务器创建数据库(database)<br>
+　　有了数据库之后,就可以在数据库上创建表了<br>
+　　有了表之后,就可以在里面存放数据了.<br>
 SQL:<br>
-	结构化查询语句<br>
-	作用:<br>
-		管理数据库.<br>
+　　　　结构化查询语句<br>
+　　　　作用:<br>
+　　　　　　　　　　管理数据库.<br>
 sql的分类:<br>
-	DDL:数据定义语言<br>
-		操作对象:数据库和表<br>
-		关键词:create alter drop<br>
-	DML:数据操作语言<br>
-		操作对象:记录<br>
-	DQL:数据查询语言(非官方)<br>
-	DCL:数据控制语言<br>
-		操作对象:用户 事务 权限<br>
+　　　　　　DDL:数据定义语言<br>
+　　　　　　　　　　操作对象:数据库和表<br>
+　　　　　　　　　　关键词:create alter drop<br>
+　　　　　　DML:数据操作语言<br>
+　　　　　　　　　　操作对象:记录<br>
+　　　　　　DQL:数据查询语言(非官方)<br>
+　　　　　　DCL:数据控制语言<br>
+　　　　　　　　　　操作对象:用户 事务 权限<br>
 
 DDL:数据定义语言<br>
-		操作对象:数据库和表<br>
-		关键词:create alter drop<br>	
-	操作数据库:<br>
-		创建:<br>
-			格式:<br>
-				create database 数据库名称;<br>
-		删除:<br>
-			格式:<br>
-				drop database 数据库名称;<br>
-		常用的命令:<br>
-			查看所有的数据库: show databases;<br>
-	操作表:<br>
-		创建表<br>
-			格式:<br>
-				create table 表名(字段描述,字段描述);<br>
-				字段描述:<br>
-					字段名称 字段类型 [约束]<br>
+　　　　　　　　　　操作对象:数据库和表<br>
+　　　　　　　　　　关键词:create alter drop<br>	
+　　　　　　操作数据库:<br>
+　　　　　　　　　　创建:<br>
+　　　　　　　　　　　　　　格式:<br>
+　　　　　　　　　　　　　　　　　　create database 数据库名称;<br>
+　　　　　　　　　　删除:<br>
+　　　　　　　　　　　　　　格式:<br>
+　　　　　　　　　　　　　　　　　　drop database 数据库名称;<br>
+　　　　　　　　　　常用的命令:<br>
+　　　　　　　　　　　　　　查看所有的数据库: show databases;<br>
+　　　　　　操作表:<br>
+　　　　　　　　　　创建表<br>
+　　　　　　　　　　　　　　格式:<br>
+　　　　　　　　　　　　　　　　　　create table 表名(字段描述,字段描述);<br>
+　　　　　　　　　　　　　　　　　　字段描述:<br>
+　　　　　　　　　　　　　　　　　　　　　　字段名称 字段类型 [约束]<br>
 					
 		例如:
 					
@@ -117,10 +117,10 @@ DDL:数据定义语言<br>
 			查看当前数据库下所有表: show tables;
 			查看表结构:desc 表名;
 			查看建表语句:show create table 表名;
-/////////////////////////////////////////////////
+/////////////////////////////////////////////////<br>
 DML:数据操作语言<br>
-	操作对象:记录(行)<br>
-	关键词:insert update delete<br>
+　　　　　　操作对象:记录(行)<br>
+　　　　　　关键词:insert update delete<br>
 				
 	插入:
 		格式1:
@@ -154,11 +154,11 @@ DML:数据操作语言<br>
 			delete from 表名 [where 条件];
 		例如:
 			delete from user where id = '2';
-///////////////////////////////////
+///////////////////////////////////<br>
 DQL:数据查询语言<br>
-		关键词:select<br>
-	格式:<br>
-		select ... from 表名 where 条件 group by 分组字段 having 条件 order by 排序字段 ase|desc<br>
+　　　　　　　　关键词:select<br>
+　　　　　　　　格式:<br>
+　　　　　　　　select ... from 表名 where 条件 group by 分组字段 having 条件 order by 排序字段 ase|desc<br>
 	
 	初始化环境:
 		-- 创建商品表
@@ -261,7 +261,7 @@ DQL:数据查询语言<br>
 				where和having区别:
 					1.where 是对分组前的数据进行过滤 ;having 是对分组后的数据进行过滤 
 					2.where 后面不能使用聚合函数,having可以
-/////////////////////////////////
+/////////////////////////////////<br>
 数据类型:(了解)<br>
 java			mysql<br>
 byte			tinyint<br>
@@ -269,32 +269,32 @@ short			smallint<br>
 int			int(★)<br>
 long			bigint<br>
 char/String		varchar(★)|char<br>
-				varchar:可变长度 mysql的方言  varchar(20):  存放abc 只会占用三个<br>
-				char:固定长度 char(20) 存放abc 占用20个<br>
+　　　　　　　　　　　　　　　　varchar:可变长度 mysql的方言  varchar(20):  存放abc 只会占用三个<br>
+　　　　　　　　　　　　　　　　char:固定长度 char(20) 存放abc 占用20个<br>
 boolean			tinyint|int 代替<br>
 float|double		float|double<br>
-				注意:<br>
-				double(5,2):该小数长度为5个,小数占2个  最大值:999.99<br>
+　　　　　　　　　　　　　　　　　　注意:<br>
+　　　　　　　　　　　　　　　　　　double(5,2):该小数长度为5个,小数占2个  最大值:999.99<br>
 
 
 java.sql.Date		date 日期<br>
 java.sql.Time		time 时间<br>
 java.sql.Timestamp	timestamp(★) 时间戳 若给定值为null,数据库会把当前的系统时间存放到数据库中<br>
-					datetime(★) 日期+时间<br>
+　　　　　　　　　　　　　　　　　　　　　　datetime(★) 日期+时间<br>
 					
 java.sql.Clob(长文本)	mysql的方言(text)<br>
 java.sql.Blob(二进制)	blob<br>
-//////////////////////////////////
+//////////////////////////////////<br>
 约束:<br>
-	作用:<br>
-		为了保证数据的有效性和完整性<br>
-	mysql中常用的约束:主键约束(primary key)  唯一约束(unique) 非空约束(not null) 外键约束(foreign key)<br>
-	主键约束:被修饰过的字段唯一非空<br>
-		注意:一张表只能有一个主键,这个主键可以包含多个字段<br>
-		方式1:建表的同时添加约束 格式: 字段名称 字段类型 primary key<br>
-		方式2:建表的同时在约束区域添加约束 <br>
-			所有的字段声明完成之后,就是约束区域了<br>
-			格式: primary key(字段1,字段2)<br>
+　　　　　　作用:<br>
+　　　　　　　　　　为了保证数据的有效性和完整性<br>
+　　　　mysql中常用的约束:主键约束(primary key)  唯一约束(unique) 非空约束(not null) 外键约束(foreign key)<br>
+　　　　主键约束:被修饰过的字段唯一非空<br>
+　　　　　　　　注意:一张表只能有一个主键,这个主键可以包含多个字段<br>
+　　　　　　　　方式1:建表的同时添加约束 格式: 字段名称 字段类型 primary key<br>
+　　　　　　　　方式2:建表的同时在约束区域添加约束 <br>
+　　　　　　　　　　　　　　所有的字段声明完成之后,就是约束区域了<br>
+　　　　　　　　　　　　　　格式: primary key(字段1,字段2)<br>
 			
 			create table pk01(
 				id int,
@@ -377,18 +377,18 @@ java.sql.Blob(二进制)	blob<br>
 			);
 			
 			insert into nn values(null,'tom');--  错误的 Column 'id' cannot be null
-///////////////////////////////
+///////////////////////////////<br>
 truncate 清空表 ★<br>
-	格式:<br>
-		truncate 表名; 干掉表,重新创建一张空表<br>
-	和delete from 区别:<br>
-		delete属于DML语句  truncate属于DDL语句<br>
-		delete逐条删除	truncate干掉表,重新创建一张空表<br>
+　　　　格式:<br>
+　　　　　　　　　　truncate 表名; 干掉表,重新创建一张空表<br>
+　　　　　　和delete from 区别:<br>
+　　　　　　　　　　delete属于DML语句  truncate属于DDL语句<br>
+　　　　　　　　　　delete逐条删除	truncate干掉表,重新创建一张空表<br>
 		
 auto_increment 自增<br>
-	要求:<br>
-		1.被修饰的字段类型支持自增. 一般int<br>
-		2.被修饰的字段必须是一个key 一般是primary key<br>
+　　　　要求:<br>
+　　　　　　　　　　1.被修饰的字段类型支持自增. 一般int<br>
+　　　　　　　　　　2.被修饰的字段必须是一个key 一般是primary key<br>
 	
 	create table ai01(
 		id varchar(10) auto_increment
@@ -397,25 +397,25 @@ auto_increment 自增<br>
 	create table ai01(
 		id int auto_increment
 	);-- 错误 Incorrect table definition; there can be only one auto column and it must be defined as a key
-///////////////////////////////
+///////////////////////////////<br>
 案例2-创建多表,可以描述出表与表之间的关系<br>
 需求:<br>
-	把网上商城里面用的实体创建成表,并且将他们之间建立关系.<br>
+　　　　　　把网上商城里面用的实体创建成表,并且将他们之间建立关系.<br>
 技术分析:<br>
-	sql<br>
+　　　　　　sql<br>
 
-/////////////////////////////////
+/////////////////////////////////<br>
 网上商城的实体:<br>
-	用户 订单 商品 分类<br>
+　　　　　　用户 订单 商品 分类<br>
 常见关系:<br>
-	一对多. 用户和订单  	分类和商品<br>
-	多对多. 订单和商品	学生和课程<br>
-	一对一. 丈夫和妻子<br>	
+　　　　　　一对多. 用户和订单  	分类和商品<br>
+　　　　　　多对多. 订单和商品	学生和课程<br>
+　　　　　　一对一. 丈夫和妻子<br>	
 ER图可以描述实体于实体之间的关系   实体-联系图(Entity Relationship Diagram)<br>
-	实体用矩形表示<br>
-	属性用椭圆表示<br>
-	关系用菱形表示<br>
-////////////////////
+　　　　　　实体用矩形表示<br>
+　　　　　　属性用椭圆表示<br>
+　　　　　　关系用菱形表示<br>
+////////////////////<br>
 一对多:<br>
 	
 	用户和订单	
@@ -444,9 +444,9 @@ ER图可以描述实体于实体之间的关系   实体-联系图(Entity Relati
 	开发中处理一对多:★
 		在多表中添加一个外键,名称一般为主表的名称_id,字段类型一般和主表的主键的类型保持一致,
 		为了保证数据的有效性和完整性,在多表的外键上添加外键约束即可.
-////////////////////////
+////////////////////////<br>
 多对多:<br>
-	例子:商品和订单
+	例子:商品和订单<br>
 	
 	-- 创建商品表
 	create table product(
@@ -470,13 +470,13 @@ ER图可以描述实体于实体之间的关系   实体-联系图(Entity Relati
 		成两个一对多了
 		为了保证数据的有效性和完整性
 			需要在中间表上添加两个外键约束即可.
-///////////////////////////////////////////////////
-案例3-多表查询
-技术分析:
-	内连接
-	外连接
-	子查询
-/////////////////////////////
+///////////////////////////////////////////////////<br>
+案例3-多表查询<br>
+技术分析:<br>
+　　　　内连接<br>
+　　　　外连接<br>
+　　　　子查询<br>
+/////////////////////////////<br>
 	
 	笛卡尔积:了解
 	多张表无条件的联合查询.没有任何意思
@@ -539,7 +539,7 @@ ER图可以描述实体于实体之间的关系   实体-联系图(Entity Relati
 		给表起别名
 			格式: 表 [as] 别名
 
-//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////<br>
 
 	初始化数据:
 	-- 用户表(user) 
