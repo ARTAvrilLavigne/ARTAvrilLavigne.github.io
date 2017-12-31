@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Spring框架总结之一"
+title:      "Spring框架总结之一"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
 date:       2017-12-31 19:01:00
 author:     "ARTAvrilLavigne"
