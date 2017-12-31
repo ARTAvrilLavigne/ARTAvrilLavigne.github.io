@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Hibernate框架总结之三"
+title:      "Hibernate框架总结之三"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
 date:       2017-12-31 18:43:00
 author:     "ARTAvrilLavigne"
