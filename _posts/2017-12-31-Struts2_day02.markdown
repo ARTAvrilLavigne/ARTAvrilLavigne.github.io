@@ -1,8 +1,8 @@
 ---
 layout:     post
-title:      "Hibernate框架总结之四"
+title:      "Struts2框架总结之一"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
-date:       2017-12-31 18:40:00
+date:       2017-12-31 18:52:00
 author:     "ARTAvrilLavigne"
 header-img: "img/post-bg-2015.jpg"
 tags:
