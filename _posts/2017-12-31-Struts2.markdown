@@ -1,0 +1,941 @@
+---
+layout:     post
+title:      "Struts2框架总结"
+subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
+date:       2017-12-31 18:54:00
+author:     "ARTAvrilLavigne"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - javaee
+---  
+## Struts2第一天 ##
+	
+----------
+	
+**Struts2的学习路线**
+	
+	1. Struts2的入门：主要是学习Struts2的开发流程（Struts2的开发流程、常见的配置、Action类的编写）
+	2. Struts2的Servlet的API、参数封装和拦截器
+	3. Struts2的值栈和OGNL表达式
+	
+----------
+	
+### 今天的课程内容 ###
+	
+	1. Struts2框架的概述
+	2. Struts2的快速入门
+	3. Struts2的运行流程
+	4. Struts2的常见配置（配置文件加载的顺序、struts.xml的常见配置（重点）、常量的配置等）
+	5. Struts2的Action的访问（Action的三种编写方式、Action类的配置、方法的调用等）
+	
+----------
+	
+### 案例一：使用Struts2框架完成登录功能 ###
+	
+----------
+	
+**需求分析**
+	
+	1. 使用Struts2完成登录的功能
+	
+----------
+	
+**技术分析之Struts2框架的概述**
+	
+	1. 什么是Struts2的框架
+		* Struts2是Struts1的下一代产品，是在 struts1和WebWork的技术基础上进行了合并的全新的Struts 2框架。
+		* 其全新的Struts 2的体系结构与Struts 1的体系结构差别巨大。
+		* Struts 2以WebWork为核心，采用拦截器的机制来处理用户的请求，这样的设计也使得业务逻辑控制器能够与ServletAPI完全脱离开，所以Struts 2可以理解为WebWork的更新产品。
+		* 虽然从Struts 1到Struts 2有着太大的变化，但是相对于WebWork，Struts 2的变化很小。
+	
+	2. Struts2是一个基于MVC设计模式的Web层框架
+		* MVC和JavaEE的三层结构
+			* MVC设计模式:是由一些网站的开发人员提出来的
+			* JavaEE三层结构:SUN公司为EE开发划分的结构
+	
+	3. 常见的Web层的框架
+		* Struts1  淘汰
+		* Struts2 
+		* Webwork  淘汰
+		* SpringMVC 
+	
+	4. Web层框架的特点
+		* 都是一个特点，前端控制器模式
+		* 记住：前端控制器（核心的控制器）
+		* Struts2框架前端的控制器就是过滤器
+	
+![](./图片/01-前端控制器模式.bmp)
+	
+----------
+	
+**技术分析之Struts2快速入门的环境准备**
+	
+	1. 创建WEB项目，编写JSP的页面，编写超链接，点击超链接发送请求，请求服务器，让服务器的方法去执行！！
+		<h3>Struts2的入门程序</h3>
+		<a href="${ pageContext.request.contextPath }/hello.action">Struts2入门程序</a>
+	
+	2. 下载Struts2的开发包
+		* https://struts.apache.org/		-- 官网地址
+	
+	3. 解压struts-2.3.24-all.zip包
+		* 解压后会看到有包和一些文件，大家需要掌握包相关的信息
+			* apps	-- Struts2框架提供了一些应用
+			* libs	-- Struts2框架开发的jar包
+			* docs	-- Struts2框架开发文档
+			* src	-- Struts2框架源码
+	
+	4. 引入需要开发的jar包
+		* Struts2框架的开发jar包非常多，但是不是所有都是必须要引入的，有一些必须要导入的jar包，这些jar包可以从Struts2框架提供的应用中找到。
+		* 大家可以打开apps目录，然后找到struts2-blank.war应用。war包和zip包的压缩格式是一样的，所以可以自己修改后缀名，解压。
+		* 找到解压后的应用，打开WEB-INF/lib目录下所以的jar包。复制到工程中，就可以了。
+	
+	5. 需要配置Struts2的前端控制器，注意：这一步是必须要做的操作，这是Struts2核心的控制器。
+		* Struts2的前端控制器就是一个过滤器，那么过滤器相关知识咱们都学习过，需要在web.xml中进行配置。
+		* 前端控制器的类的路径和名称：org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter
+		* 具体配置如下
+		  <filter>
+		  	<filter-name>struts2</filter-name>
+		  	<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+		  </filter>
+		  <filter-mapping>
+		  	<filter-name>struts2</filter-name>
+		  	<url-pattern>/*</url-pattern>
+		  </filter-mapping>
+	
+----------
+	
+**技术分析之编写Action类**	
+	
+	1. Action类是动作类，是Struts2处理请求，封装数据，响应页面的核心控制器。需要自己编写。
+		package cn.itcast.action;
+			public String sayHello(){
+			System.out.println("Hello Struts2!!");
+			return null;
+		}
+	
+----------
+	
+**技术分析之编写Struts的配置文件**
+	
+	1. 配置文件名称是struts.xml（名称必须是struts.xml）
+	2. 在src下引入struts.xml配置文件（配置文件的路径必须是在src的目录下）
+	3. 配置如下
+		<?xml version="1.0" encoding="UTF-8" ?>
+		<!DOCTYPE struts PUBLIC
+			"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+			"http://struts.apache.org/dtds/struts-2.3.dtd">
+		
+		<struts>
+		    <package name="default" namespace="/" extends="struts-default">
+		        <action name="hello" class="com.itheima.action.HelloAction" method="sayHello">
+		        </action>
+		    </package>
+		</struts>
+	
+----------
+	
+**入门总结之Struts2的执行流程**
+	
+	1. 执行的流程
+		* 编写的页面，点击超链接，请求提交到服务器端。
+		* 请求会先经过Struts2的核心过滤器（StrutsPrepareAndExecuteFilter）
+			* 过滤器的功能是完成了一部分代码功能
+			* 就是一系列的拦截器执行了，进行一些处理工作。
+			* 咱们可以在struts-default.xml配置文件中看到有很多的拦截器。可以通过断点的方式来演示。
+			* 拦截器执行完后，会根据struts.xml的配置文件找到请求路径，找到具体的类，通过反射的方式让方法执行。
+	
+	2. 总结
+		* JSP页面-->StrutsPrepereAndExecuteFilter过滤器-->执行一系列拦截器（完成了部分代码）-->执行到目标Action-->返回字符串-->结果页面（result）-->页面跳转
+	
+![](./图片/02-执行流程.bmp)	
+	
+----------
+	
+**入门总结之struts.xml的配置文件提示的问题**
+	
+	1. 先找到struts.xml的配置文件，复制http://struts.apache.org/dtds/struts-2.3.dtd，注意，不要有双引号。
+		* http://struts.apache.org/dtds/struts-2.3.dtd
+	
+	2. 选择window -- 首选项 -- 搜索xml -- 选择xml Catalog
+	3. 选择添加按钮（add按钮）
+		* key type 要选择URI
+		* key的位置把刚才复制的路径拷贝进去。http://struts.apache.org/dtds/struts-2.3.dtd
+		* Location要在本地能找到struts2-2.3.dtd的真实文件。点击File System，去资料中找到它
+		
+	4. 如果想查看源代码
+		* 选择资料/struts2/struts-2.3.24-all.zip
+	
+----------
+	
+**入门总结之Struts2框架配置文件加载的顺序**
+	
+	0. 需要掌握
+		* 加载了哪些个配置文件（重点的）
+		* 配置文件的名称是什么
+		* 配置文件的位置
+		* 配置文件的作用
+
+	1. Struts2框架的核心是StrutsPrepareAndExecuteFilter过滤器，该过滤器有两个功能
+		* Prepare		-- 预处理，加载核心的配置文件
+		* Execute		-- 执行，让部分拦截器执行
+	
+	2. StrutsPrepareAndExecuteFilter过滤器会加载哪些配置文件呢？
+		* 通过源代码可以看到具体加载的配置文件和加载配置文件的顺序
+			* init_DefaultProperties(); 				-- 加载org/apache/struts2/default.properties
+		    * init_TraditionalXmlConfigurations();		-- 加载struts-default.xml,struts-plugin.xml,struts.xml
+        	* init_LegacyStrutsProperties();			-- 加载自定义的struts.properties.
+        	* init_CustomConfigurationProviders();		-- 加载用户自定义配置提供者
+        	* init_FilterInitParameters() ;				-- 加载web.xml
+	
+	3. 重点了解的配置文件
+		* default.properties		-- 在org/apache/struts2/目录下，代表的是配置的是Struts2的常量的值
+		* struts-default.xml		-- 在Struts2的核心包下，代表的是Struts2核心功能的配置（Bean、拦截器、结果类型等）
+		* struts.xml				-- 重点中的重点配置，代表WEB应用的默认配置，在工作中，基本就配置它就可以了！！（可以配置常量）
+		* web.xml					-- 配置前端控制器（可以配置常量）
+		
+		* 注意：
+			* 前3个配置文件是struts2框架的默认配置文件，基本不用修改。
+			* 后3个配置文件可以允许自己修改struts2的常量。但是有一个特点：后加载的配置文件修改的常量的值，会覆盖掉前面修改的常量的值。
+	
+	4. 总结（重点掌握的配置文件）
+		* 先加载default.properties文件，在org/apache/struts2/default.properties文件，都是常量。
+		* 又加载struts-default.xml配置文件，在核心的jar包最下方，struts2框架的核心功能都是在该配置文件中配置的。
+		* 再加载struts.xml的配置文件，在src的目录下，代表用户自己配置的配置文件
+		* 最后加载web.xml的配置文件
+		
+		* 后加载的配置文件会覆盖掉之前加载的配置文件（在这些配置文件中可以配置常量）
+	
+	5. 注意一个问题
+		* 哪些配置文件中可以配置常量？
+			* default.properties		-- 默认值，咱们是不能修改的！！
+			* struts.xml				-- 可以配置，开发中基本上都在该配置文件中配置常量
+			* struts.properties			-- 可以配置，基本不会在该配置文件中配置
+			* web.xml					-- 可以配置，基本不会在该配置文件中配置
+		
+		* 后加载的配置文件会覆盖掉之前加载的配置！！
+	
+----------
+	
+**入门总结之struts.xml配置文件的配置**
+	
+	1. <package>标签，如果要配置<Action>的标签，那么必须要先配置<package>标签，代表的包的概念
+		* 包含的属性
+			* name					-- 包的名称，要求是唯一的，管理action配置
+			* extends				-- 继承，可以继承其他的包，只要继承了，那么该包就包含了其他包的功能，一般都是继承struts-default
+			* namespace				-- 名称空间，一般与<action>标签中的name属性共同决定访问路径（通俗话：怎么来访问action），常见的配置如下
+				* namespace="/"		-- 根名称空间
+				* namespace="/aaa"	-- 带有名称的名称空间
+			* abstract				-- 抽象的。这个属性基本很少使用，值如果是true，那么编写的包是被继承的
+	
+	2. <action>标签
+		* 代表配置action类，包含的属性
+			* name			-- 和<package>标签的namespace属性一起来决定访问路径的
+			* class			-- 配置Action类的全路径（默认值是ActionSupport类）
+			* method		-- Action类中执行的方法，如果不指定，默认值是execute
+	
+	3. <result>标签
+		* action类中方法执行，返回的结果跳转的页面
+			* name		-- 结果页面逻辑视图名称
+			* type		-- 结果类型（默认值是转发，也可以设置其他的值）
+	
+----------
+	
+**入门总结之Struts2配置常量**
+	
+	1. 可以在Struts2框架中的哪些配置文件中配置常量？
+		* struts.xml（必须要掌握，开发中基本上就在该配置文件中编写常量）
+			* <constant name="key" value="value"></constant>
+		* web.xml
+			* 在StrutsPrepareAndExecuteFilter配置文件中配置初始化参数
+		* 注意：后加载的配置的文件的常量会覆盖之前加载的常量！！
+	
+	2. 需要大家了解的常量
+		* struts.i18n.encoding=UTF-8			-- 指定默认编码集,作用于HttpServletRequest的setCharacterEncoding方法 
+		* struts.action.extension=action,,		-- 该属性指定需要Struts 2处理的请求后缀，该属性的默认值是action，即所有匹配*.action的请求都由Struts2处理。如果用户需要指定多个请求后缀，则多个后缀之间以英文逗号（,）隔开
+		* struts.serve.static.browserCache=true		-- 设置浏览器是否缓存静态内容,默认值为true(生产环境下使用),开发阶段最好关闭 
+		* struts.configuration.xml.reload=false		-- 当struts的配置文件修改后,系统是否自动重新加载该文件,默认值为false(生产环境下使用) 
+		* struts.devMode = false					-- 开发模式下使用,这样可以打印出更详细的错误信息 
+	
+----------
+	
+**入门总结之指定多个struts的配置文件（了解）**
+	
+	1. 在大部分应用里，随着应用规模的增加，系统中Action的数量也会大量增加，导致struts.xml配置文件变得非常臃肿。
+		为了避免struts.xml文件过于庞大、臃肿，提高struts.xml文件的可读性，我们可以将一个struts.xml配置文件分解成多个配置文件，然后在struts.xml文件中包含其他配置文件。
+	
+	2. 可以在<package>标签中，使用<include>标签来引入其他的struts_xx.xml的配置文件。例如：
+		<struts>
+			<include file="struts-part1.xml"/>
+			<include file="struts-part2.xml"/>
+		</struts>
+	
+	3. 注意注意注意（重要的事情说三遍）：<include file="cn/itcast/demo2/struts-part1.xml"/>
+	
+----------
+	
+**技术分析之Action类的三种写法**
+	
+	1. 配置文件学习完成，下面的重点是Action类的三种写法
+		* Action类就是一个POJO类
+			* 什么是POJO类，POJO（Plain Ordinary Java Object）简单的Java对象.简单记：没有继承某个类，没有实现接口，就是POJO的类。
+		
+		* Action类可以实现Action接口
+			* Action接口中定义了5个常量，5个常量的值对应的是5个逻辑视图跳转页面（跳转的页面还是需要自己来配置），还定义了一个方法，execute方法。
+			* 大家需要掌握5个逻辑视图的常量
+				* SUCCESS		-- 成功.
+				* INPUT			-- 用于数据表单校验.如果校验失败,跳转INPUT视图.
+				* LOGIN			-- 登录.
+				* ERROR			-- 错误.
+				* NONE			-- 页面不转向.
+		
+		* Action类可以去继承ActionSupport类（开发中这种方式使用最多）
+			* 设置错误信息
+	
+----------
+	
+**技术分析之Action的访问**
+	
+	1. 通过<action>标签中的method属性，访问到Action中的具体的方法。
+		* 传统的配置方式，配置更清晰更好理解！但是扩展需要修改配置文件等！
+		* 具体的实例如下：
+			* 页面代码
+				* <a href="${pageContext.request.contextPath}/addBook.action">添加图书</a>
+				* <a href="${pageContext.request.contextPath}/deleteBook.action">删除图书</a>
+			
+			* 配置文件的代码
+				<package name="demo2" extends="struts-default" namespace="/">
+			    	<action name="addBook" class="cn.itcast.demo2.BookAction" method="add"></action>
+			    	<action name="deleteBook" class="cn.itcast.demo2.BookAction" method="delete"></action>
+			    </package>
+			
+			* Action的代码
+				public String add(){
+					System.out.println("添加图书");
+					return NONE;
+				}
+				public String delete(){
+					System.out.println("删除图书");
+					return NONE;
+				}
+	
+	2. 通配符的访问方式:(访问的路径和方法的名称必须要有某种联系.)	通配符就是 * 代表任意的字符
+		* 使用通配符的方式可以简化配置文件的代码编写，而且扩展和维护比较容易。
+		* 具体实例如下：
+			* 页面代码
+				<a href="${pageContext.request.contextPath}/order_add.action">添加订单</a>
+				<a href="${pageContext.request.contextPath}/order_delete.action">删除订单</a>
+			
+			* 配置文件代码
+				* <action name="order_*" class="cn.itcast.demo2.OrderAction" method="{1}"></action>
+			
+			* Action的代码
+				public String add(){
+					System.out.println("添加订单");
+					return NONE;
+				}
+				public String delete(){
+					System.out.println("删除订单");
+					return NONE;
+				}
+			
+		* 具体理解：在JSP页面发送请求，http://localhost/struts2_01/order_add.action，配置文件中的order_*可以匹配该请求，*就相当于变成了add，method属性的值使用{1}来代替，{1}就表示的是第一个*号的位置！！所以method的值就等于了add，那么就找到Action类中的add方法，那么add方法就执行了！
+	
+	3. 动态方法访问的方式（有的开发中也会使用这种方式）
+		* 如果想完成动态方法访问的方式，需要开启一个常量，struts.enable.DynamicMethodInvocation = false，把值设置成true。
+			* 注意：不同的Struts2框架的版本，该常量的值不一定是true或者false，需要自己来看一下。如果是false，需要自己开启。
+			* 在struts.xml中开启该常量。
+				* <constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+		
+		* 具体代码如下
+			* 页面的代码
+				* <a href="${pageContext.request.contextPath}/product!add.action">添加商品</a>
+				* <a href="${pageContext.request.contextPath}/product!delete.action">删除商品</a>
+			
+			* 配置文件代码
+				* <action name="product" class="cn.itcast.demo2.ProductAction"></action>
+			
+			* Action的类的代码
+				public class ProductAction extends ActionSupport{
+					public String add(){
+						System.out.println("添加订单");
+						return NONE;
+					}
+					public String delete(){
+						System.out.println("删除订单");
+						return NONE;
+					}
+				}
+	
+----------------------------------------------------------------------------------------------------------------------------------
+
+ ## Struts2的第二天 ##
+	
+----------
+	
+**课程回顾：Struts2框架第一天**
+	
+	1. Struts2框架的概述，前端控制器的模式，核心的过滤器
+	2. 入门，编写struts.xml配置文件
+	3. 配置文件
+		* 配置文件的加载
+	4. Action类的编写和访问
+	
+----------
+	
+**Struts2的第二天的内容**
+	
+	1. Struts2框架中的Servlet的API的使用
+	2. Struts2中Action接收请求参数
+	3. Struts2中自定义拦截器
+	
+----------
+	
+### 案例一：使用Struts2作为WEB层完成客户的新增功能 ###
+	
+----------
+	
+**需求分析**
+	
+	1. 原来是使用Servlet作为WEB层框架，现在需要使用Struts2作为WEB层完成客户的新增功能
+	
+----------
+	
+**技术分析之在Struts2框架中使用Servlet的API**
+	
+	1. 在Action类中也可以获取到Servlet一些常用的API
+		* 需求：提供JSP的表单页面的数据，在Action中使用Servlet的API接收到，然后保存到三个域对象中，最后再显示到JSP的页面上。
+			* 提供JSP注册的页面，演示下面这三种方式
+				<h3>注册页面</h3>
+				<form action="${ pageContext.request.contextPath }/xxx.action" method="post">
+					姓名:<input type="text" name="username" /><br/>
+					密码:<input type="password" name="password" /><br/>
+					<input type="submit" value="注册" />
+				</form>
+	
+	2. 完全解耦合的方式
+		* 如果使用该种方式，Struts2框架中提供了一个类，ActionContext类，该类中提供一些方法，通过方法获取Servlet的API
+		* 一些常用的方法如下
+			* static ActionContext getContext()  										-- 获取ActionContext对象实例
+			* java.util.Map<java.lang.String,java.lang.Object> getParameters()  		-- 获取请求参数，相当于request.getParameterMap();
+			* java.util.Map<java.lang.String,java.lang.Object> getSession()  			-- 获取的代表session域的Map集合，就相当于操作session域。
+			* java.util.Map<java.lang.String,java.lang.Object> getApplication() 		-- 获取代表application域的Map集合
+			* void put(java.lang.String key, java.lang.Object value)  					-- 注意：向request域中存入值。
+    
+	3. 使用原生Servlet的API的方式（推荐）
+		* Struts2框架提供了一个类，ServletActionContext，该类中提供了一些静态的方法
+		* 具体的方法如下
+			* getPageContext()
+			* getRequest()
+			* getResponse()
+			* getServletContext()
+	
+----------
+	
+**技术分析之结果页面的跳转**
+	
+	1. 结果页面存在两种方式
+		* 全局结果页面
+			> 条件：如果<package>包中的一些action都返回success，并且返回的页面都是同一个JSP页面，这样就可以配置全局的结果页面。
+			> 全局结果页面针对的当前的包中的所有的Action，但是如果局部还有结果页面，会优先局部的。使用的标签是
+				<global-results>
+					<result>/demo3/suc.jsp</result>
+				</global-results>
+		
+		* 局部结果页面
+			<result>/demo3/suc.jsp</result>
+	
+	2. 结果页面的类型
+		* 结果页面使用<result>标签进行配置，包含两个属性
+			> name	-- 逻辑视图的名称
+			> type	-- 跳转的类型，值一些，需要掌握一些常用的类型。常见的结果类型去struts-default.xml中查找。
+				* dispatcher		-- 转发.type的默认值.Action--->JSP
+				* redirect			-- 重定向.	Action--->JSP
+				* chain				-- 多个action之间跳转.从一个Action转发到另一个Action.	Action---Action
+				* redirectAction	-- 多个action之间跳转.从一个Action重定向到另一个Action.	Action---Action
+				* stream			-- 文件下载时候使用的
+	
+----------
+
+![](./图片/01-拦截器.bmp)	
+
+**技术分析之Struts2框架的数据封装**
+	
+	1. 为什么要使用数据的封装呢？
+		* 作为MVC框架，必须要负责解析HTTP请求参数，并将其封装到Model对象中
+		* 封装数据为开发提供了很多方便
+		* Struts2框架提供了很强大的数据封装的功能，不再需要使用Servlet的API完成手动封装了！！
+	
+	2. Struts2中提供了两类数据封装的方式
+		* 第一种方式：属性驱动
+			> 提供对应属性的set方法进行数据的封装。
+				* 表单的哪些属性需要封装数据，那么在对应的Action类中提供该属性的set方法即可。
+				* 表单中的数据提交，最终找到Action类中的setXxx的方法，最后赋值给全局变量。
+				
+				* 注意0：Struts2的框架采用的拦截器完成数据的封装。
+				* 注意1：这种方式不是特别好:因为属性特别多,提供特别多的set方法,而且还需要手动将数据存入到对象中.
+				* 注意2：这种情况下，Action类就相当于一个JavaBean，就没有体现出MVC的思想，Action类又封装数据，又接收请求处理，耦合性较高。
+			
+			> 在页面上，使用OGNL表达式进行数据封装。
+				* 在页面中使用OGNL表达式进行数据的封装，就可以直接把属性封装到某一个JavaBean的对象中。
+				* 在页面中定义一个JavaBean，并且提供set方法：例如：private User user;
+				* 页面中的编写发生了变化，需要使用OGNL的方式，表单中的写法：<input type="text" name="user.username">
+				
+				* 注意：只提供一个set方法还不够，必须还需要提供user属性的get和set方法！！！
+					> 先调用get方法，判断一下是否有user对象的实例对象，如果没有，调用set方法把拦截器创建的对象注入进来，
+		
+		* 第二种方式：模型驱动(模块化开发首选)
+			> 使用模型驱动的方式，也可以把表单中的数据直接封装到一个JavaBean的对象中，并且表单的写法和之前的写法没有区别！
+			> 编写的页面不需要任何变化，正常编写name属性的值
+			> 模型驱动的编写步骤：
+				* 手动实例化JavaBean，即：private User user = new User();
+				* 必须实现ModelDriven<T>接口，实现getModel()的方法，在getModel()方法中返回user即可！！
+
+----------
+
+**技术分析之Struts2把数据封装到集合中**
+	
+	1. 封装复杂类型的参数（集合类型 Collection 、Map接口等）
+	2. 需求：页面中有可能想批量添加一些数据，那么现在就可以使用上述的技术了。把数据封装到集合中
+	3. 把数据封装到Collection中
+		* 因为Collection接口都会有下标值，所有页面的写法会有一些区别，注意：
+			> <input type="text" name="products[0].name" />
+		* 在Action中的写法，需要提供products的集合，并且提供get和set方法。
+	
+	4. 把数据封装到Map中
+		* Map集合是键值对的形式，页面的写法
+			> <input type="text" name="map['one'].name" />
+		* Action中提供map集合，并且提供get和set方法
+	
+----------
+	
+**案例：添加客户**
+	
+	1. 功能
+	
+----------
+	
+**案例总结之Struts2的拦截器技术**
+	
+	1. 拦截器的概述
+		* 拦截器就是AOP（Aspect-Oriented Programming）的一种实现。（AOP是指用于在某个方法或字段被访问之前，进行拦截然后在之前或之后加入某些操作。）
+		* 过滤器:过滤从客户端发送到服务器端请求的
+		
+		* 拦截器:拦截对目标Action中的某些方法进行拦截
+			* 拦截器不能拦截JSP
+			* 拦截到Action中某些方法
+	
+	2. 拦截器和过滤器的区别
+		1）拦截器是基于JAVA反射机制的，而过滤器是基于函数回调的
+		2）过滤器依赖于Servlet容器，而拦截器不依赖于Servlet容器
+		3）拦截器只能对Action请求起作用（Action中的方法），而过滤器可以对几乎所有的请求起作用（CSS JSP JS）
+		
+		* 拦截器 采用 责任链 模式
+			> 在责任链模式里,很多对象由每一个对象对其下家的引用而连接起来形成一条链
+			> 责任链每一个节点，都可以继续调用下一个节点，也可以阻止流程继续执行
+		
+		* 在struts2 中可以定义很多个拦截器，将多个拦截器按照特定顺序组成拦截器栈 （顺序调用栈中的每一个拦截器 ）
+	
+	3. Struts2的核心是拦截器，看一下Struts2的运行流程
+
+![](./图片/02-执行流程.bmp)	
+	
+----------
+	
+**案例总结之自定义拦截器和配置**
+	
+	1. 编写拦截器，需要实现Interceptor接口，实现接口中的三个方法
+		protected String doIntercept(ActionInvocation invocation) throws Exception {
+			// 获取session对象
+			User user = (User) ServletActionContext.getRequest().getSession().getAttribute("existUser");
+			if(user == null){
+				// 说明，没有登录，后面就不会执行了
+				return "login";
+			}
+			//放行
+			return invocation.invoke();
+		}
+	
+	2. 需要在struts.xml中进行拦截器的配置，配置一共有两种方式
+		<!-- 定义了拦截器 第一种方式
+		<interceptors>
+			<interceptor name="DemoInterceptor" class="com.itheima.interceptor.DemoInterceptor"/>
+		</interceptors>
+		-->
+		
+		<!-- 第二种方式：定义拦截器栈 -->
+		<interceptors>
+			<interceptor name="DemoInterceptor" class="com.itheima.interceptor.DemoInterceptor"/>
+			<!-- 定义拦截器栈 -->
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="DemoInterceptor"/>
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+		
+		<action name="userAction" class="com.itheima.demo3.UserAction">
+			<!-- 只要是引用自己的拦截器，默认栈的拦截器就不执行了，必须要手动引入默认栈 
+			<interceptor-ref name="DemoInterceptor"/>
+			<interceptor-ref name="defaultStack"/>
+			-->
+			
+			<!-- 引入拦截器栈就OK -->
+			<interceptor-ref name="myStack"/>
+		</action>
+
+----------
+	
+**案例二：使用拦截器判断用户是否已经登录**
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+## Struts2第三天 ##
+	
+----------
+	
+**课程回顾：Struts2框架的第二天**
+	
+	1. Servlet的API
+		* ActionContext对象
+		* ServletActionContext对象
+	
+	2. 结构类型的跳转
+		* 全局结果
+		* 局部结构，type属性
+	
+	3. 数据的封装
+		* 属性驱动方式
+		* 模型驱动方式
+	
+	4. 拦截器（自定义拦截器）
+	
+----------
+	
+**今天的课程内容**
+	
+	1. OGNL表达式（了解）
+	2. Struts2框架的值栈（值栈、存入值、取值）
+	3. OGNL的特殊符号
+	
+----------
+	
+### 案例一：使用Struts2框架查询所有的客户功能 ###
+	
+----------
+	
+**需求分析**
+	
+	1. 使用Struts2框架查询所有的客户功能
+	
+----------
+	
+**技术分析之OGNL表达式概述（了解）**
+	
+	1. OGNL是Object Graphic Navigation Language（对象图导航语言）的缩写
+		* 所谓对象图，即以任意一个对象为根，通过OGNL可以访问与这个对象关联的其它对象
+		* 通过它简单一致的表达式语法，可以存取对象的任意属性，调用对象的方法，遍历整个对象的结构图，实现字段类型转化等功能。它使用相同的表达式去存取对象的属性
+	
+	2. Struts2框架使用OGNL作为默认的表达式语言
+		* OGNL是一种比EL强大很多倍的语言
+		* xwork提供 OGNL表达式
+		* ognl-3.0.5.jar
+	
+	3. OGNL 提供五大类功能
+	   * 支持对象方法调用
+	   * 支持类静态的方法调用和值访问
+	   * 访问OGNL上下文（OGNL context）和ActionContext
+	   * 支持赋值操作和表达式串联
+	   * 操作集合对象
+	
+	4. 测试的代码
+		// 访问对象的方法
+		@Test
+		public void run1() throws OgnlException{
+			OgnlContext context = new OgnlContext();
+			// 获取对象的方法
+			Object obj = Ognl.getValue("'helloworld'.length()", context, context.getRoot());
+			System.out.println(obj);
+		}
+		
+		// 获取OGNL上下文件的对象
+		@Test
+		public void run3() throws OgnlException{
+			OgnlContext context = new OgnlContext();
+			context.put("name", "美美");
+			// 获取对象的方法
+			Object obj = Ognl.getValue("#name", context, context.getRoot());
+			System.out.println(obj);
+		}
+		
+		// 从root栈获取值
+		@Test
+		public void demo3() throws OgnlException{
+			OgnlContext context = new OgnlContext();
+			Customer c = new Customer();
+			c.setCust_name("haha");
+			context.setRoot(c);
+			String name = (String) Ognl.getValue("cust_name", context, context.getRoot());
+			System.out.println(name);
+		}
+	
+----------
+	
+**技术分析之在Struts2框架中使用OGNL表达式**
+	
+	1. Struts2引入了OGNL表达式，主要是在JSP页面中获取值栈中的值
+	2. 具体在Struts2中怎么使用呢？如下步骤
+		* 需要先引入Struts2的标签库
+			> <%@ taglib prefix="s" uri="/struts-tags" %>
+		
+		* 使用Struts2提供的标签中的标签
+			> <s:property value="OGNL表达式"/>
+	
+	3. 在JSP页面使用OGNL表达式
+		* 访问对象方法
+			<s:property value="'hello'.length()"/>
+	
+----------
+	
+**技术分析之值栈的概述**
+	
+	1. 问题一：什么是值栈？
+		* 值栈就相当于Struts2框架的数据的中转站，向值栈存入一些数据。从值栈中获取到数据。
+		* ValueStack 是 struts2 提供一个接口，实现类 OgnlValueStack ---- 值栈对象 （OGNL是从值栈中获取数据的 ）
+		* Action是多例的，有一起请求，创建Action实例，创建一个ActionContext对象，代表的是Action的上下文对象，还会创建一个ValueStack对象。
+		* 每个Action实例都有一个ValueStack对象 （一个请求 对应 一个ValueStack对象 ）
+		* 在其中保存当前Action 对象和其他相关对象
+		* Struts 框架把 ValueStack 对象保存在名为 “struts.valueStack” 的请求属性中,request中 （值栈对象 是 request一个属性）
+			* ValueStack vs = (ValueStack)request.getAttribute("struts.valueStack");
+	
+----------
+	
+**技术分析之值栈的内部结构**
+	
+	2. 问题二 ： 值栈的内部结构 ？
+	    * 值栈由两部分组成
+			> root		-- Struts把动作和相关对象压入 ObjectStack 中--List
+			> context  	-- Struts把各种各样的映射关系(一些 Map 类型的对象) 压入 ContextMap 中
+		
+		* Struts会默认把下面这些映射压入ContextMap（context）中
+			* 注意：request代表的是Map集合的key值，value的值其实也是一个Map集合。
+			
+			> parameters: 该 Map 中包含当前请求的请求参数  ?name=xxx&password=123
+			> request: 该 Map 中包含当前 request 对象中的所有属性
+			> session: 该 Map 中包含当前 session 对象中的所有属性
+			> application:该 Map 中包含当前 application  对象中的所有属性
+			> attr: 该 Map 按如下顺序来检索某个属性: request, session, application
+		
+		* ValueStack中 存在root属性 (CompoundRoot) 、 context 属性 （OgnlContext ）
+			> CompoundRoot 就是ArrayList
+			> OgnlContext 就是 Map
+		
+		* context 对应Map 引入 root对象 
+			> context中还存在 request、 session、application、 attr、 parameters 对象引用 
+			> OGNL表达式访问值栈中的数据
+				* 访问root中数据时 不需要 #
+				* 访问 request、 session、application、 attr、 parameters 对象数据 必须写 # 
+			
+			> 操作值栈 默认指 操作 root 元素
+	
+![](./图片/01-值栈的内部结构.bmp)	
+	
+----------
+	
+**技术分析之值栈的创建和ActionContext对象的关系**
+	
+	3. 问题三 ： 值栈对象的创建，ValueStack 和 ActionContext 是什么关系？
+		* 值栈对象是请求时创建的
+		* ActionContext是绑定到当前的线程上，那么在每个拦截器或者Action中获取到的ActionContext是同一个。
+		* ActionContext中存在一个Map集合，该Map集合和ValueStack的context是同一个地址。
+		* ActionContext中可以获取到ValueStack的引用，以后再开发，使用ActionContext来获取到值栈对象
+	
+----------
+	
+**技术分析之获取到值栈的对象**
+	
+	4. 问题四 ： 如何获得值栈对象
+		* 获得值栈对象 有三种方法
+			* ValueStack vs1 = (ValueStack) ServletActionContext.getRequest().getAttribute("struts.valueStack");
+			* ValueStack vs2 = (ValueStack) ServletActionContext.getRequest().getAttribute(ServletActionContext.STRUTS_VALUESTACK_KEY);
+			* ValueStack vs3 = ActionContext.getContext().getValueStack();   推荐
+	
+----------
+	
+**技术分析之向值栈中保存数据**
+	
+	5. 问题五： 向值栈保存数据 （主要针对root栈）
+		> valueStack.push(Object obj);
+			* push方法的底层调用root对象的push方法（把元素添加到0位置）
+		
+		> valueStack.set(String key, Object obj);
+			* 源码获取map集合（map有可能是已经存在的，有可能是新创建的），把map集合push到栈顶，再把数据存入到map集合中。
+		
+		> 在jsp中 通过 <s:debug /> 查看值栈的内容
+	
+----------
+	
+**技术分析之从值栈中获取值**
+	
+	6. 问题六： 在JSP中获取值栈的数据
+		* 总结几个小问题：
+		    > 访问root中数据 不需要#
+		    > 访问context其它对象数据 加 #
+		    > 如果向root中存入对象的话，优先使用push方法。
+		    > 如果向root中存入集合的话，优先要使用set方法。
+		
+		* 在OgnlContext中获取数据
+			> 在Action中向域对象中存入值
+			> request:<s:property value="#request.username"/>
+			> session:<s:property value="#session.username"/>
+			> application:<s:property value="#application.username"/>
+			> attr:<s:property value="#attr.username"/>
+			> parameters:<s:property value="#parameters.cid"/>
+	
+	6.1 代码如下
+		<!--
+			// vs.push("美美");
+			// 获取到栈顶的值
+			<s:property value="[0].top"/>
+		-->
+		
+		<!--
+			// 栈顶是map集合，通过key获取值
+			vs.set("msg", "小凤");
+			<s:property value="[0].top.msg"/>
+		-->
+		
+		<!--  
+			vs.push(user);
+			// 栈顶放user对象
+			<s:property value="[0].top.username"/>
+			<s:property value="[0].top.password"/>
+			// [0].top 关键字是可以省略的  findValue()
+			<s:property value="username"/>
+		-->
+		
+		<!--
+			vs.set("user", user);
+			<s:property value="[0].top.user.username"/>
+			<s:property value="[0].top.user.password"/>
+			// 省略关键字
+			<s:property value="user.username"/>
+		-->
+		
+		<!--  
+			// 在ValueStack1Action提供了成员的属性
+			private User user = new User("小泽","456");
+			public User getUser() {
+				return user;
+			}
+			public void setUser(User user) {
+				this.user = user;
+			}
+			
+			User user = new User("小苍","123");
+			vs.set("user", user);
+			// 从栈顶开始查找，找user的属性，显示名称	返回的小苍
+			<s:property value="user.username"/>
+			
+			// [1].top获取ValueStack1Action [1].top.user返回user对象  [1].top.user.username获取对象的属性名称
+			<s:property value="[1].top.user.username"/>
+		-->
+		
+		<!--  
+			栈顶是list集合
+			vs.push(ulist);
+			<s:property value="[0].top[0].username"/>
+			<s:property value="[0].top[1].username"/>
+		-->
+		
+		<!--
+			vs.set("ulist", ulist);
+			<s:property value="ulist[0].username"/>
+		-->
+		
+		<!-- 迭代的标签 
+			属性
+				* value	要迭代的集合，需要从值栈中获取
+				* var	迭代过程中，遍历的对象
+					* var编写上，把迭代产生的对象默认压入到context栈中，从context栈取值，加#号
+					* var不编写，默认把迭代产生的对象压入到root栈中
+			
+			for(User user:ulist){}	
+			// 编写var的属性
+			<s:iterator value="ulist" var="u">
+				<s:property value="#u.username"/>
+				<s:property value="#u.password"/>
+			</s:iterator>
+			
+			// 没有编写var关键字
+			<s:iterator value="ulist">
+				<s:property value="username"/>
+				<s:property value="password"/>
+			</s:iterator>
+		-->
+		
+		<!-- 从context栈中获取值，加#号
+		
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setAttribute("msg", "美美");
+		request.getSession().setAttribute("msg", "小风");
+		
+		<s:property value="#request.msg"/>
+		<s:property value="#session.msg"/>
+		<s:property value="#parameters.id"/>
+		<s:property value="#attr.msg"/>
+		-->
+		
+		<!-- 在JSP页面上，查看值栈的内部结构 -->
+		<s:debug></s:debug>
+	
+----------
+	
+**技术分析之EL表达式也会获取到值栈中的数据**
+	
+	7. 问题七：为什么EL也能访问值栈中的数据？
+		* StrutsPreparedAndExecuteFilter的doFilter代码中 request = prepare.wrapRequest(request); 	
+			> 对Request对象进行了包装 ，StrutsRequestWrapper
+			> 增强了request的 getAttribute
+				Object attribute = super.getAttribute(s);
+				if (attribute == null) {
+				   attribute = stack.findValue(s);
+				}
+		   	> 访问request范围的数据时，如果数据找不到，去值栈中找 
+			> request对象 具备访问值栈数据的能力 （查找root的数据）
+	
+----------
+	
+**总结OGNL表达式的特殊的符号**
+	
+	1. # 符号的用法
+		* 获得contextMap中的数据
+			> <s:property value="#request.name"/>
+			> <s:property value="#session.name"/>
+			> <s:property value="#application.name"/>
+			> <s:property value="#attr.name"/>
+			> <s:property value="#parameters.id"/>
+			> <s:property value="#parameters.name"/>
+		
+		* 构建一个map集合
+			* 例如：
+				* <s:radio name="sex" list="{'男','女'}"></s:radio>
+				* <s:radio name="sex" list="#{'0':'男','1':'女'}"></s:radio>
+	
+	2. % 符号的用法
+		* 强制字符串解析成OGNL表达式。
+			> 例如：在request域中存入值，然后在文本框（<s:textfield>）中取值，现在到value上。
+			> <s:textfield value="%{#request.msg}"/>
+		
+		* { }中值用''引起来,此时不再是ognl表达式,而是普通的字符串
+			> 例如：<s:property value="%{'#request.msg'}"/>
+	
+	3. $ 符号的用法
+		* 在配置文件中可以使用OGNL表达式，例如：文件下载的配置文件。
+			<action name="download1" class="cn.itcast.demo2.DownloadAction">
+				<result name="success" type="stream">
+					<param name="contentType">${contentType}</param>
+					<param name="contentDisposition">attachment;filename=${downFilename}</param>
+				</result>
+			</action>
+		
+
+
