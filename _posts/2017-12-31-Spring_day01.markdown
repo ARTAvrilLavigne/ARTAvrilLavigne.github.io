@@ -8,7 +8,7 @@ header-img: "img/post-bg-2015.jpg"
 tags:
     - javaee
 ---  
-## 今天课程：Spring框架第一天 ##
+## Spring框架第一天 ##
 	
 ----------
 	
