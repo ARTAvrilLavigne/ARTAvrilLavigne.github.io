@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "数据库密码安全"
+title:      "数据库的密码安全存储"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
 date:       2017-12-31 12:16:00
 author:     "ARTAvrilLavigne"
