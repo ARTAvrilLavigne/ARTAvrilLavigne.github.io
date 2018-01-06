@@ -1277,6 +1277,7 @@ tags:
 					protected void doInTransactionWithoutResult(TransactionStatus status) {
 						// 扣钱
 						accountDao.outMoney(out, money);
+						//模拟异常
 						int a = 10/0;
 						// 加钱
 						accountDao.inMoney(in, money);
