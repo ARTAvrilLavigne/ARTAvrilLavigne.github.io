@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "springsource-tool-suite插件安装"
+title:      "springsource-tool-suite插件安装"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
 date:       2018-01-06 16:12:00
 author:     "ARTAvrilLavigne"
