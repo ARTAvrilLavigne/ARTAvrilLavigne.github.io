@@ -1205,7 +1205,7 @@ tags:
 	6. 步骤六：编写DAO和Service中的方法
 		public class AccountDaoImpl extends JdbcDaoSupport implements AccountDao {
 			public void outMoney(String out, double money) {
-				this.getJdbcTemplate().update("update t_account set money = money = ? where name = ?", money,out);
+				this.getJdbcTemplate().update("update t_account set money = money - ? where name = ?", money,out);
 			}
 			public void inMoney(String in, double money) {
 				this.getJdbcTemplate().update("update t_account set money = money + ? where name = ?", money,in);
