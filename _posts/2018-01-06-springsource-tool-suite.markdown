@@ -33,4 +33,4 @@ tags:
 　　由于我的eclipse版本为4.5.2，插件版本为3.8.4。故所需的地址改为：<br>
 http://download.springsource.com/release/TOOLS/update/3.8.4.RELEASE/e4.5/springsource-tool-suite-3.8.4.RELEASE-e4.5.2-updatesite.zip<br>
 
-　　在eclipse中菜单栏选择Help->Install New Software，点击弹出框右侧的Add按钮，在Location中指定此zip压缩包的路径，即可进入到安装界面，然后最下面选择不自动更新(去掉勾 contact all update sites during install to find required software)，同样也是一般选择带IDE的项进行安装，最后一路next就行了。<br>
+　　在eclipse中菜单栏选择Help->Install New Software，点击弹出框右侧的Add按钮，在Location中指定此zip压缩包的路径，即可进入到安装界面，然后最下面选择不自动更新(去掉勾 contact all update sites during install to find required software)，同样也是一般选择带IDE的项进行安装，最后一路next就行了。<br> 
