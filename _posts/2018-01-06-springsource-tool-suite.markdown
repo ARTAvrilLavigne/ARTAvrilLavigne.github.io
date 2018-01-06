@@ -41,8 +41,8 @@ http://download.springsource.com/release/TOOLS/update/3.8.4.RELEASE/e4.5/springs
 
 ## 三、出现的问题 ##  
 　　**安装成功重启后出现成功安装插件的spring IDE界面，但是不显示找不到？**<br>
-　　解决办法：所安装的插件版本要求jdk1.8所致！！！
-　　所以，首先将环境变量改为jdk1.8；
-　　然后进入eclipse后依次打开windows——》Preferences，选择JAVA下Installed JREs，添加jdk1.8；
-　　最后再选择JAVA下的Compiler，将Compiler compliance level改为1.8即可；
-　　重启eclipse(原来的有些项目如果报错就要删掉已添加的原来jdk1.7，添加新的jdk1.8即可~ ~)
+　　解决办法：所安装的插件版本要求jdk1.8所致！！！<br>
+　　所以，首先将环境变量改为jdk1.8；<br>
+　　然后进入eclipse后依次打开windows——》Preferences，选择JAVA下Installed JREs，添加jdk1.8；<br>
+　　最后再选择JAVA下的Compiler，将Compiler compliance level改为1.8即可；<br>
+　　重启eclipse(原来的有些项目如果报错就要删掉已添加的原来jdk1.7，添加新的jdk1.8即可~ ~)<br>
