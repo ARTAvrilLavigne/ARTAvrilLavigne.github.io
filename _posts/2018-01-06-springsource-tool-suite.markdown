@@ -10,7 +10,7 @@ tags:
 ---  
 ## 一、插件版本 ##  
 　　插件官网：http://spring.io/tools/sts/all<br>
-　　官网页面中Spring Tool Suite™ Downloads是集成springsource-tool-suite插件的eclipse安装包(所以可以使用这种集成插件的eclipse直接搞定)<br>
+　　官网页面中Spring Tool Suite™ Downloads是集成springsource-tool-suite插件的eclipse的STS安装包(所以可以使用这种集成插件和eclipse的STS)<br>
 　　官网页面中Update Site Archives是下载springsource-tool-suite插件的离线安装包栏<br>
 　　官网页面中Update Sites是eclipse中在线更新的插件地址栏<br>
   
