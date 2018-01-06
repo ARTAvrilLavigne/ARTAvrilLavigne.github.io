@@ -643,7 +643,7 @@ tags:
 	
 	4. 注意：持久态对象有自动更新数据库的能力!!!
 
-![](./图片/01-三个状态转换.bmp)	
+![Image text](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2017-12-31-Hibernate/01-%E4%B8%89%E4%B8%AA%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2.png?raw=true)	
 	
 ----------
 	
@@ -672,7 +672,7 @@ tags:
 		* 然后设置User对象的一个属性，注意：没有做update操作。发现，数据库中的记录也改变了。
 		* 利用快照机制来完成的（SnapShot）
 	
-![](./图片/02-Session的快照机制.bmp)	
+![Image text](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2017-12-31-Hibernate/02-Session%E7%9A%84%E5%BF%AB%E7%85%A7%E6%9C%BA%E5%88%B6.png?raw=true)	
 	
 ----------
 	
@@ -749,7 +749,7 @@ tags:
 			* 1.在对应的JavaBean中添加一个属性，名称可以是任意的。例如：private Integer version; 提供get和set方法
 			* 2.在映射的配置文件中，提供<version name="version"/>标签即可。
 	
-![](./图片/03-丢失更新.bmp)	
+![Image text](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2017-12-31-Hibernate/03-%E4%B8%A2%E5%A4%B1%E6%9B%B4%E6%96%B0.png?raw=true)	
 	
 ----------
 	
@@ -1025,7 +1025,7 @@ tags:
 	1. JavaWEB的多对多
 
 ----------
-
+![Image text](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2017-12-31-Hibernate/01-%E5%A4%9A%E5%AF%B9%E5%A4%9A.png?raw=true)
 **技术分析之多对多JavaBean的编写**
 	
 	1. 编写用户和角色的JavaBean
