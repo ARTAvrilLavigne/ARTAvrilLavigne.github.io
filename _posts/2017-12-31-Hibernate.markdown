@@ -40,7 +40,7 @@ tags:
 			* 商机管理
 			* 统计分析等
 	
-![](./图片/01-CRM模块.bmp)
+![Image text](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2017-12-31-Hibernate/01-CRM%E6%A8%A1%E5%9D%97.png?raw=true)
 	
 	3. 模块的具体功能
 		* 客户信息管理
@@ -61,7 +61,7 @@ tags:
 		* 系统管理
 			系统管理属于crm系统基础功能模块，包括：数据字典、账户管理、角色管理、权限管理、操作日志管理等
 	
-![](./图片/02-SSH框架.bmp)
+![Image text](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2017-12-31-Hibernate/02-SSH%E6%A1%86%E6%9E%B6.png?raw=true)
 	
 ----------
 
@@ -74,7 +74,7 @@ tags:
 		* 第三天：主要学习一对多和多对多的操作等
 		* 第四天：基本查询和查询的优化
 
-![](./图片/03-Hibernate的开发位置.bmp)
+![Image text](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2017-12-31-Hibernate/03-Hibernate%E7%9A%84%E5%BC%80%E5%8F%91%E4%BD%8D%E7%BD%AE.png?raw=true)
 	
 ----------
 
@@ -119,7 +119,7 @@ tags:
 	
 	2. 简单一句话：Hibernate使程序员通过操作对象的方式来操作数据库表记录
 	
-![](./图片/04-ORM概述.bmp)
+![Image text](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2017-12-31-Hibernate/04-ORM%E6%A6%82%E8%BF%B0.png?raw=true)
 	
 ----------
 	
@@ -435,7 +435,7 @@ tags:
 	3. 总结
 		* 一般应用使用一个SessionFactory,最好是应用启动时就完成初始化。
 	
-![](./图片/05-SessionFactory.bmp)	
+![Image text](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2017-12-31-Hibernate/05-SessionFactory.png?raw=true)	
 	
 ----------
 	
