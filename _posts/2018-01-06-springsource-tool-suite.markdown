@@ -30,7 +30,7 @@ tags:
 　　方法二：使用Eclipse Marketplace在线安装<br>
 　　在Eclipse Marketplace中搜索sts，在搜索结果点击install即可。然后弹出复选框会自动全部选中，直接点击按钮“Confirm”。便开始漫长的安装过程，中间可能会弹出一个对话框，根据提示点击确认即可。缺点：耗时较长<br>
   
-　　方法三：离线安装<br>
+　　方法三：离线安装(我选择这种方式安装)<br>
 ![Image text](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2018-01-06-springsource-tool-suite/eclipse%E7%9A%84spring%E6%8F%92%E4%BB%B6%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85.png?raw=true)
 　　找到"Update Site Archives"一栏，选择一个鼠标右键复制链接进行拼接找到正确的地址。<br>
 例如：http://download.springsource.com/release/TOOLS/update/3.9.2.RELEASE/e4.7/springsource-tool-suite-3.9.2.RELEASE-e4.7.2-updatesite.zip<br>
@@ -38,3 +38,11 @@ tags:
 http://download.springsource.com/release/TOOLS/update/3.8.4.RELEASE/e4.5/springsource-tool-suite-3.8.4.RELEASE-e4.5.2-updatesite.zip<br>
 
 　　在eclipse中菜单栏选择Help->Install New Software，点击弹出框右侧的Add按钮，在Location中指定此zip压缩包的路径，即可进入到安装界面，然后最下面选择不自动更新(去掉勾 contact all update sites during install to find required software)，同样也是一般选择带IDE的项进行安装，最后一路next就行了。<br> 
+
+## 三、出现的问题 ##  
+　　**安装成功重启后出现成功安装插件的spring IDE界面，但是不显示找不到？**<br>
+　　解决办法：所安装的插件版本要求jdk1.8所致！！！
+　　所以，首先将环境变量改为jdk1.8；
+　　然后进入eclipse后依次打开windows——》Preferences，选择JAVA下Installed JREs，添加jdk1.8；
+　　最后再选择JAVA下的Compiler，将Compiler compliance level改为1.8即可；
+　　重启eclipse(原来的有些项目如果报错就要删掉已添加的原来jdk1.7，添加新的jdk1.8即可~ ~)
