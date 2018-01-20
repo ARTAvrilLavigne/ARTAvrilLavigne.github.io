@@ -20,6 +20,7 @@ tags:
              System.out.println("父类中的---->"+this);    
         }  
       }  
+
 ## 子类Son ##  
     public class Son extends Parent{  
     public Son() {  
@@ -30,6 +31,7 @@ tags:
         super.onCreate();  
       }  
     } 
+
 ## 测试类test ##  
     public class test {  
     public static void main(String[] args) {  
