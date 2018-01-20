@@ -24,12 +24,12 @@ tags:
     public class Son extends Parent{  
     public Son() {  
         onCreate();  
-    }  
+      }  
     @Override  
     public void onCreate() {  
         super.onCreate();  
-    }  
-} 
+      }  
+    } 
 ## 测试类test ##  
     public class test {  
     public static void main(String[] args) {  
@@ -39,8 +39,8 @@ tags:
         System.out.println("子类---->"+son2);  
         Son son3 = new Son();  
         System.out.println("子类---->"+son3);  
+        }  
     }  
-}  
 
 　　我们最常听到的一句话就是不管在哪，this关键字指的都是当前对象，如果是这样那么在父类Parent构造函数中输出的this和子类Son构造函数中输出的this分别是父类当前引用和子类的当前引用。那么我们来看一下输出结果：<br>
 
