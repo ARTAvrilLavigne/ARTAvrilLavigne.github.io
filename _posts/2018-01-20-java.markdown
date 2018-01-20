@@ -12,14 +12,14 @@ tags:
 　　注意：我做的测试是：**实例化子类，看父类中this关键字是谁。若正常去实例化父类，那么你执行父类中相应的方法，那么方法中的this指的就是父类对象本身的引用，希望不要被误导，所以强调一下。**<br>
   
 ## 父类Parent ##  
-    public class Parent {  
-    public Parent(){  
-        System.out.println("父类自己---->"+this);  
-    }  
-    public void onCreate(){  
-        System.out.println("父类中的---->"+this);    
-    }  
-}  
+        public class Parent {  
+        public Parent(){  
+            System.out.println("父类自己---->"+this);  
+        }  
+        public void onCreate(){  
+             System.out.println("父类中的---->"+this);    
+        }  
+      }  
 ## 子类Son ##  
     public class Son extends Parent{  
     public Son() {  
