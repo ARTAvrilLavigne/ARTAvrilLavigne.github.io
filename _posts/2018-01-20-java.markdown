@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "实例化子类，父类中this关键字指的是谁？"
+title:      "实例化子类，父类中this关键字指的是谁"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
 date:       2018-01-20 18:42:00
 author:     "ARTAvrilLavigne"
