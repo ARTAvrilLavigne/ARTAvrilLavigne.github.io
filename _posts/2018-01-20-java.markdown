@@ -1,1 +1,59 @@
+---
+layout:     post
+title:      "实例化子类，父类中this关键字指的是谁？"
+subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
+date:       2018-01-20 18:42:00
+author:     "ARTAvrilLavigne"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - java
+---  
+## 注意 ##  
+　　注意：我做的测试是：**实例化子类，看父类中this关键字是谁。若正常去实例化父类，那么你执行父类中相应的方法，那么方法中的this指的就是父类对象本身的引用，希望不要被误导，所以强调一下。**
+## 父类Parent ##  
+    public class Parent {  
+    public Parent(){  
+        System.out.println("父类自己---->"+this);  
+    }  
+    public void onCreate(){  
+        System.out.println("父类中的---->"+this);    
+    }  
+}  
+## 子类Son ##  
+    public class Son extends Parent{  
+    public Son() {  
+        onCreate();  
+    }  
+    @Override  
+    public void onCreate() {  
+        super.onCreate();  
+    }  
+} 
+## 测试类test ##  
+    public class test {  
+    public static void main(String[] args) {  
+        Son son1 = new Son();  
+        System.out.println("子类---->"+son1);  
+        Son son2 = new Son();  
+        System.out.println("子类---->"+son2);  
+        Son son3 = new Son();  
+        System.out.println("子类---->"+son3);  
+    }  
+}  
 
+　　我们最常听到的一句话就是不管在哪，this关键字指的都是当前对象，如果是这样那么在父类Parent构造函数中输出的this和子类Son构造函数中输出的this分别是父类当前引用和子类的当前引用。那么我们来看一下输出结果：<br>
+
+    父类自己---->Son@670b5064  
+    父类中的---->Son@670b5064  
+       子类----->Son@670b5064 
+       
+    父类自己---->Son@c33f45e  
+    父类中的---->Son@c33f45e  
+       子类----->Son@c33f45e 
+       
+    父类自己---->Son@26f04d94  
+    父类中的---->Son@26f04d94   
+       子类----->Son@26f04d94  
+       
+　　不知道大家有没有猜对这个结果呢？不管是父类中构造方法的this，还是父类中普通方法onCreate中的this，都是指子类对象的this。子类实例化的过程会先去执行父类的构造函数。但是，其实我上面写的这些类的过程中，仅仅的是创建了son1,son2,son3这个子类对象，虽然都走了父类的构造函数，但是并不创建父类对象，所以父类中的this便指的是他子类的具体this。
+  
