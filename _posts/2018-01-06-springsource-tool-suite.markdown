@@ -8,7 +8,7 @@ header-img: "img/post-bg-2015.jpg"
 tags:
     - javaee
 ---  
-## 一、插件版本 ##  
+## 一、插件版本<br> 
 　　插件官网：http://spring.io/tools/sts/all<br>
 　　官网页面中Spring Tool Suite™ Downloads是集成springsource-tool-suite插件的eclipse的STS安装包(所以可以使用这种集成插件和eclipse的STS)<br>
 　　官网页面中Update Site Archives是下载springsource-tool-suite插件的离线安装包栏<br>
@@ -21,7 +21,7 @@ tags:
 
 ![Image text](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2018-01-06-springsource-tool-suite/Eclipse%20Marketplace.png?raw=true) 
 
-## 二、安装 ##  
+## 二、安装<br>
 　　方法一：在线安装<br>
 　　在eclipse中菜单栏选择Help->Install New Software，点击弹出框右侧的Add按钮，在Location中指定地址为STS官网的在线安装地址(可以按版本推测)，例如我的eclipse版本的安装地址：http://dist.springsource.com/release/TOOLS/update/e4.5/<br>
   
@@ -43,7 +43,7 @@ http://download.springsource.com/release/TOOLS/update/3.8.4.RELEASE/e4.5/springs
 
 　　在eclipse中菜单栏选择Help->Install New Software，点击弹出框右侧的Add按钮，在Location中指定此zip压缩包的路径，即可进入到安装界面，然后最下面选择不自动更新(去掉勾 contact all update sites during install to find required software)，同样也是一般选择带IDE的项进行安装，最后一路next就行了。<br> 
 
-## 三、出现的问题 ##  
+## 三、出现的问题<br>  
 　　**1、安装成功重启后出现成功安装插件的spring IDE界面，但是不显示找不到？并且Maven也没了！！**<br>
 　　解决办法：所安装的插件版本要求jdk1.8所致！！！<br>
 　　第一步、将环境变量改为jdk1.8；<br>
