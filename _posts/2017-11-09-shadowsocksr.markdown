@@ -143,7 +143,8 @@ tls1.2_ticket_fastauth_compatible
 <p><strong><em>参考链接：</em></strong><br />
 <a href="https://github.com/shadowsocksr-backup/shadowsocksr">https://github.com/shadowsocksr-backup/shadowsocksr</a></p>
   
-    --------------------------------------------------------------------------------------------
+    --------------------------------------------------------------------------------------------<br>
+
 ## 3、一键安装脚本<br>
 　　首先root管理员身份进入/usr/local/<br>
 　　下载ShadowsocksR服务端脚本:  
