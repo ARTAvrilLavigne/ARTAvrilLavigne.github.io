@@ -69,7 +69,7 @@ Enjoy it!
 代码安装目录：/usr/local/shadowsocks</p>
 <p><strong>多用户配置示例：</strong></p>
 <pre><code>{
-&quot;server&quot;:&quot;0.0.0.0&quot;,
+&quot;server&quot;:&quot;x.x.x.x&quot;,
 &quot;server_ipv6&quot;: &quot;[::]&quot;,
 &quot;local_address&quot;:&quot;127.0.0.1&quot;,
 &quot;local_port&quot;:1080,
@@ -78,7 +78,7 @@ Enjoy it!
     &quot;8990&quot;:&quot;password2&quot;,
     &quot;8991&quot;:&quot;password3&quot;
 },
-&quot;timeout&quot;:300,
+&quot;timeout&quot;:60,
 &quot;method&quot;:&quot;aes-256-cfb&quot;,
 &quot;protocol&quot;: &quot;origin&quot;,
 &quot;protocol_param&quot;: &quot;&quot;,
@@ -143,7 +143,8 @@ tls1.2_ticket_fastauth_compatible
 <p><strong><em>参考链接：</em></strong><br />
 <a href="https://github.com/shadowsocksr-backup/shadowsocksr">https://github.com/shadowsocksr-backup/shadowsocksr</a></p>
   
-## 3、一键安装脚本
+    --------------------------------------------------------------------------------------------
+## 3、一键安装脚本<br>
 　　首先root管理员身份进入/usr/local/<br>
 　　下载ShadowsocksR服务端脚本:  
     wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh  
@@ -163,7 +164,7 @@ tls1.2_ticket_fastauth_compatible
 　　禁止的端口 : 无限制  
 　　用户总流量 : XXXXXXXXX  
 
-## 3、运行脚本  
+**运行脚本**<br>
     bash ssrmu.sh  
 
 界面如下：  
@@ -200,7 +201,7 @@ tls1.2_ticket_fastauth_compatible
 　　注意：添加/删除/修改用户配置后，无需重启ShadowsocksR服务端，ShadowsocksR服务端会定时读取数据库文件内的信息，不过修改用户配置后，可能要等个十几秒才能应用最新的配置（因为ShadowsocksR不是实时读取数据库的，所以有间隔时间）。  
 　　ShadowsocksR安装后，自动设置为系统服务，所以支持使用服务来启动/停止等操作，同时支持开机启动。  
 
-## 4、不用脚本手动操作  
+**不用脚本手动操作**<br>
     启动 ShadowsocksR：/etc/init.d/ssrmu start  
     停止 ShadowsocksR：/etc/init.d/ssrmu stop  
     重启 ShadowsocksR：/etc/init.d/ssrmu restart  
@@ -232,7 +233,7 @@ bash bbr.sh status
 
 注意：关闭BBR，需要重启VPS，所以脚本会提醒是否立即重启VPS  
 
-## 5、参考教程  
+### 参考教程  
 　　『原创』ShadowsocksR MudbJSON模式多用户一键脚本：https://doub.io/ss-jc60/  
 　　『原创』Debian/Ubuntu TCP-BBR 一键安装脚本：https://doub.io/wlzy-16/  
 
