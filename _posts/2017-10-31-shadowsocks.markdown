@@ -86,6 +86,8 @@ Enjoy it!
     "method":"your_encryption_method",
     "fast_open": false
 }<code></pre>
+
+## 命令
 <p><strong>使用命令：</strong><br />
 启动：/etc/init.d/shadowsocks start<br />
 停止：/etc/init.d/shadowsocks stop<br />
