@@ -102,53 +102,53 @@ Enjoy it!
 <a href="https://teddysun.com/339.html">https://teddysun.com/339.html</a></p>  
 
         -------------------------------------------------------------------------------<br>
-## 4、按照github说明安装shadowsocks-libev  
-　　github官网地址：https://github.com/shadowsocks/shadowsocks-libev  
-　　在VPS上部署shadowsocks，推荐使用C语言编写的基于libev的shadowsocks-libev的服务端。下面介绍在Linux系统的VPS上安装并配置的方法。由于shadowsocks-libev变动频繁，请以shadowsocks-libev的Github页面的readme为准。  
-### 4.1、apt-get安装shadowsocks-libev：  
-　　#对于Ubuntu 16.10及以上版本则可以直接从Ubuntu的官方repo安装：  
-    sudo apt update  
-    sudo apt install shadowsocks-libev  
-　　#对于Ubuntu 14.04/16.04 版本需要添加作者的PPA：  
-    sudo apt-get install software-properties-common -y  
-    sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y  
-    sudo apt-get update  
-    sudo apt install shadowsocks-libev  
-### 4.2、配置与启动服务  
-　　#Edit the configuration file编辑配置文件：  
-    sudo vim /etc/shadowsocks-libev/config.json  
+## 4、按照github说明安装shadowsocks-libev<br>
+　　github官网地址：https://github.com/shadowsocks/shadowsocks-libev <br>  
+　　在VPS上部署shadowsocks，推荐使用C语言编写的基于libev的shadowsocks-libev的服务端。下面介绍在Linux系统的VPS上安装并配置的方法。由于shadowsocks-libev变动频繁，请以shadowsocks-libev的Github页面的readme为准。<br>  
+### 4.1、apt-get安装shadowsocks-libev：<br>
+　　#对于Ubuntu 16.10及以上版本则可以直接从Ubuntu的官方repo安装：<br>
+    sudo apt update  <br>
+    sudo apt install shadowsocks-libev  <br>
+　　#对于Ubuntu 14.04/16.04 版本需要添加作者的PPA：  <br>
+    sudo apt-get install software-properties-common -y  <br>
+    sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y  <br>
+    sudo apt-get update  <br>
+    sudo apt install shadowsocks-libev  <br>
+### 4.2、配置与启动服务<br> 
+　　#Edit the configuration file编辑配置文件：<br>  
+    sudo vim /etc/shadowsocks-libev/config.json  <br>
     
-　　格式说明：  
-　　{  
-　　"server":"租用服务器IP地址",  
-　　"server_port":服务器监听端口(可设为8388),  
-　　"local_port":1080(默认本地端口),  
-　　"password":"密码",  
-　　"method":"aes-256-cfb(可以设置为其它)",  
-　　"timeout":60  
+　　格式说明：<br>  
+　　{  <br>
+　　"server":"租用服务器IP地址",  <br>
+　　"server_port":服务器监听端口(可设为8388),  <br>
+　　"local_port":1080(默认本地端口),  <br>
+　　"password":"密码",  <br>
+　　"method":"aes-256-cfb(可以设置为其它)",  <br>
+　　"timeout":60  <br>
 　　}  
   
-　　#Start the service启动服务端：  
-    sudo /etc/init.d/shadowsocks-libev start  
+　　#Start the service启动服务端：<br>  
+    sudo /etc/init.d/shadowsocks-libev start  <br>
 
-## 5、开启TCP的BBR拥塞算法加速  
+## 5、开启TCP的BBR拥塞算法加速<br>  
     wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh  
     chmod +x bbr.sh  
     ./bbr.sh  
 
-## 可选项  
-　　一、使用基于KCP的shadowsocks加速：  
-　　#Setup your server  
+## 可选项<br> 
+　　一、使用基于KCP的shadowsocks加速：<br>  
+　　#Setup your server<br>  
     server_linux_amd64 -l :21 -t 127.0.0.1:443 --crypt none --mtu 1200 --nocomp --mode normal --dscp 46 & ss-server -s 0.0.0.0 -p 443 -k passwd -m chacha20 -u  
-　　#Setup your client  
+　　#Setup your client<br>  
     client_linux_amd64 -l 127.0.0.1:1090 -r <服务器IP>:21 --crypt none --mtu 1200 --nocomp --mode normal --dscp 46 & ss-local -s 127.0.0.1 -p 1090 -k passwd -m chacha20 -l 1080 -b 0.0.0.0 & ss-local -s <服务器IP> -p 443 -k passwd -m chacha20 -l 1080 -U -b 0.0.0.0  
 
 
-　　二、设置最大连接数：  
-　　#Security Tips  
+　　二、设置最大连接数：<br>  
+　　#Security Tips<br>
 　　#Although shadowsocks-libev can handle thousands of concurrent connections nicely, we still recommend setting up your server's 
 firewall rules to limit connections from each user:  
-　　#Up to 32 connections are enough for normal usage：  
+　　#Up to 32 connections are enough for normal usage：<br>
     iptables -A INPUT -p tcp --syn --dport ${SHADOWSOCKS_PORT} -m connlimit --connlimit-above 32 -j REJECT --reject-with tcp-reset  
 
 　　中文博客参考地址：https://cokebar.info/archives/767<br>
