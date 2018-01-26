@@ -85,15 +85,7 @@ Enjoy it!
     "timeout":60,
     "method":"your_encryption_method",
     "fast_open": false
-}<code></pre>
-
-
-
-
-
-
-**配置与启动服务**<br>
-## 命令<br>
+}</code></pre>
 <p><strong>使用命令：</strong><br />
 启动：/etc/init.d/shadowsocks start<br />
 停止：/etc/init.d/shadowsocks stop<br />
