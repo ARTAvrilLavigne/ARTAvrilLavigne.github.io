@@ -85,17 +85,20 @@ Enjoy it!
     "timeout":60,
     "method":"your_encryption_method",
     "fast_open": false
-}<code></pre>  
+}<code></pre>
+
 <p><strong>使用命令：</strong><br/>
 启动：/etc/init.d/shadowsocks start<br />
 停止：/etc/init.d/shadowsocks stop<br />
 重启：/etc/init.d/shadowsocks restart<br />
-状态：/etc/init.d/shadowsocks status</p>  
+状态：/etc/init.d/shadowsocks status</p>
+
 <p><strong>更多版本 Shadowsocks 服务端一键安装脚本：</strong><br />
 <a href="https://shadowsocks.be/9.html" target="_blank">ShadowsocksR 版一键安装脚本（CentOS，Debian，Ubuntu）</a><br />
 <a href="https://teddysun.com/357.html" target="_blank">CentOS 下 Shadowsocks-libev 一键安装脚本</a><br />
 <a href="https://teddysun.com/358.html" target="_blank">Debian 下 Shadowsocks-libev 一键安装脚本</a><br />
-<a href="https://teddysun.com/392.html" target="_blank">Shadowsocks-go 一键安装脚本（CentOS，Debian，Ubuntu）</a></p>  
+<a href="https://teddysun.com/392.html" target="_blank">Shadowsocks-go 一键安装脚本（CentOS，Debian，Ubuntu）</a></p>
+
 <p><strong>参考链接：</strong><br />
 <a href="https://teddysun.com/339.html">https://teddysun.com/339.html</a></p>  
 
