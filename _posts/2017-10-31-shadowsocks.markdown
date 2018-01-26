@@ -87,7 +87,13 @@ Enjoy it!
     "fast_open": false
 }<code></pre>
 
-## 命令
+
+
+
+
+
+**配置与启动服务**<br>
+## 命令<br>
 <p><strong>使用命令：</strong><br />
 启动：/etc/init.d/shadowsocks start<br />
 停止：/etc/init.d/shadowsocks stop<br />
