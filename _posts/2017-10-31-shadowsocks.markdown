@@ -101,7 +101,7 @@ Enjoy it!
 <p><strong>参考链接：</strong><br />
 <a href="https://teddysun.com/339.html">https://teddysun.com/339.html</a></p>  
 
-    -------------------------------------------------------------------------------<br>
+-------------------------------------------------------------------------------<br>
 ## 4、按照github说明安装shadowsocks-libev<br>
 　　github官网地址：https://github.com/shadowsocks/shadowsocks-libev <br>  
 　　在VPS上部署shadowsocks，推荐使用C语言编写的基于libev的shadowsocks-libev的服务端。下面介绍在Linux系统的VPS上安装并配置的方法。由于shadowsocks-libev变动频繁，请以shadowsocks-libev的Github页面的readme为准。<br>  
