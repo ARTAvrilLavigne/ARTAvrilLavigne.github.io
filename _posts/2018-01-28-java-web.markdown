@@ -9,27 +9,21 @@ tags:
     - javaee
 ---
 ## 1、Hibernate的模板的常用的方法<br>
-　　
 	1.1、 增删改的操作:
-		* 添加:
-			* save(Object obj);
-		* 修改:
-			* update(Object obj);
-		* 删除:
-			* delete(Object obj);
-	
+		* 添加:save(Object obj);
+		* 修改:update(Object obj);
+		* 删除:delete(Object obj);
 	1.2、 查询的操作:
 		* 查询一条记录:
 			* Object get(Class c,Serializable id);
 			* Object load(Class c,Serializable id);
-	
 	1.3、 查询多条记录:
 		* List find(String hql,Object... args);
 
 ## 2、get和load区别<br>
 get和load方法是根据id取得一个记录,下边详细说一下get和load的不同,因为有些时候为了对比也会把find加进来。<br>
 **2.1、从返回结果上对比：**<br>
-load方式检索不到的话会抛出org.hibernate.ObjectNotFoundException异常,get方法检索不到的话会返回null。
+load方式检索不到的话会抛出org.hibernate.ObjectNotFoundException异常,get方法检索不到的话会返回null。<br>
 **2.2、从检索执行机制上对比：**<br>
 get方法和find方法都是直接从数据库中检索。<br>
 而load方法的执行则比较复杂，如下：<br>
