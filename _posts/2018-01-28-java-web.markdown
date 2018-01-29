@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "hibernate中get和load方法的区别"
+title:      "hibernate中get和load方法的区别"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
 date:       2018-01-28 20:42:00
 author:     "ARTAvrilLavigne"
@@ -9,6 +9,7 @@ tags:
     - javaee
 ---
 ## 1、Hibernate的模板的常用的方法<br>
+	继承HibernateDaoSupport工具类，dao层中调用this.getHibernateTemplate().方法
 	1.1、 增删改的操作:
 		* 添加:save(Object obj);
 		* 修改:update(Object obj);
