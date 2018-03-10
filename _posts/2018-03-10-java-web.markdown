@@ -9,8 +9,6 @@ tags:
     - javaee
 ---
 ## 一、什么是Ognl？<br>
-<p>通过百度百科查询到的解释，其中详细的说明了OGNL的作用。</p>
-<p><img src="https://images2015.cnblogs.com/blog/874710/201703/874710-20170322133324518-645486244.png" alt="" width="678" height="113"></p>
 <p>下面我们就对OGNL这5个作用进行讲解</p>
 <p>1、存取对象的任意属性，简单说就是对javabean进行操作(重要)</p>
 <p>2、调用对象方法。</p>
@@ -41,10 +39,13 @@ tags:
 
 ### 2.2、调用对象方法<br>
 <p><img src="https://images2015.cnblogs.com/blog/874710/201703/874710-20170322141318627-1724796711.png" alt="" width="725" height="182">　</p>
+
 ### 2.3、调用类的静态方法或属性<br>
 <p><img src="https://images2015.cnblogs.com/blog/874710/201703/874710-20170322142715502-424619429.png" alt="" width="743" height="300"></p>
+
 ### 2.4、索引数组元素<br>
 <p><img src="https://images2015.cnblogs.com/blog/874710/201703/874710-20170322144119940-474810523.png" alt="" width="721" height="199"></p>
+
 ### 2.5、操作集合<br>
 <p>操作list集合，list结合本质就是一个数组，所以从list中读取数据跟对数组的操作是一样的。</p>
 <p><img src="https://images2015.cnblogs.com/blog/874710/201703/874710-20170322144743721-1033143089.png" alt="" width="626" height="265"></p>
@@ -60,8 +61,9 @@ tags:
 <p>OGNL中的上下文即struts2中的actionContext</p>
 <p>OGNL中的root即struts2中的valueStack</p>
 <p>actionContext和valueStack是什么，他们之间什么关系？</p>
+
 ### 3.1、ActionContext和valueStack(重要)<br>
-<p><span style="font-size: 16px">ActionContext</span>：</p>
+#### 3.1.1、ActionContext：<br>
 <p>充当OGNL的context。是action的上下文，也可以叫做action的数据中心，本质是一个map，在其中，所有的数据都存放在这里，那其中到底存放了哪些东西呢，actionContext中存放数据的方式又是怎样的？</p>
 <p>actionContext是一个map，所以其中都是以键值对的形式存储对象，如下图所示，</p>
 <p>     request、session、application这种我们熟知的作用域，注意是作用域，而不是对象，</p>
@@ -73,24 +75,25 @@ tags:
 <p>　　　　　　　　　　　　</p>
 <p>　　　　　<img src="https://images2015.cnblogs.com/blog/874710/201703/874710-20170322161906377-141323126.png" alt="" width="288" height="460">　　<img src="https://images2015.cnblogs.com/blog/874710/201703/874710-20170322165837299-1245744016.png" alt="" width="602" height="363"></p>
 <p>　　　</p>
-<p>&nbsp;</p>
+
+#### 3.1.2、valueStack：<br>
 <p>valueStack：值栈，本质是一个ArrayList，作用，充当ognl的root，给一次请求中共享数据的功能。</p>
 <p>内部图</p>
 <p><img src="https://images2015.cnblogs.com/blog/874710/201703/874710-20170322171049799-1595650902.png" alt="" width="280" height="352"></p>
 <p>root:源码中的名称为CompoundRoot，它也是一个栈，而每次值栈中入栈和出栈等操作其实就是对CompoundRoot进行对应的操作。</p>
 <p>Context:对actionContext的引用，也就是通过valueStack也能够获取到上下文，通过getContext();</p>
 <p>在我们访问一个action时，会将action加入到栈顶，也就是action会在CompoundRoot的栈顶，而我们提交的各种表单参数(充当了ognl表达式)会在valueStack从顶向下查找对应的属性进行赋值。这就是值栈的作用。</p>
-<p>     值栈的操作</p>
+**值栈的操作**
 <p>这里提一下，知道了值栈的内部结构图，那么就好理解了。</p>
 <p>action中手动向valueStack中放数据。</p>
 <p>ActionContext.getContext().getValueStack().push(xxx);　　//一般是javabean，这样放是放在root中，因为push操作是对栈进行操作，也就是对root进行操作</p>
 <p>ActionContext.getContext().getValueStack().set(key,value);　　//任意值，以key-value的形式放入到了root中。</p>
-<p>     jsp获取</p>
+**jsp获取**
 <p>push存放，在root下，直接使用属性获取即可</p>
 <p>set存放，通过属性也可以直接获得。这里要排除一个误区，就是不要觉得set方式是以键值对的方式存放，就觉得是放入了context中，并没有，还是在root中的</p>
-<p>     context操作</p>
+**context操作**
 <p>ActionContext.getContext().put(key,value);　　//存放在actionContext中，也就是OGNL的context中</p>
-<p>     JSP获取：三种方式进行获取</p>
+**JSP获取：三种方式进行获取**
 <p>#key获取。　　</p>
 <p>直接使用key获取，因为值栈中也有context。只不过要从栈顶中的root开始找，然后在从context中查找</p>
 <p>#request获取。因为struts2对request进行了增强，如果request域中找不到，则使用findValue()，从值栈中的root开始一路往下找。</p>
@@ -102,18 +105,18 @@ tags:
 
 <p>valueStack是对root进行操作，而actionContext是对context进行操作。(root和context是OGNL中的根和上下文)</p>
 <p>&nbsp;</p>
-<p>获取值栈的方式：</p>
+**获取值栈的方式：**
 <p>     ActionContext.getContext.getValueStack();//常用</p>
 <p>     ActionContext.getContext.get("VALUE_STACK");</p>
 <p>     request.getAttribute("VALUE_STACK");　　　　//这个为什么可以？因为request进行了增强。详情看上面的解释。</p>
-<p>获取actionContext的方式</p>
+**获取actionContext的方式**
 <p>     ActionContext.getContext();　　//常用</p>
 <p>     valueStack.getContext();</p>
 
 ### 3.3、struts2不同的地方使用OGNL表达式获取数据<br>
-<p>3.3.4、在jsp页面中</p>
+#### 3.3.4、在jsp页面中<br>
 <p>大部分都会在这里使用，因为jsp就是显示数据的地方，在struts2中有很多s标签，通过s标签和OGNL表达式一起配置使用，就能拿到想要的数据了。而OGNL的表达式的编写在最开始就已经讲解过了，context就是actionContext，root就是valueStack，剩下表达式就看我们需要什么了。</p>
-<p>3.3.5、在struts.xml中</p>
+#### 3.3.5、在struts.xml中<br>
 <p>在struts.xml中有时候也需要用到OGNL表达式去拿一些数据。比如，在result中设置stream时，就需要从action中获取流，而action可以看成是javabean，又在栈顶，所以直接使用OGNL表达式就能够获取到，但是注意特殊的，如果在你直接编写ognl表达式时struts2不能够区分出这是ognl表达式还是普通文本，那么就需要使用${}来表明该段文本是ognl表达式</p>
 <p><img src="https://images2015.cnblogs.com/blog/874710/201703/874710-20170322185422533-1790566817.png" alt="" width="961" height="264"></p>
 <p>&nbsp;</p>
