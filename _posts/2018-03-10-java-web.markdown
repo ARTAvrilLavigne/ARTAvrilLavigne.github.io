@@ -83,16 +83,20 @@ tags:
 <p>root:源码中的名称为CompoundRoot，它也是一个栈，而每次值栈中入栈和出栈等操作其实就是对CompoundRoot进行对应的操作。</p>
 <p>Context:对actionContext的引用，也就是通过valueStack也能够获取到上下文，通过getContext();</p>
 <p>在我们访问一个action时，会将action加入到栈顶，也就是action会在CompoundRoot的栈顶，而我们提交的各种表单参数(充当了ognl表达式)会在valueStack从顶向下查找对应的属性进行赋值。这就是值栈的作用。</p>
+
 **值栈的操作**<br>
 <p>这里提一下，知道了值栈的内部结构图，那么就好理解了。</p>
 <p>action中手动向valueStack中放数据。</p>
 <p>ActionContext.getContext().getValueStack().push(xxx);　　//一般是javabean，这样放是放在root中，因为push操作是对栈进行操作，也就是对root进行操作</p>
 <p>ActionContext.getContext().getValueStack().set(key,value);　　//任意值，以key-value的形式放入到了root中。</p>
+
 **jsp获取**<br>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push存放，在root下，直接使用属性获取即可</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set存放，通过属性也可以直接获得。这里要排除一个误区，就是不要觉得set方式是以键值对的方式存放，就觉得是放入了context中，并没有，还是在root中的</p>
+
 **context操作**<br>
 <p>ActionContext.getContext().put(key,value);　　//存放在actionContext中，也就是OGNL的context中</p>
+
 **JSP获取：三种方式进行获取**<br>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#key获取。　　</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接使用key获取，因为值栈中也有context。只不过要从栈顶中的root开始找，然后在从context中查找</p>
@@ -105,10 +109,12 @@ tags:
 
 <p>valueStack是对root进行操作，而actionContext是对context进行操作。(root和context是OGNL中的根和上下文)</p>
 <p>&nbsp;</p>
+
 **获取值栈的方式：**<br>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ActionContext.getContext.getValueStack();//常用</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ActionContext.getContext.get("VALUE_STACK");</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;request.getAttribute("VALUE_STACK");　　　　//这个为什么可以？因为request进行了增强。详情看上面的解释。</p>
+
 **获取actionContext的方式**<br>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ActionContext.getContext();　　//常用</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valueStack.getContext();</p>
