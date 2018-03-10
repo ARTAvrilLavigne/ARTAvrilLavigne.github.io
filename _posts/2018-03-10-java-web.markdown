@@ -127,3 +127,40 @@ tags:
 #### 3.3.5、在struts.xml中<br>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在struts.xml中有时候也需要用到OGNL表达式去拿一些数据。比如，在result中设置stream时，就需要从action中获取流，而action可以看成是javabean，又在栈顶，所以直接使用OGNL表达式就能够获取到，但是注意特殊的，如果在你直接编写ognl表达式时struts2不能够区分出这是ognl表达式还是普通文本，那么就需要使用${}来表明该段文本是ognl表达式</p>
 <p><img src="https://images2015.cnblogs.com/blog/874710/201703/874710-20170322185422533-1790566817.png" alt="" width="961" height="264"></p>
+
+<br>**************************************************************************************************************<br>
+## 一、理解Struts2中的 ValueStack<br>
+
+　　ValueStack实际是一个接口,在Struts2中利用OGNL时，实际上使用的是实现了该接口的OgnlValueStack类,这个类是Struts2利用OGNL的基础<br>
+
+　　ValueStack(值栈): 贯穿整个 Action 的生命周期(每个 Action 类的对象实例都拥有一个ValueStack 对象). 相当于一个数据的中转站. 在其中保存当前Action 对象和其他相关对象.<br>
+　　Struts 框架把 ValueStack 对象保存在名为 “struts.valueStack” 的请求属性request中<br>
+
+在 ValueStack 对象的内部有两个逻辑部分:<br>
+　　ObjectStack: Struts  把动作和相关对象压入 ObjectStack 中--它是List结构作为栈<br>
+　　ContextMap: Struts 把各种各样的映射关系(一些 Map 类型的对象) 压入 ContextMap 中<br>
+
+Struts 会把下面这些映射压入 ContextMap 中<br>
+　　parameters: 该 Map 中包含当前请求的请求参数<br>
+　　request: 该 Map 中包含当前 request 对象中的所有属性<br>
+　　session: 该 Map 中包含当前 session 对象中的所有属性<br>
+　　application:该 Map 中包含当前 application  对象中的所有属性<br>
+　　attr: 该 Map 按如下顺序来检索某个属性: request, session, application<br>
+
+## 二、理解OGNL上下文context<br>
+ActionContext提供了对ognl上下文对象中数据操作的方法.<br>
+OgnlValueStack 类包含两个重要的属性:一个root和一个context。<br>
+　　　　其中root本质上是一个ArrayList.<br>
+　　　　而context 是一个Map（更确切的说是一个OgnlContext对象)<br>
+　　在这个OgnlContext对象（context）中，有一个默认的顶层对象 _root，OGNL访问context中这个默认顶层对象中的元素时，是不需要#号的，直接通过元素的名称来进行访问，而访问其他对象时，如 request、session、attr等，则需要#号引用。<br>
+　　注:Struts2将OgnlValueStack的root对象赋值给了OgnlContext 中的_root对象，在OgnlValueStack的root对象中，保存着调用Action的实例，因此，在页面上通过Struts2标签访问Action 的属性时，就不需要通过#号来引用<br>
+　　总结:ognl Context包含 ObjectStack属性和ContextMap属性<br>
+
+　　当Struts2接受一个请求时，会迅速创建ActionContext，ValueStack，action 。然后把action存放进ValueStack，所以action的实例变量可以被OGNL访问。<br>
+注意： Struts2中，OGNL表达式需要配合Struts标签才可以使用。如：<s:property value="name"/><br>
+
+
+## 三、总结<br>
+　　struts2框架在解析OGNL表达式的时候，OGNL上下文context对象就是ActionContext对象，其相当于一个大大的容器，里面包含了根对象(valueSatck,其中valueStack对象就是值栈对象)与非根对象(application、session、parameters、attr)。<br>
+
+　　OGNL表达式中访问root中元素时直接通过元素的名称来进行访问，不需要#号的。访问application、session、parameters等非根对象时，需要在表达式前面加上#前缀<br>
