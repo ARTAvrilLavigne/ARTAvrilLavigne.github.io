@@ -66,10 +66,10 @@ tags:
 #### 3.1.1、ActionContext：<br>
 <p>&nbsp;&nbsp;充当OGNL的context。是action的上下文，也可以叫做action的数据中心，本质是一个map，在其中，所有的数据都存放在这里，那其中到底存放了哪些东西呢，actionContext中存放数据的方式又是怎样的？</p>
 <p>actionContext是一个map，所以其中都是以键值对的形式存储对象，如下图所示，</p>
-<p>&nbsp;&nbsp;request、session、application这种我们熟知的作用域，注意是作用域，而不是对象，</p>
-<p>&nbsp;&nbsp;paramters：这个是表单提交的参数，全部都会放到这个map中，</p>
-<p>&nbsp;&nbsp;attr(attributes)：三个作用域所有的属性都会放在该map下，如果有重复的，那么以request域中的为准。</p>
-<p>&nbsp;&nbsp;VALUE_STACK：值栈，存放着valueStack对象，也就是说，通过ActionContext能够获取到valueStack。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;request、session、application这种我们熟知的作用域，注意是作用域，而不是对象，</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;paramters：这个是表单提交的参数，全部都会放到这个map中，</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attr(attributes)：三个作用域所有的属性都会放在该map下，如果有重复的，那么以request域中的为准。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUE_STACK：值栈，存放着valueStack对象，也就是说，通过ActionContext能够获取到valueStack。</p>
 <p>如果我们使用actionContext.put();&nbsp; 那么会将该键值对直接放入到ActionContext下，</p>
 <p>注意：除了request外，其他都可以直接通过getXxx()获得。而想要获取request作用域，必须通过key值的方式来获取。ActionContext.getContext().get("request"); &nbsp; 为什么这样呢？因为struts2对request进行了增强。从这里actionContext中是不能直接获取到的，request进行了怎样的增强呢？比如在actionContext中put了一个普通的key和value，该键值对并没有在request域中，但是在jsp中，通过在request域查找key，也能找到该键值对，底层进行了两步：第一步：从request域中查找数据，第二步：如果没有找到，将从值栈中执行findValue()。　　这样就解释了为什么通过ActionContext不能直接获取request，并且为什么不在request作用域中的数据，而通过在request域中查找也能够获取到。</p>
 <p>　　　　　　　　　　　　</p>
