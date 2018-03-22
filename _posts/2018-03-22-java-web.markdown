@@ -62,14 +62,14 @@ tags:
 <p>除了name与value之外，Cookie还具有其他几个常用的属性。每个属性对应一个getter方法与一个setter方法。Cookie类的所有属性如下所示。</p>
 <blockquote>
     
-<p> String name：该Cookie的名称。Cookie一旦创建，名称便不可更改。 
-    Object value：该Cookie的值。如果值为Unicode字符，需要为字符编码。如果值为二进制数据，则需要使用BASE64编码。 
-    int maxAge：该Cookie失效的时间，单位秒。如果为正数，则该Cookie在&gt;maxAge秒之后失效。如果为负数，该Cookie为临时Cookie，关闭浏览器即失效，浏览器也不会以任何形式保存该Cookie。如果为0，表示删除该Cookie。默认为–1。 
-    boolean secure：该Cookie是否仅被使用安全协议传输。安全协议。安全协议有HTTPS，SSL等，在网络&gt;上传输数据之前先将数据加密。默认为false。
-    String path：该Cookie的使用路径。如果设置为“/sessionWeb/”，则只有contextPath为“/sessionWeb”的程序可以访问该Cookie。如果设置为“/”，则本域名下contextPath都可以访问该Cookie。注意最后一个字符必须为“/”。 &gt;
-    String domain：可以访问该Cookie的域名。如果设置为“.google.com”，则所有以“google.com”结尾的域名都可以访问该Cookie。注意第一个字符必须为“.”。
-    String comment：该Cookie的用处说明。浏览器显示Cookie信息的时候显示该说明。 
-    int version：该Cookie使&gt;用的版本号。0表示遵循Netscape的Cookie规范，1表示遵循W3C的RFC 2109规范。</p>
+<p> String name：该Cookie的名称。Cookie一旦创建，名称便不可更改。<br> 
+    Object value：该Cookie的值。如果值为Unicode字符，需要为字符编码。如果值为二进制数据，则需要使用BASE64编码。<br> 
+    int maxAge：该Cookie失效的时间，单位秒。如果为正数，则该Cookie在&gt;maxAge秒之后失效。如果为负数，该Cookie为临时Cookie，关闭浏览器即失效，浏览器也不会以任何形式保存该Cookie。如果为0，表示删除该Cookie。默认为–1。<br> 
+    boolean secure：该Cookie是否仅被使用安全协议传输。安全协议。安全协议有HTTPS，SSL等，在网络&gt;上传输数据之前先将数据加密。默认为false。<br>
+    String path：该Cookie的使用路径。如果设置为“/sessionWeb/”，则只有contextPath为“/sessionWeb”的程序可以访问该Cookie。如果设置为“/”，则本域名下contextPath都可以访问该Cookie。注意最后一个字符必须为“/”。<br>
+    String domain：可以访问该Cookie的域名。如果设置为“.google.com”，则所有以“google.com”结尾的域名都可以访问该Cookie。注意第一个字符必须为“.”。<br>
+    String comment：该Cookie的用处说明。浏览器显示Cookie信息的时候显示该说明。<br> 
+    int version：该Cookie使&gt;用的版本号。0表示遵循Netscape的Cookie规范，1表示遵循W3C的RFC 2109规范。</p><br>
     
 </blockquote>
 <h2 id="cookie的有效期">Cookie的有效期</h2>
@@ -139,18 +139,20 @@ response.<span class="fu">addCookie</span>(cookie); <span class="co">// 输出�
 <p>Session中包括各种方法，使用起来要比Cookie方便得多。Session的常用方法如下所示。</p>
 
 <blockquote>
-<p>void setAttribute(String attribute, Object value)：设置Session属性。value参数可以为任何Java Object,通常为Java Bean。value信息不宜过大
-    String getAttribute(String attribute)：返回Session属性 
-    Enumeration getAttributeNames()：返回Session中存在的属性名 &gt;
-    void removeAttribute(String attribute)：移除Session属性 
-    String getId()：返回Session的ID。该ID由服务器自动创建，不会重复 
-    long getCreationTime()：返回Session的创建日期。返回类型为long，常被转化为Date类型，例如：Date createTime = new Date(session.get &gt;CreationTime()) 
-    long getLastAccessedTime()：返回Session的最后活跃时间。返回类型为long 
-    int getMaxInactiveInterval()：返回Session的超时时间。单位为秒。超过该时间没有访问，服务器认为该Session失效 
-    void setMaxInactiveInterval(int second)：设置Session的&gt;超时时间。单位为秒 
-    void putValue(String attribute, Object value)：不推荐的方法。已经被setAttribute(String attribute, Object Value)替代 
-    Object getValue(String attribute)：不被推荐的方法。已经被getAttribute(String attr)替代 
-    boolean isNew()：返回该Session是否是&gt;新创建的 void invalidate()：使该Session失效</p>
+<p>void setAttribute(String attribute, Object value)：设置Session属性。value参数可以为任何Java Object,通常为Java Bean。<br>
+    String getAttribute(String attribute)：返回Session属性<br> 
+    Enumeration getAttributeNames()：返回Session中存在的属性名<br>
+    void removeAttribute(String attribute)：移除Session属性<br> 
+    String getId()：返回Session的ID。该ID由服务器自动创建，不会重复<br> 
+    long getCreationTime()：返回Session的创建日期。返回类型为long，常被转化为Date类型，例如：Date createTime = new Date(session.get CreationTime())<br> 
+    long getLastAccessedTime()：返回Session的最后活跃时间。返回类型为long<br> 
+    int getMaxInactiveInterval()：返回Session的超时时间。单位为秒。超过该时间没有访问，服务器认为该Session失效<br> 
+    void setMaxInactiveInterval(int second)：设置Session的&gt;超时时间。单位为秒<br> 
+    void putValue(String attribute, Object value)：不推荐的方法。已经被setAttribute(String attribute, Object Value)替代 <br>
+    Object getValue(String attribute)：不被推荐的方法。已经被getAttribute(String attr)替代<br> 
+    boolean isNew()：返回该Session是否是新创建的<br> 
+    void invalidate()：使该Session失效<br>
+</p>
 </blockquote>
 
 <p>Tomcat中Session的默认超时时间为30分钟。通过setMaxInactiveInterval(int seconds)修改超时时间。可以修改web.xml改变Session的默认超时时间。例如修改为60分钟：</p>
@@ -216,7 +218,7 @@ response.<span class="fu">addCookie</span>(cookie); <span class="co">// 输出�
 <span class="kw">&lt;/Context&gt;</span></code></pre></div>
 <p>部署后TOMCAT便不会自动生成名JSESSIONID的Cookie，Session也不会以Cookie为识别标志，而仅仅以重写后的URL地址为识别标志了</p>
 <p>注意：该配置只是禁止Session使用Cookie作为识别标志，并不能阻止其他的Cookie读写。也就是说服务器不会自动维护名为JSESSIONID的Cookie了，但是程序中仍然可以读写其他的Cookie。</p>
-<h2 id="cookie与session的区别">Cookie与Session的区别</h2>
+## 三、总结：Cookie与Session的区别<br>
 <ol>
 <li>cookie数据存放在客户的浏览器上，session数据放在服务器上；</li>
 <li>cookie不是很安全，别人可以分析存放在本地的COOKIE并进行COOKIE欺骗，考虑到安全应当使用session；</li>
