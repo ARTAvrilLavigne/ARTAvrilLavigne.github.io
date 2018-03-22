@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "cookie和session的理解"
+title:      "cookie和session的理解"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
 date:       2018-03-22 17:13:00
 author:     "ARTAvrilLavigne"
