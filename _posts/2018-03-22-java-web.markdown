@@ -18,7 +18,7 @@ tags:
 <p>客户端发送一个http请求到服务器端 服务器端发送一个http响应到客户端，其中包含Set-Cookie头部 客户端发送一个http请求到服务器端，其中包含Cookie头部 服务器端发送一个http响应到客户端</p>
 </blockquote>
 <p>这个通讯过程也可以用以下下示意图来描述：</p>
-<p><img src="https://images.cnblogs.com/cnblogs_com/andy-zhou/811282/o_Cookie_Session001.png" title="Cookie Session 001" /></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2018-03-22-java-web/Cookie_Session001.png?raw=true" title="Cookie Session 001" /></p>
 <p>在客户端的第二次请求中包含的Cookie头部中，提供给了服务器端可以用来唯一标识客户端身份的信息。这时，服务器端也就可以判断客户端是否启用了cookies。尽管，用户可能在和应用程序交互的过程中突然禁用cookies的使用，但是，这个情况基本是不太可能发生的，所以可以不加以考虑，这在实践中也被证明是对的。</p>
 <p>除了cookies,客户端还可以将发送给服务器的数据包含在请求的url中，比如请求的参数或者请求的路径中。 我们来看一个常规的http get 请求例子：</p>
 <blockquote>
@@ -40,9 +40,9 @@ tags:
 <p>Cookie意为“甜饼”，是由W3C组织提出，最早由Netscape社区发展的一种机制。目前Cookie已经成为标准，所有的主流浏览器如IE、Netscape、Firefox、Opera等都支持Cookie。</p>
 <p>由于HTTP是一种无状态的协议，服务器单从网络连接上无从知道客户身份。怎么办呢？就给客户端们颁发一个通行证吧，每人一个，无论谁访问都必须携带自己通行证。这样服务器就能从通行证上确认客户身份了。这就是Cookie的工作原理。</p>
 <p>Cookie实际上是一小段的文本信息。客户端请求服务器，如果服务器需要记录该用户状态，就使用response向客户端浏览器颁发一个Cookie。客户端浏览器会把Cookie保存起来。当浏览器再请求该网站时，浏览器把请求的网址连同该Cookie一同提交给服务器。服务器检查该Cookie，以此来辨认用户状态。服务器还可以根据需要修改Cookie的内容。</p>
-<p><img src="https://images.cnblogs.com/cnblogs_com/andy-zhou/811282/o_Cookie_Session002.jpg" title="Cookie Session 002" /></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2018-03-22-java-web/Cookie_Session002.jpg?raw=true" title="Cookie Session 002" /></p>
 <p>查看某个网站颁发的Cookie很简单。在浏览器地址栏输入javascript:alert (document. cookie)就可以了（需要有网才能查看）。JavaScript脚本会弹出一个对话框显示本网站颁发的所有Cookie的内容，如图所示。</p>
-<p><img src="https://images.cnblogs.com/cnblogs_com/andy-zhou/811282/o_Cookie_Session003.jpg" title="Cookie Session 003" /></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2018-03-22-java-web/Cookie_Session003.jpg?raw=true" title="Cookie Session 003" /></p>
 <p>上图中弹出的对话框中显示的为Baidu网站的Cookie。其中第一行BAIDUID记录的就是笔者的身份helloweenvsfei，只是Baidu使用特殊的方法将Cookie信息加密了。</p>
 <p>注意：Cookie功能需要浏览器的支持。如果浏览器不支持Cookie（如大部分手机中的浏览器）或者把Cookie禁用了，Cookie功能就会失效。不同的浏览器采用不同的方式保存Cookie。IE浏览器会在“C:\Documents and Settings\你的用户名\Cookies”文件夹下以文本文件形式保存，一个文本文件保存一个Cookie。</p>
 <h3 id="记录用户访问次数">记录用户访问次数</h3>
