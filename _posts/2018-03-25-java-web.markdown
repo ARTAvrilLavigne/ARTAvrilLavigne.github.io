@@ -1,1 +1,35 @@
+---
+layout:     post
+title:      "hibernate持久化对象的三种状态"
+subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
+date:       2018-03-25 18:51:00
+author:     "ARTAvrilLavigne"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - javaee
+---
+## 一、hibernate持久化对象的三种状态<br>
+**在Hibernate中持久化类的对象可以划分为三种状态：瞬时态，持久态，脱管态**<br>
 
+<p>1、瞬时态(Transient)，也叫临时态。处于这种状态的对象具备的特征如下：<br>
+　　a)不在Session的缓存中，不与任何的Session实例相关联。<br>
+　　b)在数据库中没有与之相对应的记录。<br>
+
+2、持久态(Persistent)，处于这种状态的对象具备的特征如下：<br>
+　　a)在Session的缓存中，与Session实例相关联。<br>
+　　b)在数据库中存在与之相对应的记录。<br>
+
+3、脱管态(Detached)，也叫游离态。处于这种状态的对象具备的特征如下：<br>
+　　a)不在Session的缓存中，不与任何的Session实例相关联。<br>
+　　b)在数据库中存在与之相对应的记录。(前提条件是没有其他Session实例删除该条记录)。<br>
+</p>
+
+持久化对象的三种状态是可以相互转化的，具体转换过程如图所示：<br>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2018-03-22-java-web/Cookie_Session001.png?raw=true" title="Cookie Session 001" /></p>
+
+　　新new出来的对象如Student stu = new Student(),就是瞬时对象，它在内存中孤立存在，它的意义是携带信息的载体，不和数据库的数据有任何关联。通过Session的save()或saveOrUpdate()方法可以把一个瞬时对象与数据库相关联，并把瞬时对象携带的信息通过配置文件所做的映射插入到数据库中，这个瞬时对象就转化成了持久对象(使用get(),load()等方法查询到的数据对象，一出场就是持久对象)，并拥有和数据库记录相同的id标识(Hibernate自动将id值赋予它)。如果这时候使用delete()方法，它就会变回瞬时对象，删除了数据库与这个对象关联的记录，对象与数据库不再有任何的关联。当一个Session指定close()或clear(),evict()之后，持久对象就变成脱管对象，这时对象的id虽然拥有数据库识别值，但他们目前并不在Hibernate持久层的管理下，它与瞬时对象的本质是相同的，只不过比瞬时对象多了数据标识的id值。脱管对象的引用依然有效，对象可以继续被修改，当它重新被关联到某个新的Session上时，会再次变成持久对象(脱管状态期间的改动将被持久化到数据库上)。脱管对象拥有数据库识别值id，所以它可以通过update(),saveOrUpdate(),lock()等方法，再度与持久层关联。<br>
+
+## 二、总结<br>
+1、对于刚创建的一个对象，如果session中和数据库中都不存在该对象，那么该对象就是瞬时对象(Transient)<br>
+2、瞬时对象调用save方法，或者离线对象调用update方法可以使该对象变成持久化对象。如果对象是持久化对象时，那么对该对象的任何修改，都会在提交事务时才会与之进行比较，如果不同，则发送一条update语句，否则就不会发送语句<br>
+3、离线对象就是，数据库存在该对象，但是该对象又没有被session所托管<br>
