@@ -107,11 +107,11 @@ tags:
 	　　@ResponseBody:将java中pojo对象自动转换成json格式字符串返回给页面<br>
       
 6.RestFul支持:<br>
-　　　　　　　　　　就是对url的命名标准,要求url中只有能名词,没有动词(不严格要求),但是要求url中不能用问号?传入的参数<br>
-　　　　　　　　　　传参数:<br>
-		　　	页面:${pageContext.request.contextPath}/items/itemEdit/${item.id}<br>
-		　　	方法: @RquestMapping("/itemEdit/{id}")<br>
-		　      　方法: @PathVariable("id") Integer idd<br>
+	　　就是对url的命名标准,要求url中只有能名词,没有动词(不严格要求),但是要求url中不能用问号?传入的参数<br>
+	　　传参数:<br>
+	　　	页面:${pageContext.request.contextPath}/items/itemEdit/${item.id}<br>
+	　　	方法: @RquestMapping("/itemEdit/{id}")<br>
+	　　	方法: @PathVariable("id") Integer idd<br>
 7.拦截器:<br>
 	　　作用:拦截请求,一般做登录权限验证时用的比较多<br>
 　　　　　　　　　　1)需要编写自定义拦截器类,实现HandlerInterceptor接口<br>
