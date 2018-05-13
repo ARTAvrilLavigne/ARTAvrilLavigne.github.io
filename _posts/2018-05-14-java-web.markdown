@@ -71,7 +71,7 @@ tags:
 **☆2.controller方法返回值(指定返回到哪个页面, 指定返回到页面的数据)**<br>
 	　　1)ModelAndView<br>
 	　　	modelAndView.addObject("itemList", list); 指定返回页面的数据<br>
-		　　modelAndView.setViewName("itemList");	  指定返回的页面<br>
+	　　	modelAndView.setViewName("itemList");	  指定返回的页面<br>
 	　　2)String(推荐使用)<br>
 　　　　　　　　　　返回普通字符串,就是页面去掉扩展名的名称, 返回给页面数据通过Model来完成<br>
 　　　　　　　　　　返回的字符串以forward:开头为请求转发<br>
