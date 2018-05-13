@@ -8,4 +8,124 @@ header-img: "img/post-bg-2015.jpg"
 tags:
     - javaee
 ---
-## springmvc知识总结<br>
+## 一、springmvc框架处理流程<br>
+
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2018-05-14-java-web/springmvc.png?raw=true" /></p>
+
+图中Handler(就是Controller)是我们需要手动开发的主要内容<br>
+
+**springmvc架构三大组件 ：处理器映射器、处理器适配器、视图解析器**<br>
+
+文字语言描述处理流程说明：(面试)<br>
+　　**用户发送请求给前端控制器DispatcherServlet，前端控制器拿到请求后将请求转发给处理器映射器HandlerMapping(相当于一个HashMap，根据页面URL找到对应的方法)，然后给前端控制器返回处理器执行链(如果配置了拦截器，先进行拦截处理，然后继续放行。最后到所需要执行的Handler时返回给前端控制器)，前端控制器拿到要执行的Handler，发送给处理器适配器HandlerAdapter，处理器适配器根据我们的springmvc.xml配置找到对应的处理器Handler去执行这个Handler，执行我们的业务逻辑后返回ModelAndView(包含模型和视图，模型中是返回用户的数据，视图是返回用户的页面路径)给处理器适配器，处理器适配器将ModelAndView发送给前端控制器。前端控制器然后根据我们的springmvc.xml配置找到对应的视图解析器去解析JSP，返回前端控制器所解析的view对象(已经解析为静态html标签)。最后前端控制器渲染视图，组装成静态的网页视图后作为响应返回给用户浏览器。**<br>
+
+
+## 二、springmvc基础知识<br>
+
+1. springMvc:是一个表现层框架<br>
+	　　作用:就是从请求中接收传入的参数,将处理后的结果数据返回给页面展示<br>
+2. ssm整合:<br>
+	　　1)Dao层<br>
+		　　pojo和映射文件以及接口使用逆向工程生成<br>
+		　　SqlMapConfig.xml   mybatis核心配置文件<br>
+		　　ApplicationContext-dao.xml 整合后spring在dao层的配置<br>
+			　　数据源<br>
+			　　会话工厂<br>
+			　　扫描Mapper<br>
+	　　2)service层<br>
+		　　事务			ApplicationContext-trans.xml<br>
+		　　@Service注解扫描	ApplicationContext-service.xml<br>
+	　　3)controller层<br>
+		　　SpringMvc.xml<br> 
+			　　注解扫描:扫描@Controller注解<br>
+			　　注解驱动:替我们显示的配置了最新版的处理器映射器和处理器适配器<br>
+			　　视图解析器:显示的配置是为了在controller中不用每个方法都写页面的全路径<br>
+	　　4)web.xml<br>
+		　　springMvc前端控制器配置<br>
+		　　spring监听<br>
+
+3.参数绑定(从请求中接收参数)重点<br>
+	　　1)默认类型4个:<br>
+		　　在controller方法中可以有也可以没有,看自己需求随意添加.<br>
+		　　httpservletRqeust,httpServletResponse,httpSession,Model(ModelMap其实就是Mode的一个子类,一般用的不多)<br>
+	　　2)基本类型:string,double,float,integer,long.boolean<br>
+	　　3)pojo类型:页面上input框的name属性值必须要等于pojo的属性名称<br>
+	　　4)vo类型:页面上input框的name属性值必须要等于vo中的属性.属性.属性....<br>
+	　　5)自定义转换器converter:<br>
+		　　作用:由于springMvc无法将string自动转换成date所以需要自己手动编写类型转换器<br>
+		　　需要编写一个类实现Converter接口<br>
+		　　在springMvc.xml中配置自定义转换器<br>
+		　　在springMvc.xml中要将自定义转换器配置到注解驱动上<br>
+
+=========================================================================================<br>
+## 三、总结:<br>
+**☆1.参数绑定:(从请求中接收参数)**<br>
+	　　1)默认支持的类型:Request,Response,Session,Model<br>
+	　　2)基本数据类型(包含String)<br>
+	　　3)Pojo类型<br>
+	　　4)Vo类型<br>
+	　　5)Converter自定义转换器<br>
+	　　6)数组<br>
+	　　7)List<br>
+
+**☆2.controller方法返回值(指定返回到哪个页面, 指定返回到页面的数据)**<br>
+	　　1)ModelAndView<br>
+	　　	modelAndView.addObject("itemList", list); 指定返回页面的数据<br>
+		　　modelAndView.setViewName("itemList");	  指定返回的页面<br>
+	　　2)String(推荐使用)<br>
+	　　	返回普通字符串,就是页面去掉扩展名的名称, 返回给页面数据通过Model来完成<br>
+	　　	返回的字符串以forward:开头为请求转发<br>
+		　返回的字符串以redirect:开头为重定向<br>
+	　　3)返回void(使用它破坏了springMvc的结构,所以不建议使用)<br>
+		　　可以使用request.setAttribut 来给页面返回数据<br>
+		　　可以使用request.getRquestDispatcher().forward()来指定返回的页面<br>
+		　　如果controller返回值为void则不走springMvc的组件,所以要写页面的完整路径名称<br>
+
+　　　相对路径:相对于当前目录,也就是在当前类的目录下,这时候可以使用相对路径跳转<br>
+　　　绝对路径:从项目名后开始.<br>
+	　在springMvc中不管是forward还是redirect后面凡是以/开头的为绝对路径,不以/开头的为相对路径<br>
+	　　例如:	forward:/items/itemEdit.action 为绝对路径(推荐)<br>
+	　　　　	forward:itemEdit.action 为相对路径<br>
+
+
+3.架构级别异常处理:<br>
+	　　主要为了防止项目上线后给用户抛500等异常信息,所以需要在架构级别上整体处理.hold住异常<br>
+	　　首先自定义全局异常处理器实现HandlerExceptionResolver接口<br>
+	　　在spirngMvc.xml中配置生效<br>
+      
+4.上传图片:<br>
+	　　1)在tomcat中配置虚拟图片服务器路径<br>
+	　　2)导入fileupload的jar包<br>
+	　　3)在springMvc.xml中配置上传组件<br>
+	　　4)在页面上编写上传域,更改form标签的类型<br>
+	　　5)在controller方法中可以使用MultiPartFile接口接收上传的图片<br>
+	　　6)将文件名保存到数据库,将图片保存到磁盘中<br>
+      
+5.Json数据交互:<br>
+	　　需要加入jackson的jar包<br>
+	　　@Requestbody:将页面传到controller中的json格式字符串自动转换成java的pojo对象<br>
+	　　@ResponseBody:将java中pojo对象自动转换成json格式字符串返回给页面<br>
+      
+6.RestFul支持:<br>
+	　　就是对url的命名标准,要求url中只有能名词,没有动词(不严格要求),但是要求url中不能用问号?传参<br>
+	　　传参数:<br>
+		　　页面:${pageContext.request.contextPath}/items/itemEdit/${item.id}<br>
+		　　方法: @RquestMapping("/itemEdit/{id}")<br>
+		　　方法: @PathVariable("id") Integer idd<br>
+7.拦截器:<br>
+	　　作用:拦截请求,一般做登录权限验证时用的比较多<br>
+	　　1)需要编写自定义拦截器类,实现HandlerInterceptor接口<br>
+	　　2)在springMvc.xml中配置拦截器生效<br>
+
+8.登录权限验证:<br>
+	　　1)编写登录的controller, 编写跳转到登录页面的方法, 编写登录验证方法<br>
+	　　2)编写登录页面<br>
+	　　3)编写拦截器<br>
+　　运行过程:<br>
+	　　1)访问随意一个页面,拦截器会拦截请求,会验证session中是否有登录信息<br>
+		　　　如果已登录,放行<br>
+	　　	　　如果未登录,跳转到登录页面<br>
+	　　2)在登录页面中输入用户名,密码,点击登录按钮,拦截器会拦截请求,如果是登录路径放行<br>
+		　　在controller方法中判断用户名密码是否正确,如果正确则将登录信息放入session<br>
+ 
+ 
