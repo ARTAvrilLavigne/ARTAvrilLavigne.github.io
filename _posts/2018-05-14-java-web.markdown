@@ -1,0 +1,11 @@
+---
+layout:     post
+title:      "springmvc总结"
+subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
+date:       2018-05-14 19:11:00
+author:     "ARTAvrilLavigne"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - javaee
+---
+## springmvc知识总结<br>
