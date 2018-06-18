@@ -1,4 +1,13 @@
-<!-- 我估计应该是js引入冲突的问题，在页面点击扫码图片后应该在界面放大展示，但是没有效果，只是新跳转该图片页面！！ -->
+<!-- 可能出现的问题，本地调试正确，但是放到github在页面点击扫码图片后应该在界面放大展示，但是没有效果，只是新跳转该图片页面！！ 
+     原因：多个页面前后由于js库引入冲突
+     解决：如果想在jQuery代码块使用$简写，不愿意改变这个快捷方式，可以把 $ 符号作为变量传递给 ready 方法。这样就可以在函数内使用$符号了，而在函数外，依旧不得不使用 "jQuery"
+     		jQuery.noConflict();
+		jQuery(document).ready(function($) {
+			$('.fancybox_mydefine').fancybox();
+		});
+
+     参考网址：https://www.cnblogs.com/starof/p/6855186.html
+-->
 
 <!-- 引入打赏的css样式 -->
 <link href="https://artavrillavigne.github.io/css/myQR.css" rel="stylesheet">
