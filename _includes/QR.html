@@ -1,4 +1,4 @@
-<!-- 我估计应该是js的写法有问题，在页面点击扫码图片后应该在界面放大展示，但是没有效果，只是新跳转该图片页面！！ -->
+<!-- 我估计应该是js文件或者目录有问题，在页面点击扫码图片后应该在界面放大展示，但是没有效果，只是新跳转该图片页面！！ -->
 
 <!-- 引入打赏的css样式 -->
 <link href="https://artavrillavigne.github.io/css/myQR.css" rel="stylesheet">
@@ -11,27 +11,19 @@
     <div id="QR" style="display: none;">
       
         <div id="wechat" style="display: inline-block">
-	<!--
-	  <a href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Wechatpay.png?raw=true" class="fancybox" rel="group"> 
-	     <img id="wechat_qr" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Wechatpay.png?raw=true" alt="Wechatpay"/>
-          </a>  
-	 -->
-	  <a class="fancybox" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Wechatpay.png?raw=true" data-fancybox-group="gallery"> 
-	     <img id="wechat_qr" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Wechatpay.png?raw=true" alt="Wechatpay"/>
-          </a>
-		  <p>微信打赏</p>
+	
+	    <a href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Wechatpay.png?raw=true" class="fancybox" rel="group"> 
+	      <img id="wechat_qr" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Wechatpay.png?raw=true" alt="Wechatpay"/>
+            </a>  
+	         <p>微信打赏</p>
         </div>
       
       
         <div id="alipay" style="display: inline-block">
-	<!--
-	<a href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Alipay.png?raw=true" class="fancybox" rel="group">
-          <img id="alipay_qr" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Alipay.png?raw=true" alt="Alipay"/>
-	</a>
-	-->
-	<a class="fancybox" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Alipay.png?raw=true" data-fancybox-group="gallery">
-          <img id="alipay_qr" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Alipay.png?raw=true" alt="Alipay"/>
-	</a>
+	
+	   <a href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Alipay.png?raw=true" class="fancybox" rel="group">
+               <img id="alipay_qr" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Alipay.png?raw=true" alt="Alipay"/>
+	   </a>
           	<p>支付宝打赏</p>
         </div>
       
@@ -40,20 +32,19 @@
  </div>
 
   <!-- 相应的js引入及写法 -->
-	<script type="text/javascript" src="https://artavrillavigne.github.io/myblog/QRpay/jquery-1.8.2.min.js"></script>
-	<script type="text/javascript" src="https://artavrillavigne.github.io/myblog/QRpay/jquery.mousewheel-3.0.6.pack.js"></script>
-	<script type="text/javascript" src="https://artavrillavigne.github.io/myblog/QRpay/jquery.fancybox.js?v=2.1.3"></script>
-	<link rel="stylesheet" type="text/css" href="https://artavrillavigne.github.io/myblog/QRpay/jquery.fancybox.css?v=2.1.2" media="screen" />
-	<link rel="stylesheet" type="text/css" href="https://artavrillavigne.github.io/myblog/QRpay/jquery.fancybox-buttons.css?v=1.0.5" />
-	<script type="text/javascript" src="https://artavrillavigne.github.io/myblog/QRpay/jquery.fancybox-buttons.js?v=1.0.5"></script>
-	<link rel="stylesheet" type="text/css" href="https://artavrillavigne.github.io/myblog/QRpay/jquery.fancybox-thumbs.css?v=1.0.7" />
-	<script type="text/javascript" src="https://artavrillavigne.github.io/myblog/QRpay/jquery.fancybox-thumbs.js?v=1.0.7"></script>
-	<script type="text/javascript" src="https://artavrillavigne.github.io/myblog/QRpay/jquery.fancybox-media.js?v=1.0.5"></script>
-	
+	<!-- Add jQuery library -->
+	<script type="text/javascript" src="https://artavrillavigne.github.io/myblog/QRpay/lib/jquery-1.10.2.min.js"></script>
+	<!-- Add mousewheel plugin (this is optional) -->
+	<script type="text/javascript" src="https://artavrillavigne.github.io/myblog/QRpay/lib/jquery.mousewheel.pack.js?v=3.1.3"></script>
+	<!-- Add fancyBox main JS and CSS files -->
+	<script type="text/javascript" src="https://artavrillavigne.github.io/myblog/QRpay/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+	<link rel="stylesheet" type="text/css" href="../source/jquery.fancybox.css?v=2.1.5" media="screen" />
+	<!-- Add Media helper (this is optional) -->
+	<script type="text/javascript" src="https://artavrillavigne.github.io/myblog/QRpay/source/helpers/jquery.fancybox-media.js?v=1.0.6"></script>
+
+
 
 	<script type="text/javascript">
-		
-		var $= jQuery.noConflict();
 		
 		$(document).ready(function() {
 
