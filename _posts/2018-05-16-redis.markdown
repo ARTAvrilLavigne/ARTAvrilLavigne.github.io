@@ -2,7 +2,7 @@
 layout:     post
 title:      "Redis的过期策略和内存淘汰策略区别"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
-date:       2018-08-07 22:32:00
+date:       2018-05-16 22:32:00
 author:     "ARTAvrilLavigne"
 header-img: "img/post-bg-2015.jpg"
 tags:
