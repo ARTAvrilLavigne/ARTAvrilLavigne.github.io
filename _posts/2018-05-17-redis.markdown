@@ -1,0 +1,13 @@
+---
+layout:     post
+title:      "Redis持久化之RDB和AOF"
+subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
+date:       2018-05-17 22:56:00
+author:     "ARTAvrilLavigne"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - Redis
+---
+## 一、Redis的过期策略--三种<br>
+<p>　　Redis是key-value数据库，我们可以设置Redis中缓存的key的过期时间。Redis的过期策略就是指当Redis中缓存的key过期了，Redis如何处理。</p>
+<p>过期策略通常有以下三种：</p>
