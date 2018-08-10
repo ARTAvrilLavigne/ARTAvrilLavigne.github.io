@@ -16,7 +16,7 @@ tags:
 <li>Redis无论因为什么原因crash掉之后，重启时能够自动恢复到上一次RDB快照中记录的数据。这省去了手工从其他数据源（如DB）同步数据的过程，而且要比其他任何的数据恢复方式都要快</li>
 </ul>
 
-## 二、RDB<br>
+## 二、RDB持久方式<br>
 <p>　　采用RDB持久方式，Redis会定期保存数据快照至一个rbd文件中，并在启动时自动加载rdb文件，恢复之前保存的数据。可以在配置文件中配置Redis进行快照保存的时机：</p>
 <pre><code>save [seconds] [changes]
 </code></pre>
@@ -44,7 +44,7 @@ save 60 10000
 </ul>
 
 
-## 三、AOF<br>
+## 三、AOF持久方式<br>
 <p>　　采用AOF持久方式时，Redis会把每一个写请求都记录在一个日志文件里。在Redis重启时，会把AOF文件中记录的所有写操作顺序执行一遍，确保数据恢复到最新。</p>
 <p>AOF默认是关闭的，如要开启，进行如下配置：</p>
 <pre><code>appendonly yes
