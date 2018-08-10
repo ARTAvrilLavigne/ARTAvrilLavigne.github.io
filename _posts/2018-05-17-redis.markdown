@@ -55,13 +55,13 @@ save 60 10000
 <li>appendfsync always：每写入一条日志就进行一次fsync操作，数据安全性最高，但速度最慢</li>
 <li>appendfsync everysec：折中的做法，交由后台线程每秒fsync一次</li>
 </ul>
-<p>随着AOF不断地记录写操作日志，必定会出现一些无用的日志，例如某个时间点执行了命令<strong>SET key1 "abc"</strong>，在之后某个时间点又执行了<strong>SET key1 "bcd"</strong>，那么第一条命令很显然是没有用的。大量的无用日志会让AOF文件过大，也会让数据恢复的时间过长。<br>
-所以Redis提供了AOF rewrite功能，可以重写AOF文件，只保留能够把数据恢复到最新状态的最小写操作集。<br>
+<p>　　随着AOF不断地记录写操作日志，必定会出现一些无用的日志，例如某个时间点执行了命令<strong>SET key1 "abc"</strong>，在之后某个时间点又执行了<strong>SET key1 "bcd"</strong>，那么第一条命令很显然是没有用的。大量的无用日志会让AOF文件过大，也会让数据恢复的时间过长。<br>
+　　所以Redis提供了AOF rewrite功能，可以重写AOF文件，只保留能够把数据恢复到最新状态的最小写操作集。<br>
 AOF rewrite可以通过<strong>BGREWRITEAOF</strong>命令触发，也可以配置Redis定期自动进行：</p>
 <pre><code>auto-aof-rewrite-percentage 100
 auto-aof-rewrite-min-size 64mb
 </code></pre>
-<p>上面两行配置的含义是，Redis在每次AOF rewrite时，会记录完成rewrite后的AOF日志大小，当AOF日志大小在该基础上增长了100%后，自动进行AOF rewrite。同时如果增长的大小没有达到64mb，则不会进行rewrite。</p>
+<p>　　上面两行配置的含义是，Redis在每次AOF rewrite时，会记录完成rewrite后的AOF日志大小，当AOF日志大小在该基础上增长了100%后，自动进行AOF rewrite。同时如果增长的大小没有达到64mb，则不会进行rewrite。</p>
 <p><strong>AOF的优点：</strong></p>
 <ul>
 <li>最安全，在启用appendfsync always时，任何已写入的数据都不会丢失，使用在启用appendfsync everysec也至多只会丢失1秒的数据。</li>
