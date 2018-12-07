@@ -238,7 +238,7 @@ bash bbr.sh status
 　　『原创』ShadowsocksR MudbJSON模式多用户一键脚本：https://doub.io/ss-jc60/  
 　　『原创』Debian/Ubuntu TCP-BBR 一键安装脚本：https://doub.io/wlzy-16/  
 
-　　谷歌学术不能访问问题解决：  
+　　谷歌学术不能访问问题解决：(搭建的VPS之前可能被用来爬过虫，导致IP被谷歌学术禁了)<br>
             https://www.polarxiong.com/archives/%E9%80%9A%E8%BF%87VPS%E4%BD%BF%E7%94%A8VPN%E6%88%96ShadowSocks%E8%AE%BF%E9%97%AEGoogle%E6%88%96Google-Schoolar%E5%87%BA%E7%8E%B0%E9%AA%8C%E8%AF%81%E7%A0%81%E7%AD%89%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95.html  
 
     https://blog.finaltheory.me/note/Solve-Google-Problems.html  
