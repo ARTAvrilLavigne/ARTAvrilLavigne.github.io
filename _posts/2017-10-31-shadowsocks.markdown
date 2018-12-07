@@ -8,8 +8,10 @@ header-img: "img/post-bg-2015.jpg"
 tags:
     - VPN
 ---
-## 1、租用云服务器  
-　　选择vultr:https://my.vultr.com/  
+## 1、租用云服务器<br>
+　　本地客户端：shadowsocks纸飞机，官网：http://shadowsocks.org/en/index.html<br>
+  
+　　选择vultr:https://my.vultr.com/<br>
 　　备注：Vultr是一家提供日本、美国、欧洲等多个国家和地区机房的VPS主机商，硬盘都是采用SSD，VPS主机都是KVM架构，VPS配置最少的内存512MB、硬盘为15GB的VPS只要2.5美元/月（2017.3.2修改），vultr是根据VPS使用小时来计费（0.007/h,折合人民币4分6/小时）的，使用多长时间就算多长时间，计费对应的款。Vultr是KVM系统架构，目前已开通15个机房，比较适合国内的是日本东京（tokyo）,美国洛杉矶（ Los Angeles ），美国西雅图（ Seattle ）这三个机房相对国内线路较好。vultr支持使用支付宝（Alipay）付款。  
 　　**我选择的是洛杉矶机房，ubuntu17.10 X64版本,Server Hostname & Label填写的是avrillavigne,其余均不用填写。**  
 　　**推荐**:如果是学生，可以使用github学生包。用学校的学生邮箱进行github认证就可以得到DigitalOcean的优惠码--50刀(要预先给digitalocean账户充值5美元)。  
