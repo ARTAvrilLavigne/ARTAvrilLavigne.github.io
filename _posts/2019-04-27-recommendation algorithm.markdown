@@ -22,7 +22,7 @@ tags:
 </ol>
 <ul>  
 <br>
-<center class="half">
+<center class="third">
 <img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/IU.jpg?raw=true" width="170" height="180">
 <img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/sasaki.jpg?raw=true" width="180" height="180">
 <img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/avril.jpg?raw=true" width="150" height="180">
