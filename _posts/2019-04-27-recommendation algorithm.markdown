@@ -22,11 +22,15 @@ tags:
 </ol>
 <ul>  
 <br>
-<center class="third">
-<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/IU.jpg?raw=true" width="170" height="180">
-<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/sasaki.jpg?raw=true" width="180" height="180">
-<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/avril.jpg?raw=true" width="150" height="180">
-</center>
+<!-- 同一行并排三张图片的格式写法 -->
+<table>
+    <tr>
+        <td><center><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/IU.jpg?raw=true" width="170" height="180"></center></td>
+        <td><center><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/sasaki.jpg?raw=true" width="180" height="180"></center></td>
+        <td><center><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/avril.jpg?raw=true" width="150" height="180"></center></td>
+    </tr>
+</table>
+
 <br>
 <li><strong>一个用户A</strong>：对IU的喜欢程度3，对佐佐木希的喜欢程度1，对Avril Lavigne的喜欢程度4，对韩剧的喜欢程度5，对996工作制的喜欢程度0，用户A可以用向量表示为：<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/3.png?raw=true" alt="" width="100" height="18" /></li>
 <li><strong>一个用户B</strong>：对IU的喜欢程度3，对佐佐木希的喜欢程度4，对Avril Lavigne的喜欢程度5，对韩剧的喜欢程度0，对996工作制的喜欢程度2，用户B可以用向量表示为：<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/4.png?raw=true" alt="" width="101" height="18" /></li>
