@@ -10,7 +10,8 @@ tags:
 ---
 ## 一、余弦公式<br>
 <p>　　常用的推荐算法分为：基于内容的推荐、基于内容的协同过滤、基于用户的协同过滤、基于标签的推荐。</p>
-<p>　　量化两个事物的相似度,这是推荐系统需要多次面临的问题。我们知道向量的概念，可以形象化地表示为带箭头的线段。二维空间向量表示方法为<img  src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/1.png?raw=true" alt="" width="60" height="18" />,多维空间向量表示为<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/2.png?raw=true" alt="" width="114" height="18" />，向量是描述事物一种很好模型。</p>
+<p>　　量化两个事物的相似度,这是推荐系统需要多次面临的问题。我们知道向量的概念，可以形象化地表示为带箭头的线段。二维空间向量表示方法为：<img  src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/1.png?raw=true" alt="" width="60" height="18" /></p>
+<p>多维空间向量表示为：<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/2.png?raw=true" alt="" width="114" height="18" /></p>
 <p>　　比如，假设用户有5个维度：</p>
 <ol>
 <li>对IU的喜欢程度（1~5分）</li>
@@ -19,9 +20,16 @@ tags:
 <li>对韩剧的喜欢程度（1~5分）</li>
 <li>对996工作制的喜欢程度（1~5分）</li>
 </ol>
-<ul>
-<li><strong>一个用户A</strong>：对IU的喜欢程度3，对佐佐木希的喜欢程度1，对Avril Lavigne的喜欢程度4，对韩剧的喜欢程度5，对996工作制的喜欢程度0，用户A可以用向量表示为<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/3.png?raw=true" alt="" width="100" height="18" /></li>
-<li><strong>一个用户B</strong>：对IU的喜欢程度3，对佐佐木希的喜欢程度4，对Avril Lavigne的喜欢程度5，对韩剧的喜欢程度0，对996工作制的喜欢程度2，用户B可以用向量表示为<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/4.png?raw=true" alt="" width="101" height="18" /></li>
+<ul>  
+<br>
+<div style='width:700px; margin:0px auto'>
+<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/IU.jpg?raw=true" width="220" height="250">
+<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/sasaki.jpg?raw=true" width="220" height="250">
+<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/avril.jpg?raw=true" width="220" height="250">
+</div>
+<br>
+<li><strong>一个用户A</strong>：对IU的喜欢程度3，对佐佐木希的喜欢程度1，对Avril Lavigne的喜欢程度4，对韩剧的喜欢程度5，对996工作制的喜欢程度0，用户A可以用向量表示为：<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/3.png?raw=true" alt="" width="100" height="18" /></li>
+<li><strong>一个用户B</strong>：对IU的喜欢程度3，对佐佐木希的喜欢程度4，对Avril Lavigne的喜欢程度5，对韩剧的喜欢程度0，对996工作制的喜欢程度2，用户B可以用向量表示为：<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/4.png?raw=true" alt="" width="101" height="18" /></li>
 </ul>
 <p>　　既然我们把这两个用户表示为向量，那么可以考虑向量怎么判断相似性。即看这两个向量的夹角。夹角约小，则相似度越大。</p>
 <p>　　对于向量<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/5.png?raw=true" alt="" width="132" height="18" />和<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/6.png?raw=true" alt="" width="132" height="18" />而言，他们的在多维空间的夹角可以用向量余弦公式计算：</p>
