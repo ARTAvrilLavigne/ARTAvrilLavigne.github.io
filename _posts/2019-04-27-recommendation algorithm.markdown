@@ -9,8 +9,7 @@ tags:
     - bigdata
 ---
 ## 一、余弦公式<br>
-<p>　　常用的推荐算法分为：基于内容的推荐、基于内容的协同过滤、基于用户的协同过滤、基于标签的推荐。</p>
-<p>　　量化两个事物的相似度,这是推荐系统需要多次面临的问题。我们知道向量的概念，可以形象化地表示为带箭头的线段。二维空间向量表示方法为：<img  src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/1.png?raw=true" alt="" width="60" height="18" /></p>
+<p>　　常用的推荐算法分为：基于内容的推荐、基于内容的协同过滤、基于用户的协同过滤、基于标签的推荐。量化两个事物的相似度,这是推荐系统需要多次面临的问题。我们知道向量的概念，可以形象化地表示为带箭头的线段。二维空间向量表示方法为：<img  src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/1.png?raw=true" alt="" width="60" height="18" /></p>
 <p>多维空间向量表示为：<img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-04-27-recommendation%20algorithm/2.png?raw=true" alt="" width="114" height="18" /></p>
 <p>　　比如，假设用户有5个维度：</p>
 <ol>
