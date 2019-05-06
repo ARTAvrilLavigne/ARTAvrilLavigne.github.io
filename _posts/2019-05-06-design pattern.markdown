@@ -295,7 +295,7 @@ public class Client{
 　　问题由来：类A通过接口I依赖类B，类C通过接口I依赖类D，如果接口I对于类A和类B来说不是最小接口，则类B和类D必须去实现他们不需要的方法。<br>
 　　解决方案：将臃肿的接口I拆分为独立的几个接口，类A和类C分别与他们需要的接口建立依赖关系。也就是采用接口隔离原则。<br>
 　　举例来说明接口隔离原则：<br>
-![未遵循接口隔离原则的设计](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/1.jpg?raw=true)<br>
+<div align=center>![未遵循接口隔离原则的设计](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/1.jpg?raw=true)<br>
 　　这个图的意思是：类A依赖接口I中的方法1、方法2、方法3，类B是对类A依赖的实现。类C依赖接口I中的方法1、方法4、方法5，类D是对类C依赖的实现。对于类B和类D来说，虽然他们都存在着用不到的方法（也就是图中红色字体标记的方法），但由于实现了接口I，所以也必须要实现这些用不到的方法。对类图不熟悉的可以参照程序代码来理解，代码如下：<br>
 ```java
 public interface I {
@@ -378,7 +378,7 @@ public class Client{
 } 
 ```
 　　可以看到，如果接口过于臃肿，只要接口中出现的方法，不管对依赖于它的类有没有用处，实现类中都必须去实现这些方法，这显然不是好的设计。如果将这个设计修改为符合接口隔离原则，就必须对接口I进行拆分。在这里我们将原有的接口I拆分为三个接口，拆分后的设计如图2所示：<br>
-![遵循接口隔离原则的设计](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/2.jpg?raw=true)<br>
+<div align=center>![遵循接口隔离原则的设计](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/2.jpg?raw=true)<br>
 　　照例贴出程序的代码如下所示：<br>
 ```java
 public interface I1 {
