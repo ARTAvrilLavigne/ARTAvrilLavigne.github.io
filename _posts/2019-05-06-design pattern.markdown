@@ -295,7 +295,7 @@ public class Client{
 　　问题由来：类A通过接口I依赖类B，类C通过接口I依赖类D，如果接口I对于类A和类B来说不是最小接口，则类B和类D必须去实现他们不需要的方法。<br>
 　　解决方案：将臃肿的接口I拆分为独立的几个接口，类A和类C分别与他们需要的接口建立依赖关系。也就是采用接口隔离原则。<br>
 　　举例来说明接口隔离原则：<br>
-<div align=center>![未遵循接口隔离原则的设计](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/1.jpg?raw=true)<br>
+<div align=center>![未遵循接口隔离原则的设计](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/1.jpg?raw=true)</div><br>
 　　这个图的意思是：类A依赖接口I中的方法1、方法2、方法3，类B是对类A依赖的实现。类C依赖接口I中的方法1、方法4、方法5，类D是对类C依赖的实现。对于类B和类D来说，虽然他们都存在着用不到的方法（也就是图中红色字体标记的方法），但由于实现了接口I，所以也必须要实现这些用不到的方法。对类图不熟悉的可以参照程序代码来理解，代码如下：<br>
 ```java
 public interface I {
@@ -378,7 +378,7 @@ public class Client{
 } 
 ```
 　　可以看到，如果接口过于臃肿，只要接口中出现的方法，不管对依赖于它的类有没有用处，实现类中都必须去实现这些方法，这显然不是好的设计。如果将这个设计修改为符合接口隔离原则，就必须对接口I进行拆分。在这里我们将原有的接口I拆分为三个接口，拆分后的设计如图2所示：<br>
-<div align=center>![遵循接口隔离原则的设计](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/2.jpg?raw=true)<br>
+<div align=center>![遵循接口隔离原则的设计](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/2.jpg?raw=true)</div><br>
 　　照例贴出程序的代码如下所示：<br>
 ```java
 public interface I1 {
@@ -583,8 +583,8 @@ public class CompanyManager{
 
 ## 七、总结
 　　最后说明一下如何去遵守这六个原则。对这六个原则的遵守并不是是和否的问题，而是多和少的问题，也就是说，我们一般不会说有没有遵守，而是说遵守程度的多少。任何事都是过犹不及，设计模式的六个设计原则也是一样，制定这六个原则的目的并不是要我们刻板的遵守他们，而需要根据实际情况灵活运用。对他们的遵守程度只要在一个合理的范围内，就算是良好的设计。我们用一幅图来说明一下:<br>
-![设计原则](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/3.jpg?raw=true)<br>
+<div align=center>![设计原则](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/3.jpg?raw=true)</div><br>
 　　图中的每一条维度各代表一项原则，我们依据对这项原则的遵守程度在维度上画一个点，则如果对这项原则遵守的合理的话，这个点应该落在红色的同心圆内部；如果遵守的差，点将会在小圆内部；如果过度遵守，点将会落在大圆外部。一个良好的设计体现在图中，应该是六个顶点都在同心圆中的六边形。<br>
-![设计原则的遵守](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/4.jpg?raw=true)<br>
+<div align=center>![设计原则的遵守](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/4.jpg?raw=true)</div><br>
 　　在上图中，设计1、设计2属于良好的设计，他们对六项原则的遵守程度都在合理的范围内；设计3、设计4设计虽然有些不足，但也基本可以接受；设计5则严重不足，对各项原则都没有很好的遵守；而设计6则遵守过渡了，设计5和设计6都是迫切需要重构的设计。<br>　
   主要参考书籍有《设计模式》、《设计模式之禅》、《大话设计模式》以及网上一些零散的文章，但主要内容是对这六个原则的感悟。<br>
