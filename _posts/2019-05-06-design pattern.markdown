@@ -29,6 +29,14 @@ public class Client{
 		animal.breathe("猪");
 
 ```
+运行结果：<br>
+
+牛呼吸空气<br>
+
+羊呼吸空气<br>
+
+猪呼吸空气<br>
+
 
 ## 二、里氏替换原则<br>
 
