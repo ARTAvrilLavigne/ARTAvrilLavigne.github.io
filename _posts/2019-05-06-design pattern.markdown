@@ -16,7 +16,7 @@ tags:
 　　比如：类T只负责一个职责P，这样设计是符合单一职责原则的。后来由于某种原因，也许是需求变更了，也许是程序的设计者境界提高了，需要将职责P细分为粒度更细的职责P1，P2，这时如果要使程序遵循单一职责原则，需要将类T也分解为两个类T1和T2，分别负责P1、P2两个职责。但是在程序已经写好的情况下，这样做简直太费时间了。所以，简单的修改类T，用它来负责两个职责是一个比较不错的选择，虽然这样做有悖于单一职责原则。（这样做的风险在于职责扩散的不确定性，因为我们不会想到这个职责P，在未来可能会扩散为P1，P2，P3，P4&hellip;&hellip;Pn。所以记住，在职责扩散到我们无法控制的程度之前，立刻对代码进行重构。）<br>
 　　举例说明，用一个类描述动物呼吸这个场景：<br>
 ```java
-class Animal{
+public class Animal{
 	public void breathe(String animal){
 		System.out.println(animal+"呼吸空气");
 	}
@@ -39,12 +39,12 @@ public class Client{
 
 　　程序上线后发现了问题，并不是所有的动物都呼吸空气的，比如鱼就是呼吸水的。修改时如果遵循单一职责原则，需要将Animal类细分为陆生动物类Terrestrial，水生动物Aquatic，代码如下：<br>
 ```java
-class Terrestrial{
+public class Terrestrial{
 	public void breathe(String animal){
 		System.out.println(animal+"呼吸空气");
 	}
 }
-class Aquatic{
+public class Aquatic{
 	public void breathe(String animal){
 		System.out.println(animal+"呼吸水");
 	}
@@ -74,7 +74,7 @@ public class Client{
 
 　　我们会发现如果这样修改花销是很大的，除了将原来的类分解之外，还需要修改客户端。而直接修改类Animal来达成目的虽然违背了单一职责原则，但花销却小的多，代码如下：<br>
 ```java
-class Animal{
+public class Animal{
 	public void breathe(String animal){
 		if("鱼".equals(animal)){
 			System.out.println(animal+"呼吸水");
@@ -96,7 +96,7 @@ public class Client{
 ```
 　　可以看到，这种修改方式要简单的多。但是却存在着隐患：有一天需要将鱼分为呼吸淡水的鱼和呼吸海水的鱼，则又需要修改Animal类的breathe方法，而对原有代码的修改会对调用“猪”“牛”“羊”等相关功能带来风险，也许某一天你会发现程序运行的结果变为“牛呼吸水”了。这种修改方式直接在代码级别上违背了单一职责原则，虽然修改起来最简单，但隐患却是最大的。还有一种修改方式：<br>
 ```java
-class Animal{
+public class Animal{
 	public void breathe(String animal){
 		System.out.println(animal+"呼吸空气");
 	}
@@ -134,7 +134,7 @@ public class Client{
 　　继承作为面向对象三大特性之一，在给程序设计带来巨大便利的同时，也带来了弊端。比如使用继承会给程序带来侵入性，程序的可移植性降低，增加了对象间的耦合性，如果一个类被其他的类所继承，则当这个类需要修改时，必须考虑到所有的子类，并且父类修改后，所有涉及到子类的功能都有可能会产生故障。<br>
 　　举例说明继承的风险，我们需要完成一个两数相减的功能，由类A来负责。如下：<br>
 ```java
-class A{
+public class A{
 	public int func1(int a, int b){
 		return a-b;
 	}
@@ -159,7 +159,7 @@ public class Client{
 　　2、两数相加，然后再加100。<br>
 　　由于类A已经实现了第一个功能，所以类B继承类A后，只需要再完成第二个功能就可以了，代码如下：<br>
 ```java
-class B extends A{
+public class B extends A{
 	public int func1(int a, int b){
 		return a+b;
 	}
@@ -202,13 +202,13 @@ public class Client{
 　　依赖倒置原则基于这样一个事实：相对于细节的多变性，抽象的东西要稳定的多。以抽象为基础搭建起来的架构比以细节为基础搭建起来的架构要稳定的多。在java中，抽象指的是接口或者抽象类，细节就是具体的实现类，使用接口或者抽象类的目的是制定好规范和契约，而不去涉及任何具体的操作，把展现细节的任务交给他们的实现类去完成。<br>
 　　依赖倒置原则的核心思想是面向接口编程，我们依旧用一个例子来说明面向接口编程比相对于面向实现编程好在什么地方。场景是这样的，母亲给孩子讲故事，只要给她一本书，她就可以照着书给孩子讲故事了。代码如下：<br>
 ```java
-class Book{
+public class Book{
 	public String getContent(){
 		return "很久很久以前有一个阿拉伯的故事……";
 	}
 }
 
-class Mother{
+public class Mother{
 	public void narrate(Book book){
 		System.out.println("妈妈开始讲故事");
 		System.out.println(book.getContent());
@@ -230,33 +230,33 @@ public class Client{
 
 　　运行良好，假如有一天，需求变成这样：不是给书而是给一份报纸，让这位母亲讲一下报纸上的故事，报纸的代码如下：<br>
 ```java
-class Newspaper{
+public class Newspaper{
 	public String getContent(){
-		return "林书豪38+7领导尼克斯击败湖人……";
+		return "詹姆斯38+7领导湖人击败杜兰特这只勇士狗……";
 	}
 }
 ```
 　　这位母亲却办不到，因为她居然不会读报纸上的故事，这太荒唐了，只是将书换成报纸，居然必须要修改Mother才能读。假如以后需求换成杂志呢？换成网页呢？还要不断地修改Mother，这显然不是好的设计。原因就是Mother与Book之间的耦合性太高了，必须降低他们之间的耦合度才行。<br>
 　　我们引入一个抽象的接口IReader。读物，只要是带字的都属于读物：<br>
 ```java
-interface IReader{
+public interface IReader{
 	public String getContent();
 } 
 ```
 　　Mother类与接口IReader发生依赖关系，而Book和Newspaper都属于读物的范畴，他们各自都去实现IReader接口，这样就符合依赖倒置原则了，代码修改为：<br>
 ```java
-class Newspaper implements IReader {
+public class Newspaper implements IReader {
 	public String getContent(){
-		return "林书豪17+9助尼克斯击败老鹰……";
+		return "詹姆斯38+7领导湖人击败杜兰特这只勇士狗……";
 	}
 }
-class Book implements IReader{
+public class Book implements IReader{
 	public String getContent(){
 		return "很久很久以前有一个阿拉伯的故事……";
 	}
 }
 
-class Mother{
+public class Mother{
 	public void narrate(IReader reader){
 		System.out.println("妈妈开始讲故事");
 		System.out.println(reader.getContent());
@@ -279,7 +279,7 @@ public class Client{
 
 妈妈开始讲故事<br>
 
-林书豪17+9助尼克斯击败老鹰……<br>
+詹姆斯38+7领导湖人击败杜兰特这只勇士狗……<br>
 
 　　这样修改后，无论以后怎样扩展Client类，都不需要再修改Mother类了。这只是一个简单的例子，实际情况中，代表高层模块的Mother类将负责完成主要的业务逻辑，一旦需要对它进行修改，引入错误的风险极大。所以遵循依赖倒置原则可以降低类之间的耦合性，提高系统的稳定性，降低修改程序造成的风险。<br>
 　　采用依赖倒置原则给多人并行开发带来了极大的便利，比如上例中，原本Mother类与Book类直接耦合时，Mother类必须等Book类编码完成后才可以进行编码，因为Mother类依赖于Book类。修改后的程序则可以同时开工，互不影响，因为Mother与Book类一点关系也没有。参与协作开发的人越多、项目越庞大，采用依赖导致原则的意义就越重大。现在很流行的TDD开发模式就是依赖倒置原则最成功的应用。<br>
@@ -295,10 +295,10 @@ public class Client{
 　　问题由来：类A通过接口I依赖类B，类C通过接口I依赖类D，如果接口I对于类A和类B来说不是最小接口，则类B和类D必须去实现他们不需要的方法。<br>
 　　解决方案：将臃肿的接口I拆分为独立的几个接口，类A和类C分别与他们需要的接口建立依赖关系。也就是采用接口隔离原则。<br>
 　　举例来说明接口隔离原则：<br>
-![未遵循接口隔离原则的设计](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/1.jpg?raw=true)  
+![未遵循接口隔离原则的设计](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/1.jpg?raw=true)<br>
 　　这个图的意思是：类A依赖接口I中的方法1、方法2、方法3，类B是对类A依赖的实现。类C依赖接口I中的方法1、方法4、方法5，类D是对类C依赖的实现。对于类B和类D来说，虽然他们都存在着用不到的方法（也就是图中红色字体标记的方法），但由于实现了接口I，所以也必须要实现这些用不到的方法。对类图不熟悉的可以参照程序代码来理解，代码如下：<br>
 ```java
-interface I {
+public interface I {
 	public void method1();
 	public void method2();
 	public void method3();
@@ -306,7 +306,7 @@ interface I {
 	public void method5();
 }
 
-class A{
+public class A{
 	public void depend1(I i){
 		i.method1();
 	}
@@ -318,7 +318,7 @@ class A{
 	}
 }
 
-class B implements I{
+public class B implements I{
 	public void method1() {
 		System.out.println("类B实现接口I的方法1");
 	}
@@ -334,7 +334,7 @@ class B implements I{
 	public void method5() {}
 }
 
-class C{
+public class C{
 	public void depend1(I i){
 		i.method1();
 	}
@@ -346,7 +346,7 @@ class C{
 	}
 }
 
-class D implements I{
+public class D implements I{
 	public void method1() {
 		System.out.println("类D实现接口I的方法1");
 	}
@@ -378,24 +378,24 @@ public class Client{
 } 
 ```
 　　可以看到，如果接口过于臃肿，只要接口中出现的方法，不管对依赖于它的类有没有用处，实现类中都必须去实现这些方法，这显然不是好的设计。如果将这个设计修改为符合接口隔离原则，就必须对接口I进行拆分。在这里我们将原有的接口I拆分为三个接口，拆分后的设计如图2所示：<br>
-![遵循接口隔离原则的设计](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/2.jpg?raw=true)
+![遵循接口隔离原则的设计](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/2.jpg?raw=true)<br>
 　　照例贴出程序的代码如下所示：<br>
 ```java
-interface I1 {
+public interface I1 {
 	public void method1();
 }
 
-interface I2 {
+public interface I2 {
 	public void method2();
 	public void method3();
 }
 
-interface I3 {
+public interface I3 {
 	public void method4();
 	public void method5();
 }
 
-class A{
+public class A{
 	public void depend1(I1 i){
 		i.method1();
 	}
@@ -407,7 +407,7 @@ class A{
 	}
 }
 
-class B implements I1, I2{
+public class B implements I1, I2{
 	public void method1() {
 		System.out.println("类B实现接口I1的方法1");
 	}
@@ -419,7 +419,7 @@ class B implements I1, I2{
 	}
 }
 
-class C{
+public class C{
 	public void depend1(I1 i){
 		i.method1();
 	}
@@ -431,7 +431,7 @@ class C{
 	}
 }
 
-class D implements I1, I3{
+public class D implements I1, I3{
 	public void method1() {
 		System.out.println("类D实现接口I1的方法1");
 	}
@@ -460,7 +460,7 @@ class D implements I1, I3{
 　　举一个例子：有一个集团公司，下属单位有分公司和直属部门，现在要求打印出所有下属单位的员工ID。先来看一下违反迪米特法则的设计，如下：<br>
 ```java
 //总公司员工
-class Employee{
+public class Employee{
 	private String id;
 	public void setId(String id){
 		this.id = id;
@@ -471,7 +471,7 @@ class Employee{
 }
 
 //分公司员工
-class SubEmployee{
+public class SubEmployee{
 	private String id;
 	public void setId(String id){
 		this.id = id;
@@ -481,7 +481,7 @@ class SubEmployee{
 	}
 }
 
-class SubCompanyManager{
+public class SubCompanyManager{
 	public List<SubEmployee> getAllEmployee(){
 		List<SubEmployee> list = new ArrayList<SubEmployee>();
 		for(int i=0; i<100; i++){
@@ -494,7 +494,7 @@ class SubCompanyManager{
 	}
 }
 
-class CompanyManager{
+public class CompanyManager{
 
 	public List<Employee> getAllEmployee(){
 		List<Employee> list = new ArrayList<Employee>();
@@ -529,7 +529,7 @@ public class Client{
 ```
 　　现在这个设计的主要问题出在CompanyManager中，根据迪米特法则，只与直接的朋友发生通信，而SubEmployee类并不是CompanyManager类的直接朋友（以局部变量出现的耦合不属于直接朋友），从逻辑上讲总公司只与他的分公司耦合就行了，与分公司的员工并没有任何联系，这样设计显然是增加了不必要的耦合。按照迪米特法则，应该避免类中出现这样非直接朋友关系的耦合。修改后的代码如下:<br>
 ```java
-class SubCompanyManager{
+public class SubCompanyManager{
 	public List<SubEmployee> getAllEmployee(){
 		List<SubEmployee> list = new ArrayList<SubEmployee>();
 		for(int i=0; i<100; i++){
@@ -548,7 +548,7 @@ class SubCompanyManager{
 	}
 }
 
-class CompanyManager{
+public class CompanyManager{
 	public List<Employee> getAllEmployee(){
 		List<Employee> list = new ArrayList<Employee>();
 		for(int i=0; i<30; i++){
@@ -582,9 +582,9 @@ class CompanyManager{
 　　说到这里，再回想一下前面说的5项原则，恰恰是告诉我们用抽象构建框架，用实现扩展细节的注意事项而已：单一职责原则告诉我们实现类要职责单一；里氏替换原则告诉我们不要破坏继承体系；依赖倒置原则告诉我们要面向接口编程；接口隔离原则告诉我们在设计接口的时候要精简单一；迪米特法则告诉我们要降低耦合。而开闭原则是总纲，他告诉我们要对扩展开放，对修改关闭。<br>
 
 ## 七、总结
-　最后说明一下如何去遵守这六个原则。对这六个原则的遵守并不是是和否的问题，而是多和少的问题，也就是说，我们一般不会说有没有遵守，而是说遵守程度的多少。任何事都是过犹不及，设计模式的六个设计原则也是一样，制定这六个原则的目的并不是要我们刻板的遵守他们，而需要根据实际情况灵活运用。对他们的遵守程度只要在一个合理的范围内，就算是良好的设计。我们用一幅图来说明一下:<br>
-![设计原则](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/3.jpg?raw=true)
+　　最后说明一下如何去遵守这六个原则。对这六个原则的遵守并不是是和否的问题，而是多和少的问题，也就是说，我们一般不会说有没有遵守，而是说遵守程度的多少。任何事都是过犹不及，设计模式的六个设计原则也是一样，制定这六个原则的目的并不是要我们刻板的遵守他们，而需要根据实际情况灵活运用。对他们的遵守程度只要在一个合理的范围内，就算是良好的设计。我们用一幅图来说明一下:<br>
+![设计原则](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/3.jpg?raw=true)<br>
 　　图中的每一条维度各代表一项原则，我们依据对这项原则的遵守程度在维度上画一个点，则如果对这项原则遵守的合理的话，这个点应该落在红色的同心圆内部；如果遵守的差，点将会在小圆内部；如果过度遵守，点将会落在大圆外部。一个良好的设计体现在图中，应该是六个顶点都在同心圆中的六边形。<br>
-![设计原则的遵守](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/4.jpg?raw=true)
+![设计原则的遵守](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-05-06-design%20pattern/4.jpg?raw=true)<br>
 　　在上图中，设计1、设计2属于良好的设计，他们对六项原则的遵守程度都在合理的范围内；设计3、设计4设计虽然有些不足，但也基本可以接受；设计5则严重不足，对各项原则都没有很好的遵守；而设计6则遵守过渡了，设计5和设计6都是迫切需要重构的设计。<br>　
   主要参考书籍有《设计模式》、《设计模式之禅》、《大话设计模式》以及网上一些零散的文章，但主要内容是对这六个原则的感悟。<br>
