@@ -1,1 +1,23 @@
+---
+layout:     post
+title:      "看准网模糊信息查看"
+subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
+date:       2019-07-31 19:40:00
+author:     "ARTAvrilLavigne"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - javaee
+---
+## 一、内容模糊化遮挡<br>
+<p>　　闲暇之余去看准网找找幸福感，发现不登录就无法查看，所以找了找原因解决一下。如图所示为看准网上蚂蚁金服的一项面试信息，大部分内容进行了模糊化遮挡处理：</p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-07-31-java-web/1.png?raw=true"></p>
 
+<p>　　该部分对应的前端代码为：</p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-07-31-java-web/2.png?raw=true"></p>  
+## 二、实现不登录查看看准网遮挡信息<br>
+<p>　　本以为该部分隐藏内容在放在js中，但是我在前端js代码中并没有找到。所以我猜想应该是需要认证用户后请求到服务器重新获取该部分内容才行。经验证，实现不登录就能查看遮挡内容的方法有两种。</p>
+<p>第一种：在开发者模式下，点击登录的href属性(href="?pageType=3#login")去跳转请求这一页分页查询的文本资源，如下所示：</p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-07-31-java-web/3.png?raw=true"></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-07-31-java-web/4.png?raw=true"></p>
+<p>第二种：该资源访问页面的URL后跟着参数?ka=interview-item-ckqw(例如：https://www.kanzhun.com/gsmsh11408791.html?ka=interview-item-ckqw)，可以直接去掉该地址请求参数，重新请求该资源即可返回完整的文字信息。如下所示：</p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-07-31-java-web/5.png?raw=true"></p>
