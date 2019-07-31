@@ -21,5 +21,6 @@ tags:
 <p><strong>第一种</strong>：在开发者模式下，点击登录的href属性(href="?pageType=3#login")去跳转请求这一页分页查询的文本资源，如下所示：</p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-07-31-java-web/3.png?raw=true"></p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-07-31-java-web/4.png?raw=true"></p>
-<p><strong>第二种：</strong>该资源访问页面的URL后跟着参数?ka=interview-item-ckqw，可以直接去掉该地址请求参数，重新请求该资源即可返回完整的文字信息。如下所示：</p>
+<p><strong>第二种：</strong>该资源访问页面的URL后跟着参数?ka=interview-item-ckqw，例如：https://www.kanzhun.com/gsmsh11408791.html
+    可以直接去掉该地址请求参数，重新请求该资源即可返回完整的文字信息。如下所示：</p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-07-31-java-web/5.png?raw=true"></p>
