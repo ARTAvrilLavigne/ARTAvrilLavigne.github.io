@@ -44,15 +44,15 @@ make
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/8.png?raw=true"></p>
 
 <p><strong>第三步、下载预训练的权重</strong><br>
-<pre>wget https://pjreddie.com/media/files/yolo.weights</pre>
+<pre>wget https://pjreddie.com/media/files/yolov3.weights</pre>
 </p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/6.png?raw=true"></p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/7.png?raw=true"></p>
 
 <p><strong>第四步、执行预测</strong><br>
-<pre>./darknet detect cfg/yolo.cfg yolo.weights data/IU1.jpg
+<pre>./darknet detect cfg/yolov3.cfg yolov3.weights data/IU1.jpg
 
-./darknet detect cfg/yolo.cfg yolo.weights data/IU2.jpg
+./darknet detect cfg/yolov3.cfg yolov3.weights data/IU2.jpg
 </pre></p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/9.png?raw=true"></p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/10.png?raw=true"></p>
@@ -64,7 +64,8 @@ make
 
 
 ## 四、参考链接<br>
-<p>YOLO算法使用一：https://www.cnblogs.com/minsons/p/7905473.html<br>  
+<p>算法官网：https://pjreddie.com/darknet/yolo/<br>
+YOLO算法使用一：https://www.cnblogs.com/minsons/p/7905473.html<br>  
 YOLO算法使用二：https://www.cnblogs.com/minsons/p/7905488.html<br>
 YOLO算法详解：https://blog.csdn.net/xiaohu2022/article/details/79211732<br>
 </p>
