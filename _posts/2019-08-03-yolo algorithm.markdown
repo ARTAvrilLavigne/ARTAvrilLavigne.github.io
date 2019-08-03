@@ -2,7 +2,7 @@
 layout:     post
 title:      "YOLO目标检测算法基本使用"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
-date:       2019-08-03 19:27:00
+date:       2019-08-03 20:27:00
 author:     "ARTAvrilLavigne"
 header-img: "img/post-bg-2015.jpg"
 tags:
@@ -17,14 +17,15 @@ tags:
 ## 二、YOLO算法的安装及基本使用<br>
 <p>环境：ubuntu14.04-64位</p>
 <p>第一步、环境准备。创建YOLO算法的一个目录，在该目录下：
+
 <strong>1、安装git工具</strong>
 <pre>apt-get install git</pre>
 <strong>2、安装bunzip2</strong>
 <pre>apt-get install -y bzip2</pre>
-<strong>3、安装gcc</strong>
-<pre>sudo apt-get install build-essential</pre>   //安装软件列表，因为gcc，g++一般是自带的，安装了软件列表就自然安装上gcc和g++了
-<pre>gcc --version</pre>                          //查看gcc版本
-<pre>g++ --version</pre>                         //查看g++版本
+<strong>3、安装gcc</strong>                        //安装软件列表，因为gcc，g++一般是自带的，安装了软件列表就自然安装上gcc和g++了
+<pre>sudo apt-get install build-essential</pre>   //查看gcc版本
+<pre>gcc --version</pre>                          //查看g++版本
+<pre>g++ --version</pre>                         
 </p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/3.png?raw=true"></p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/4.png?raw=true"></p>
@@ -59,6 +60,9 @@ make
 
 ## 四、参考链接<br>
 <p>YOLO算法使用一：https://www.cnblogs.com/minsons/p/7905473.html
+    
 YOLO算法使用二：https://www.cnblogs.com/minsons/p/7905488.html
+
 YOLO算法详解：https://blog.csdn.net/xiaohu2022/article/details/79211732
+
 </p>
