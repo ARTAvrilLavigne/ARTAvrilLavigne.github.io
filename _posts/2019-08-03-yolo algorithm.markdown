@@ -16,7 +16,7 @@ tags:
 
 ## 二、YOLO算法的安装及基本使用<br>
 <p>环境：ubuntu14.04-64位</p>
-<p>第一步、环境准备。创建YOLO算法的一个目录，在该目录下：<br>
+<p><strong>第一步、环境准备。创建YOLO算法的一个目录，在该目录下：</strong><br>
 <strong>1、安装git工具</strong><br>
 
 <pre>apt-get install git</pre>
@@ -36,20 +36,20 @@ tags:
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/4.png?raw=true"></p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/5.png?raw=true"></p>
 
-<p>第二步、下载安装包并编译<br>
+<p><strong>第二步、下载安装包并编译</strong><br>
 <pre>sudo git clone https://github.com/pjreddie/darknet
 cd darknet
 make
 </pre></p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/8.png?raw=true"></p>
 
-<p>第三步、下载预训练的权重<br>
+<p><strong>第三步、下载预训练的权重</strong><br>
 <pre>wget https://pjreddie.com/media/files/yolo.weights</pre>
 </p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/6.png?raw=true"></p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/7.png?raw=true"></p>
 
-<p>第四步、执行预测<br>
+<p><strong>第四步、执行预测</strong><br>
 <pre>./darknet detect cfg/yolo.cfg yolo.weights data/IU1.jpg
 
 ./darknet detect cfg/yolo.cfg yolo.weights data/IU2.jpg
