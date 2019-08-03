@@ -20,9 +20,12 @@ tags:
 
 <strong>1、安装git工具</strong>
 <pre>apt-get install git</pre>
+
 <strong>2、安装bunzip2</strong>
 <pre>apt-get install -y bzip2</pre>
-<strong>3、安装gcc</strong>                        //安装软件列表，因为gcc，g++一般是自带的，安装了软件列表就自然安装上gcc和g++了
+
+<strong>3、安装gcc</strong>                        
+//安装软件列表，因为gcc，g++一般是自带的，安装了软件列表就自然安装上gcc和g++了
 <pre>sudo apt-get install build-essential</pre>   //查看gcc版本
 <pre>gcc --version</pre>                          //查看g++版本
 <pre>g++ --version</pre>                         
