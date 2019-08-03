@@ -64,10 +64,7 @@ make
 
 
 ## 四、参考链接<br>
-<p>YOLO算法使用一：https://www.cnblogs.com/minsons/p/7905473.html
-    
-YOLO算法使用二：https://www.cnblogs.com/minsons/p/7905488.html
-
-YOLO算法详解：https://blog.csdn.net/xiaohu2022/article/details/79211732
-
+<p>YOLO算法使用一：https://www.cnblogs.com/minsons/p/7905473.html<br>  
+YOLO算法使用二：https://www.cnblogs.com/minsons/p/7905488.html<br>
+YOLO算法详解：https://blog.csdn.net/xiaohu2022/article/details/79211732<br>
 </p>
