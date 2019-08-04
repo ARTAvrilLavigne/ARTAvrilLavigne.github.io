@@ -46,6 +46,7 @@ make
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/8.png?raw=true"></p>
 
 <p><strong>第三步、下载预训练的权重</strong><br>
+//官网的版本更新到了yolov3，因此下载yolov3对应的权重文件
 <pre>wget https://pjreddie.com/media/files/yolov3.weights</pre>
 </p>
 <p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/6.png?raw=true"></p>
@@ -56,13 +57,21 @@ make
 
 ./darknet detect cfg/yolov3.cfg yolov3.weights data/IU2.jpg
 </pre></p>
-<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/9.png?raw=true"></p>
-<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/10.png?raw=true"></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/9-1.png?raw=true"></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/9-2.png?raw=true"></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/9-3.png?raw=true"></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/10-1.png?raw=true"></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/10-2.png?raw=true"></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/10-3.png?raw=true"></p>
 
 
 
 ## 三、YOLO算法执行结果<br>
-
+<p>德鲁纳酒店IU姑娘的检测效果</p>
+<p><strong>目标检测图片IU1.jpg的结果：</strong></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/9-predictions.png?raw=true"></p>
+<p><strong>目标检测图片IU2.jpg的结果：</strong></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/10-predictions.png?raw=true"></p>
 
 
 ## 四、参考链接<br>
