@@ -69,9 +69,9 @@ make
 ## 三、YOLO算法执行结果<br>
 <p>德鲁纳酒店IU姑娘的检测效果</p>
 <p><strong>目标检测图片IU1.jpg的结果：</strong></p>
-<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/9-predictions.png?raw=true"></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/9-predictions.jpg?raw=true"></p>
 <p><strong>目标检测图片IU2.jpg的结果：</strong></p>
-<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/10-predictions.png?raw=true"></p>
+<p><img src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-03%20yolo%20algorithm/10-predictions.jpg?raw=true"></p>
 
 
 ## 四、参考链接<br>
