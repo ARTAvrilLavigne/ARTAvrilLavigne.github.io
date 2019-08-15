@@ -6,16 +6,8 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="">
     
-    <!-- 我添加的网页鼠标动态触击式线条效果js -->
-    <script>
-    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-    	//说明是移动终端，不加载鼠标动态触击式线条特效js
-    	
-    }else{
-    	//说明是PC，加载这个js
-    	document.write('<script src="/js/MouseDynamicEffect.js"></scr'+'ipt>');
-    }
-    </script>
+    <!-- 我添加的网页鼠标动态触击式线条效果js，里面增加了在移动终端不加载该效果-->
+    <script src="/js/MouseDynamicEffect.js"></script>
     
     {% include nav.html %}
 
