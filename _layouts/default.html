@@ -7,7 +7,9 @@
 <body ontouchstart="">
     
     <!-- 我添加的网页鼠标动态触击式线条效果js -->
-    <script src="/js/MouseDynamicEffect.js "></script>
+    if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)){
+    document.write('<script src="/js/MouseDynamicEffect.js"><\/script>');
+    }
     
     {% include nav.html %}
 
