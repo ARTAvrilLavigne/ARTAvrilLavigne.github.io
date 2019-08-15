@@ -18,9 +18,13 @@
         i = t[o - 1];
         return {
             l: o,
+            //zIndex：背景的z-index属性，css属性用于控制所在层的位置, 默认: -1
             z: n(i, "zIndex", -1),
+            //opacity： 线条透明度（0~1）, 默认: 0.5
             o: n(i, "opacity", .6),
+            //color：线条颜色, 默认: '0,0,0' ；三个数字分别为(R,G,B)，注意用,分割
             c: n(i, "color", "0,0,0"),
+            //count：线条的总数量, 默认: 150
             n: n(i, "count", 110)
         }
     }
