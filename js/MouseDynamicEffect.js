@@ -19,7 +19,7 @@
         return {
             l: o,
             z: n(i, "zIndex", -1),
-            o: n(i, "opacity", .9),
+            o: n(i, "opacity", .6),
             c: n(i, "color", "0,0,0"),
             n: n(i, "count", 150)
         }
