@@ -3,9 +3,15 @@
  * License: MIT
  * Version: v1.0.1
  * GitHub: https://github.com/hustcc/canvas-nest.js
- * 网页鼠标动态线条效果的js
+ * 网页鼠标动态线条效果的js，增加了移动端不加载，否则影响效果
 **/
-!function() {
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+    	//说明是安卓/iphone/ipad等移动终端，不加载鼠标动态触击式线条特效js，因为会影响页面查看效果
+    	
+}else{
+    //说明是PC，加载这个js
+    //document.write('<script src="/js/MouseDynamicEffect.js"></scr'+'ipt>');//后面这个script的+号连接符是为了避免被外层script标签影响加载
+    !function() {
     function n(n, e, t) {
         return n.getAttribute(e) || t
     }
@@ -88,3 +94,5 @@
     },
     100)
 } ();
+
+}
