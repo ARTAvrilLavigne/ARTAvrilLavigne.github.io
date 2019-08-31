@@ -60,6 +60,25 @@ you-get -i https://www.iqiyi.com/v_19rro67g8w.html
 　　于是更换无限挑战歌谣祭2015这一期在B站上的资源后，成功找到资源并且下载，这个资源它下载各个片段最后自动合并为一个完整视频：<br>
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/7.png?raw=true)<br>
 
+```
+C:\Users\ThinkPad\Desktop>you-get https://www.bilibili.com/video/av14784402/
+you-get: This is a multipart video. (use --playlist to download all parts.)
+site:                Bilibili
+title:               无限挑战2015歌谣祭（合集） (P1. 150704)
+stream:
+    - format:        flv720
+      container:     flv
+      quality:       高清 720P
+      size:          1135.1 MiB (1190190184 bytes)
+    # download-with: you-get --format=flv720 [URL]
+
+Downloading 无限挑战2015歌谣祭（合集） (P1. 150704).mp4 ...
+ 100% (1135.1/1135.1MB) ├████████████████████████████████████┤[13/13]    5 MB/s
+Merging video parts... Merged into 无限挑战2015歌谣祭（合集） (P1. 150704).mp4
+
+Downloading 无限挑战2015歌谣祭（合集） (P1. 150704).cmt.xml ...
+```
+
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/8.png?raw=true)<br>
 
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/9.png?raw=true)<br>
