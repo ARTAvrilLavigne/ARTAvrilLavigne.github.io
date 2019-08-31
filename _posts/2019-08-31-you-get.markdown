@@ -94,7 +94,7 @@ Downloading 无限挑战2015歌谣祭（合集） (P1. 150704).cmt.xml ...
 3、可以使用 `--output-dir`/`-o` 设置下载的路径，以及`--output-filename`/`-O` 设置下载文件的名字：
 
 ```
-you-get -o C:\Users\Administrator\Desktop -O IU https://www.bilibili.com/video/av14784402/
+C:\Users\ThinkPad>you-get -o Desktop -O IU https://www.bilibili.com/video/av14784402/
 ```
 
 4、代理设置，可以通过you-get使用 `--http-proxy`/`-x` 选项指定要使用的HTTP代理：
