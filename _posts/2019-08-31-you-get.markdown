@@ -10,56 +10,60 @@ tags:
 ---
 ## 一、you-get介绍<br>
 
-  在回看经典的无限挑战2015歌谣祭这一期后，准备从爱奇艺下载保存起来，但是发现爱奇艺流氓地要求下载客户端才能下载。所以拒绝这种方式，发现了一款基于python3的you-get视频下载工具。这是命令行程序，用于从Web下载媒体内容（视频，音频，图像）。例如YouTube，优酷，Bilibili，爱奇艺等等。<br>
+　　在回看经典的无限挑战2015歌谣祭这一期后，准备从爱奇艺下载保存起来，但是发现爱奇艺流氓地要求下载客户端才能下载。所以拒绝这种方式，发现了一款基于python3的you-get视频下载工具。这是命令行程序，用于从Web下载媒体内容（视频，音频，图像）。例如YouTube，优酷，Bilibili，爱奇艺等等。<br>
 
 ## 二、安装<br>
 
-  环境准备：
+　　环境准备：
 * **[Python3](https://www.python.org/downloads/)**  3.2 or above
 * **[FFmpeg](https://www.ffmpeg.org/)** 1.0 or above
 * (可选) [RTMPDump](https://rtmpdump.mplayerhq.hu/)
 
 ### 2.1、安装you-get<br>
 
-  首先要在windows中装好python3环境。由于you-get的官方版本通过PyPI分发, 可从PyPI镜像中通过pip包管理器安装，所以使用pip命令方式安装：<br>
-
-    $ pip3 install you-get
-
-![](https://i.imgur.com/GfthFAz.png)<br>
-或者选择其他五种安装方式见官网。如果以前已经安装好了you-get，那么可以更新一下：<br>
+　　首先要在windows中装好python3环境。由于you-get的官方版本通过PyPI分发, 可从PyPI镜像中通过pip包管理器安装，所以使用pip命令方式安装：<br>
 
 ```
-$ pip3 install --upgrade you-get
+pip3 install you-get
+```
+
+![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/0.png?raw=true)<br>
+　　或者选择其他五种安装方式见官网。如果以前已经安装好了you-get，那么可以更新一下：<br>
+
+```
+pip3 install --upgrade you-get
 ```
 
 ### 2.2、安装FFmpeg<br>
 
-  通过官网下载压缩包解压到本地，并将bin目录添加到系统环境变量即可。如下图所示：<br>
-![](https://i.imgur.com/GfthFAz.png)<br>
-![](https://i.imgur.com/GfthFAz.png)<br>
-![](https://i.imgur.com/GfthFAz.png)<br>
-![](https://i.imgur.com/GfthFAz.png)<br>
+　　通过官网下载压缩包解压到本地，并将bin目录添加到系统环境变量即可。如下图所示：<br>
+![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/1.png?raw=true)<br>
+![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/2.png?raw=true)<br>
+![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/3.png?raw=true)<br>
+![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/4.png?raw=true)<br>
 
 ## 三、下载使用<br>
 
-  首先可以使用 `--info`/`-i` 以查看所有可用画质与格式。并且标有DEFAULT的为默认画质，默认选项为最高画质，并且默认下载为当前用户路径，如不希望you-get合并视频，使用 `--no-merge/-n` ：<br>
+　　首先可以使用 `--info`/`-i` 以查看所有可用画质与格式。并且标有DEFAULT的为默认画质，默认选项为最高画质，并且默认下载为当前用户路径，如不希望you-get合并视频，使用 `--no-merge/-n` ：<br>
 
 ```
 you-get -i https://www.iqiyi.com/v_19rro67g8w.html
 ```
 
-  结果如下所示，这个资源不能下载，查看官网资料发现个别网站还存在一些BUG，有些资源不能下载：<br>
-![](https://i.imgur.com/GfthFAz.png)<br>
-  官网展示的BUG如下所示：<br>
-![](https://i.imgur.com/GfthFAz.png)<br>
-  于是更换无限挑战歌谣祭2015这一期在B站上的资源后，成功找到资源并且下载：<br>
-![](https://i.imgur.com/GfthFAz.png)<br>
+　　结果如下所示，爱奇艺这个资源不能下载，查看官网资料发现个别网站还存在一些BUG，有些资源还不能下载：<br>
+![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/5.png?raw=true)<br>
+　　官网展示的BUG如下所示：<br>
+![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/6.png?raw=true)<br>
+　　于是更换无限挑战歌谣祭2015这一期在B站上的资源后，成功找到资源并且下载，这个资源它下载各个片段最后自动合并为一个完整视频：<br>
+![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/7.png?raw=true)<br>
+![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/8.png?raw=true)<br>
+![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/9.png?raw=true)<br>
 
 ## 四、you-get常用命令及说明<br>
 
 1、可以使用 <kbd>Ctrl</kbd>+<kbd>C</kbd> 来暂停当前的下载。
 
-  临时的 `.download` 文件将保存于输出目录。下次使用 `you-get` 传入相同参数时，下载将从上次继续开始。如果下载已经完成 (临时的 `.download` 扩展名消失)， `you-get`将忽略下载。
+　　临时的 `.download` 文件将保存于输出目录。下次使用 `you-get` 传入相同参数时，下载将从上次继续开始。如果下载已经完成 (临时的 `.download` 扩展名消失)， `you-get`将忽略下载。
 
 2、可以使用`--force`/`-f` 进行强行重下载。(注意: 这将会覆盖同名文件或临时文件!)
 
@@ -75,7 +79,8 @@ you-get -o C:\Users\Administrator\Desktop -O IU https://www.bilibili.com/video/a
 you-get -x 127.0.0.1:8087 https://www.youtube.com/watch?v=jNQXAC9IVRw
 ```
 
-但是，`http_proxy` 默认情况下应用系统代理设置（即环境变量）。要禁用任何代理，请使用该 `--no-proxy` 选项。
+但是，`http_proxy` 默认情况下应用系统代理设置（即环境变量）。要禁用任何代理，请使用该 `--no-proxy` 选项。<br>
+
 **注意**
 
 * If you need to use proxies a lot (in case your network is blocking certain sites), you might want to use `you-get` with [proxychains](https://github.com/rofl0r/proxychains-ng) and set `alias you-get="proxychains -q you-get"` (in Bash).
@@ -168,5 +173,5 @@ you-get -x 127.0.0.1:8087 https://www.youtube.com/watch?v=jNQXAC9IVRw
 | 中国体育(TV) | <http://v.zhibo.tv/> </br><http://video.zhibo.tv/>    |✓| | |
 | 知乎 | <https://www.zhihu.com/>      |✓| | |
 
-参考官网：https://github.com/soimort/you-get
+**参考官网**：https://github.com/soimort/you-get
 
