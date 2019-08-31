@@ -38,8 +38,11 @@ pip3 install --upgrade you-get
 
 　　通过官网下载压缩包解压到本地，并将bin目录添加到系统环境变量即可。如下图所示：<br>
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/1.png?raw=true)<br>
+
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/2.png?raw=true)<br>
+
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/3.png?raw=true)<br>
+
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/4.png?raw=true)<br>
 
 ## 三、下载使用<br>
@@ -56,7 +59,9 @@ you-get -i https://www.iqiyi.com/v_19rro67g8w.html
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/6.png?raw=true)<br>
 　　于是更换无限挑战歌谣祭2015这一期在B站上的资源后，成功找到资源并且下载，这个资源它下载各个片段最后自动合并为一个完整视频：<br>
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/7.png?raw=true)<br>
+
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/8.png?raw=true)<br>
+
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/9.png?raw=true)<br>
 
 ## 四、you-get常用命令及说明<br>
@@ -90,15 +95,15 @@ you-get -x 127.0.0.1:8087 https://www.youtube.com/watch?v=jNQXAC9IVRw
 
 | 网站 | URL | 视频? | 图片? | 音频? |
 | :--: | :-- | :-----: | :-----: | :-----: |
-| **YouTube** | <https://www.youtube.com/>    |✓| | |
-| **Twitter** | <https://twitter.com/>        |✓|✓| |
+| YouTube | <https://www.youtube.com/>    |✓| | |
+| Twitter | <https://twitter.com/>        |✓|✓| |
 | VK          | <http://vk.com/>              |✓|✓| |
 | Vine        | <https://vine.co/>            |✓| | |
 | Vimeo       | <https://vimeo.com/>          |✓| | |
 | Vidto       | <http://vidto.me/>            |✓| | |
 | Videomega   | <http://videomega.tv/>        |✓| | |
 | Veoh        | <http://www.veoh.com/>        |✓| | |
-| **Tumblr**  | <https://www.tumblr.com/>     |✓|✓|✓|
+| Tumblr  | <https://www.tumblr.com/>     |✓|✓|✓|
 | TED         | <http://www.ted.com/>         |✓| | |
 | SoundCloud  | <https://soundcloud.com/>     | | |✓|
 | SHOWROOM    | <https://www.showroom-live.com/> |✓| | |
@@ -110,11 +115,11 @@ you-get -x 127.0.0.1:8087 https://www.youtube.com/watch?v=jNQXAC9IVRw
 | Magisto     | <http://www.magisto.com/>     |✓| | |
 | Khan Academy | <https://www.khanacademy.org/> |✓| | |
 | Internet Archive | <https://archive.org/>   |✓| | |
-| **Instagram** | <https://instagram.com/>    |✓|✓| |
+| Instagram | <https://instagram.com/>    |✓|✓| |
 | InfoQ       | <http://www.infoq.com/presentations/> |✓| | |
 | Imgur       | <http://imgur.com/>           | |✓| |
 | Heavy Music Archive | <http://www.heavy-music.ru/> | | |✓|
-| **Google+** | <https://plus.google.com/>    |✓|✓| |
+| Google+ | <https://plus.google.com/>    |✓|✓| |
 | Freesound   | <http://www.freesound.org/>   | | |✓|
 | Flickr      | <https://www.flickr.com/>     |✓|✓| |
 | FC2 Video   | <http://video.fc2.com/>       |✓| | |
@@ -126,14 +131,14 @@ you-get -x 127.0.0.1:8087 https://www.youtube.com/watch?v=jNQXAC9IVRw
 | Bandcamp    | <http://bandcamp.com/>        | | |✓|
 | AliveThai   | <http://alive.in.th/>         |✓| | |
 | interest.me | <http://ch.interest.me/tvn>   |✓| | |
-| **755<br/>ナナゴーゴー** | <http://7gogo.jp/> |✓|✓| |
-| **niconico<br/>ニコニコ動画** | <http://www.nicovideo.jp/> |✓| | |
-| **163<br/>网易视频<br/>网易云音乐** | <http://v.163.com/><br/><http://music.163.com/> |✓| |✓|
+| 755<br/>ナナゴーゴー | <http://7gogo.jp/> |✓|✓| |
+| niconico<br/>ニコニコ動画 | <http://www.nicovideo.jp/> |✓| | |
+| 163<br/>网易视频<br/>网易云音乐 | <http://v.163.com/><br/><http://music.163.com/> |✓| |✓|
 | 56网     | <http://www.56.com/>           |✓| | |
-| **AcFun** | <http://www.acfun.cn/>        |✓| | |
-| **Baidu<br/>百度贴吧** | <http://tieba.baidu.com/> |✓|✓| |
+| AcFun | <http://www.acfun.cn/>        |✓| | |
+| Baidu<br/>百度贴吧 | <http://tieba.baidu.com/> |✓|✓| |
 | 爆米花网 | <http://www.baomihua.com/>     |✓| | |
-| **bilibili<br/>哔哩哔哩** | <http://www.bilibili.com/> |✓| | |
+| bilibili<br/>哔哩哔哩 | <http://www.bilibili.com/> |✓| | |
 | 豆瓣     | <http://www.douban.com/>       |✓| |✓|
 | 斗鱼     | <http://www.douyutv.com/>      |✓| | |
 | Panda<br/>熊猫 | <http://www.panda.tv/>      |✓| | |
@@ -155,11 +160,11 @@ you-get -x 127.0.0.1:8087 https://www.youtube.com/watch?v=jNQXAC9IVRw
 | 企鹅直播 | <http://live.qq.com/>          |✓| | |
 | Sina<br/>新浪视频<br/>微博秒拍视频 | <http://video.sina.com.cn/><br/><http://video.weibo.com/> |✓| | |
 | Sohu<br/>搜狐视频 | <http://tv.sohu.com/> |✓| | |
-| **Tudou<br/>土豆** | <http://www.tudou.com/> |✓| | |
+| Tudou<br/>土豆 | <http://www.tudou.com/> |✓| | |
 | 虾米     | <http://www.xiami.com/>        |✓| |✓|
 | 阳光卫视 | <http://www.isuntv.com/>       |✓| | |
-| **音悦Tai** | <http://www.yinyuetai.com/> |✓| | |
-| **Youku<br/>优酷** | <http://www.youku.com/> |✓| | |
+| 音悦Tai | <http://www.yinyuetai.com/> |✓| | |
+| Youku<br/>优酷 | <http://www.youku.com/> |✓| | |
 | 战旗TV   | <http://www.zhanqi.tv/lives>   |✓| | |
 | 央视网   | <http://www.cntv.cn/>          |✓| | |
 | Naver<br/>네이버 | <http://tvcast.naver.com/>     |✓| | |
