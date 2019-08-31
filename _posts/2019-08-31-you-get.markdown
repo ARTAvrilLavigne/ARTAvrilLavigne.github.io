@@ -24,14 +24,14 @@ tags:
 　　首先要在windows中装好python3环境。由于you-get的官方版本通过PyPI分发, 可从PyPI镜像中通过pip包管理器安装，所以使用pip命令方式安装：<br>
 
 ```
-pip3 install you-get
+C:\Users\ThinkPad\Desktop>pip3 install you-get
 ```
 
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/0.png?raw=true)<br>
 　　或者选择其他五种安装方式见官网。如果以前已经安装好了you-get，那么可以更新一下：<br>
 
 ```
-pip3 install --upgrade you-get
+C:\Users\ThinkPad\Desktop>pip3 install --upgrade you-get
 ```
 
 ### 2.2、安装FFmpeg<br>
@@ -50,7 +50,7 @@ pip3 install --upgrade you-get
 　　首先可以使用 `--info`/`-i` 以查看所有可用画质与格式。并且标有DEFAULT的为默认画质，默认选项为最高画质，并且默认下载为当前用户路径，如不希望you-get合并视频，使用 `--no-merge/-n` ：<br>
 
 ```
-you-get -i https://www.iqiyi.com/v_19rro67g8w.html
+C:\Users\ThinkPad\Desktop>you-get -i https://www.iqiyi.com/v_19rro67g8w.html
 ```
 
 　　结果如下所示，爱奇艺这个资源不能下载，查看官网资料发现个别网站还存在一些BUG，有些资源还不能下载：<br>
@@ -100,7 +100,7 @@ C:\Users\ThinkPad>you-get -o Desktop -O IU https://www.bilibili.com/video/av1478
 4、代理设置，可以通过you-get使用 `--http-proxy`/`-x` 选项指定要使用的HTTP代理：
 
 ```
-you-get -x 127.0.0.1:8087 https://www.youtube.com/watch?v=jNQXAC9IVRw
+C:\Users\ThinkPad\Desktop>you-get -x 127.0.0.1:8087 https://www.youtube.com/watch?v=jNQXAC9IVRw
 ```
 
 但是，`http_proxy` 默认情况下应用系统代理设置（即环境变量）。要禁用任何代理，请使用该 `--no-proxy` 选项。<br>
