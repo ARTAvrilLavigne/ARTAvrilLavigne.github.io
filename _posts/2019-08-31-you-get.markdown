@@ -1,1 +1,172 @@
+---
+layout:     post
+title:      "基于python3的you-get视频下载工具"
+subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
+date:       2019-08-31 14:41:00
+author:     "ARTAvrilLavigne"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - python
+---
+## 一、you-get介绍<br>
+
+  在回看经典的无限挑战2015歌谣祭这一期后，准备从爱奇艺下载保存起来，但是发现爱奇艺流氓地要求下载客户端才能下载。所以拒绝这种方式，发现了一款基于python3的you-get视频下载工具。这是命令行程序，用于从Web下载媒体内容（视频，音频，图像）。例如YouTube，优酷，Bilibili，爱奇艺等等。<br>
+
+## 二、安装<br>
+
+  环境准备：
+* **[Python3](https://www.python.org/downloads/)**  3.2 or above
+* **[FFmpeg](https://www.ffmpeg.org/)** 1.0 or above
+* (可选) [RTMPDump](https://rtmpdump.mplayerhq.hu/)
+
+### 2.1、安装you-get<br>
+
+  首先要在windows中装好python3环境。由于you-get的官方版本通过PyPI分发, 可从PyPI镜像中通过pip包管理器安装，所以使用pip命令方式安装：<br>
+
+    $ pip3 install you-get
+
+![](https://i.imgur.com/GfthFAz.png)<br>
+或者选择其他五种安装方式见官网。如果以前已经安装好了you-get，那么可以更新一下：<br>
+
+```
+$ pip3 install --upgrade you-get
+```
+
+### 2.2、安装FFmpeg<br>
+
+  通过官网下载压缩包解压到本地，并将bin目录添加到系统环境变量即可。如下图所示：<br>
+![](https://i.imgur.com/GfthFAz.png)<br>
+![](https://i.imgur.com/GfthFAz.png)<br>
+![](https://i.imgur.com/GfthFAz.png)<br>
+![](https://i.imgur.com/GfthFAz.png)<br>
+
+## 三、下载使用<br>
+
+  首先可以使用 `--info`/`-i` 以查看所有可用画质与格式。并且标有DEFAULT的为默认画质，默认选项为最高画质，并且默认下载为当前用户路径，如不希望you-get合并视频，使用 `--no-merge/-n` ：<br>
+
+```
+you-get -i https://www.iqiyi.com/v_19rro67g8w.html
+```
+
+  结果如下所示，这个资源不能下载，查看官网资料发现个别网站还存在一些BUG，有些资源不能下载：<br>
+![](https://i.imgur.com/GfthFAz.png)<br>
+  官网展示的BUG如下所示：<br>
+![](https://i.imgur.com/GfthFAz.png)<br>
+  于是更换无限挑战歌谣祭2015这一期在B站上的资源后，成功找到资源并且下载：<br>
+![](https://i.imgur.com/GfthFAz.png)<br>
+
+## 四、you-get常用命令及说明<br>
+
+1、可以使用 <kbd>Ctrl</kbd>+<kbd>C</kbd> 来暂停当前的下载。
+
+  临时的 `.download` 文件将保存于输出目录。下次使用 `you-get` 传入相同参数时，下载将从上次继续开始。如果下载已经完成 (临时的 `.download` 扩展名消失)， `you-get`将忽略下载。
+
+2、可以使用`--force`/`-f` 进行强行重下载。(注意: 这将会覆盖同名文件或临时文件!)
+
+3、可以使用 `--output-dir`/`-o` 设置下载的路径，以及`--output-filename`/`-O` 设置下载文件的名字：
+
+```
+you-get -o C:\Users\Administrator\Desktop -O IU https://www.bilibili.com/video/av14784402/
+```
+
+4、代理设置，可以通过you-get使用 `--http-proxy`/`-x` 选项指定要使用的HTTP代理：
+
+```
+you-get -x 127.0.0.1:8087 https://www.youtube.com/watch?v=jNQXAC9IVRw
+```
+
+但是，`http_proxy` 默认情况下应用系统代理设置（即环境变量）。要禁用任何代理，请使用该 `--no-proxy` 选项。
+**注意**
+
+* If you need to use proxies a lot (in case your network is blocking certain sites), you might want to use `you-get` with [proxychains](https://github.com/rofl0r/proxychains-ng) and set `alias you-get="proxychains -q you-get"` (in Bash).
+* For some websites (e.g. Youku), if you need access to some videos that are only available in mainland China, there is an option of using a specific proxy to extract video information from the site: `--extractor-proxy`/`-y`.
+
+## 五、you-get支持的网站<br>
+
+| 网站 | URL | 视频? | 图片? | 音频? |
+| :--: | :-- | :-----: | :-----: | :-----: |
+| **YouTube** | <https://www.youtube.com/>    |✓| | |
+| **Twitter** | <https://twitter.com/>        |✓|✓| |
+| VK          | <http://vk.com/>              |✓|✓| |
+| Vine        | <https://vine.co/>            |✓| | |
+| Vimeo       | <https://vimeo.com/>          |✓| | |
+| Vidto       | <http://vidto.me/>            |✓| | |
+| Videomega   | <http://videomega.tv/>        |✓| | |
+| Veoh        | <http://www.veoh.com/>        |✓| | |
+| **Tumblr**  | <https://www.tumblr.com/>     |✓|✓|✓|
+| TED         | <http://www.ted.com/>         |✓| | |
+| SoundCloud  | <https://soundcloud.com/>     | | |✓|
+| SHOWROOM    | <https://www.showroom-live.com/> |✓| | |
+| Pinterest   | <https://www.pinterest.com/>  | |✓| |
+| MusicPlayOn | <http://en.musicplayon.com/>  |✓| | |
+| MTV81       | <http://www.mtv81.com/>       |✓| | |
+| Mixcloud    | <https://www.mixcloud.com/>   | | |✓|
+| Metacafe    | <http://www.metacafe.com/>    |✓| | |
+| Magisto     | <http://www.magisto.com/>     |✓| | |
+| Khan Academy | <https://www.khanacademy.org/> |✓| | |
+| Internet Archive | <https://archive.org/>   |✓| | |
+| **Instagram** | <https://instagram.com/>    |✓|✓| |
+| InfoQ       | <http://www.infoq.com/presentations/> |✓| | |
+| Imgur       | <http://imgur.com/>           | |✓| |
+| Heavy Music Archive | <http://www.heavy-music.ru/> | | |✓|
+| **Google+** | <https://plus.google.com/>    |✓|✓| |
+| Freesound   | <http://www.freesound.org/>   | | |✓|
+| Flickr      | <https://www.flickr.com/>     |✓|✓| |
+| FC2 Video   | <http://video.fc2.com/>       |✓| | |
+| Facebook    | <https://www.facebook.com/>   |✓| | |
+| eHow        | <http://www.ehow.com/>        |✓| | |
+| Dailymotion | <http://www.dailymotion.com/> |✓| | |
+| Coub        | <http://coub.com/>            |✓| | |
+| CBS         | <http://www.cbs.com/>         |✓| | |
+| Bandcamp    | <http://bandcamp.com/>        | | |✓|
+| AliveThai   | <http://alive.in.th/>         |✓| | |
+| interest.me | <http://ch.interest.me/tvn>   |✓| | |
+| **755<br/>ナナゴーゴー** | <http://7gogo.jp/> |✓|✓| |
+| **niconico<br/>ニコニコ動画** | <http://www.nicovideo.jp/> |✓| | |
+| **163<br/>网易视频<br/>网易云音乐** | <http://v.163.com/><br/><http://music.163.com/> |✓| |✓|
+| 56网     | <http://www.56.com/>           |✓| | |
+| **AcFun** | <http://www.acfun.cn/>        |✓| | |
+| **Baidu<br/>百度贴吧** | <http://tieba.baidu.com/> |✓|✓| |
+| 爆米花网 | <http://www.baomihua.com/>     |✓| | |
+| **bilibili<br/>哔哩哔哩** | <http://www.bilibili.com/> |✓| | |
+| 豆瓣     | <http://www.douban.com/>       |✓| |✓|
+| 斗鱼     | <http://www.douyutv.com/>      |✓| | |
+| Panda<br/>熊猫 | <http://www.panda.tv/>      |✓| | |
+| 凤凰视频 | <http://v.ifeng.com/>          |✓| | |
+| 风行网   | <http://www.fun.tv/>           |✓| | |
+| iQIYI<br/>爱奇艺 | <http://www.iqiyi.com/> |✓| | |
+| 激动网   | <http://www.joy.cn/>           |✓| | |
+| 酷6网    | <http://www.ku6.com/>          |✓| | |
+| 酷狗音乐 | <http://www.kugou.com/>        | | |✓|
+| 酷我音乐 | <http://www.kuwo.cn/>          | | |✓|
+| 乐视网   | <http://www.le.com/>           |✓| | |
+| 荔枝FM   | <http://www.lizhi.fm/>         | | |✓|
+| 秒拍     | <http://www.miaopai.com/>      |✓| | |
+| MioMio弹幕网 | <http://www.miomio.tv/>    |✓| | |
+| 痞客邦   | <https://www.pixnet.net/>      |✓| | |
+| PPTV聚力 | <http://www.pptv.com/>         |✓| | |
+| 齐鲁网   | <http://v.iqilu.com/>          |✓| | |
+| QQ<br/>腾讯视频 | <http://v.qq.com/>      |✓| | |
+| 企鹅直播 | <http://live.qq.com/>          |✓| | |
+| Sina<br/>新浪视频<br/>微博秒拍视频 | <http://video.sina.com.cn/><br/><http://video.weibo.com/> |✓| | |
+| Sohu<br/>搜狐视频 | <http://tv.sohu.com/> |✓| | |
+| **Tudou<br/>土豆** | <http://www.tudou.com/> |✓| | |
+| 虾米     | <http://www.xiami.com/>        |✓| |✓|
+| 阳光卫视 | <http://www.isuntv.com/>       |✓| | |
+| **音悦Tai** | <http://www.yinyuetai.com/> |✓| | |
+| **Youku<br/>优酷** | <http://www.youku.com/> |✓| | |
+| 战旗TV   | <http://www.zhanqi.tv/lives>   |✓| | |
+| 央视网   | <http://www.cntv.cn/>          |✓| | |
+| Naver<br/>네이버 | <http://tvcast.naver.com/>     |✓| | |
+| 芒果TV   | <http://www.mgtv.com/>         |✓| | |
+| 火猫TV   | <http://www.huomao.com/>       |✓| | |
+| 阳光宽频网 | <http://www.365yg.com/>      |✓| | |
+| 西瓜视频 | <https://www.ixigua.com/>      |✓| | |
+| 快手 | <https://www.kuaishou.com/>      |✓|✓| |
+| 抖音 | <https://www.douyin.com/>      |✓| | |
+| TikTok | <https://www.tiktok.com/>      |✓| | |
+| 中国体育(TV) | <http://v.zhibo.tv/> </br><http://video.zhibo.tv/>    |✓| | |
+| 知乎 | <https://www.zhihu.com/>      |✓| | |
+
+参考官网：https://github.com/soimort/you-get
 
