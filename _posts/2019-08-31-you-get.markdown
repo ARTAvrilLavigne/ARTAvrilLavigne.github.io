@@ -83,7 +83,7 @@ Downloading 无限挑战2015歌谣祭（合集） (P1. 150704).cmt.xml ...
 
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/9.png?raw=true)<br>
 
-### 2.3、遇到问题更新2019-09-08<br>
+### 3.1、遇到问题更新2019-09-08<br>
 
 　　距离上次使用才过几天，刚刚使用you-get下载B站视频时发现失败了，debug显示HTTP Error with code403，而且下载前几天使用的同一资源也是这个报错。说明请求被服务器拒绝了，于是去you-get官网pull requests查看最新合并问题，发现刚好这几天B站禁止了这个常量user-agent，已经有人解决申请合并了，更改源码bilibili.py中固定的UA即可(现在就临时找到我本地python安装目录的python3.7.4\Lib\site-packages\you_get\extractors下的bilibili.py修改，以后该问题合并通过后，重新卸载掉you-get再安装最新修复版本就行了。其中，我在修改后运行报错为TabError: inconsistent use of tabs and spaces in indentation，查询发现是Tab和空格的缩进不一致问题，更改后就成功了！！)，如下所示：<br>
 
