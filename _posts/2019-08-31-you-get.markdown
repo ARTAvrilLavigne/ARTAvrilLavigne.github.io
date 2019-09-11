@@ -93,6 +93,22 @@ Downloading 无限挑战2015歌谣祭（合集） (P1. 150704).cmt.xml ...
 
 ![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-08-31-you-get/12.png?raw=true)<br>
 
+```
+src/you_get/extractors/bilibili.py下：
+1、增加import random
+2、增删代码为：
+        # a reasonable UA
+        # bilibili has banned constant UA,so use random   
+        # ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'
+        browser_version=str(random.randint(60, 63))+'.0.'+str(random.randint(1239, 4239))+'.'+str(random.randint(10, 80))
+        OSversion=str(random.randint(8, 10))+'_'+str(random.randint(5, 10))+'_'+str(random.randint(5, 10))
+        webkitversion=str(random.randint(500, 537))+'.'+str(random.randint(30, 60))
+        ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X '+OSversion+') AppleWebKit/'+webkitversion+' (KHTML, like Gecko) Chrome/'+browser_version+' Safari/'+webkitversion
+
+        # headers = {'Accept': '*/*', 'User-Agent': ua}
+        headers = {'User-Agent': ua}
+```
+
 ## 四、you-get常用命令及说明<br>
 
 1、可以使用 <kbd>Ctrl</kbd>+<kbd>C</kbd> 来暂停当前的下载。
