@@ -37,10 +37,12 @@
         </div>
       
     </div>
+	  <!-- 引入计时展示功能 -->
+        <div><span id="runtime_span"></span></div>
   </div>    
- </div>
 
-  <!-- 相应的js引入及写法 -->
+
+  <!-- 打赏相应的js引入及写法 start-->
 	<!-- Add jQuery library -->
 	<script type="text/javascript" src="https://artavrillavigne.github.io/myblog/QRpay/lib/jquery-1.10.2.min.js"></script>
 	<!-- Add mousewheel plugin (this is optional) -->
@@ -51,11 +53,26 @@
 	<!-- Add Media helper (this is optional) -->
 	<script type="text/javascript" src="https://artavrillavigne.github.io/myblog/QRpay/source/helpers/jquery.fancybox-media.js?v=1.0.6"></script>
 
-
-
 	<script type="text/javascript">
 		jQuery.noConflict();
 		jQuery(document).ready(function($) {
 			$('.fancybox_mydefine').fancybox();
 		});
 	</script>
+  <!-- 打赏相应的js引入及写法 end-->
+
+  <!-- 计时展示相应的js start-->
+	<script type="text/javascript">
+		function show_runtime(){
+		window.setTimeout("show_runtime()",1000);
+		X=new Date("10/19/2017 20:48:00");
+		Y=new Date();
+		T=(Y.getTime()-X.getTime());
+		M=24*60*60*1000;
+		a=T/M;A=Math.floor(a);
+		b=(a-A)*24;B=Math.floor(b);
+		c=(b-B)*60;C=Math.floor((b-B)*60);
+		D=Math.floor((c-C)*60);
+		runtime_span.innerHTML="博客不知不觉运转了: "+A+"天"+B+"小时"+C+"分"+D+"秒"}show_runtime();
+	</script>
+  <!-- 计时展示相应的js end-->
