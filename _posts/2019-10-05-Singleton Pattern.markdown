@@ -166,7 +166,7 @@ public class Singleton {
 　　**类的静态属性只会在第一次加载类的时候初始化，所以在这里，JVM 帮助我们保证了线程的安全性，在类进行初始化时，别的线程是无法进入的。**<br>
 * 优点：避免了线程不安全，延迟加载，效率高。
 
-## 2.8、枚举方式<br>
+### 2.8、枚举方式<br>
 
 ```
 public enum Singleton {
@@ -179,6 +179,76 @@ public enum Singleton {
 
 　　借助JDK1.5中添加的枚举来实现单例模式。不仅能避免多线程同步问题，而且还能防止反序列化重新创建新的对象。可能是因为枚举在JDK1.5中才添加，所以在实际项目开发中，很少见人这么写过。<br>
 
+## 3、模拟高并发下测试线程安全的单例模式<br>
+
+　　**要求多个线程`同时`并发启动模拟高并发来测试，因此使用CountDownLatch类实现多个线程开始执行任务的最大并行性，实现多个线程在某一时刻同时开始执行。**`CountDownLatch`是JAVA提供在`java.util.concurrent`包下的一个辅助类，可以把它看成是一个计数器，其内部维护着一个count计数，只不过对这个计数器的操作都是原子操作，同时只能有一个线程去操作这个计数器，`CountDownLatch`通过构造函数传入一个初始计数值，调用者可以通过调用`CounDownLatch`对象的`cutDown()`方法，来使计数减1；如果调用对象上的`await()`方法，那么调用者就会一直阻塞在这里，直到别人通过`cutDown`方法，将计数减到0，所有因调用`await()`方法而处于等待状态的线程就会继续往下执行。<br>
+
+```
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+public class Test {
+
+    //模拟多个客户端同时并发访问请求
+    private static int clientNum = 1000;
+
+    //线程池的数量
+    private static int threadsNum = 10;
+
+    //计数器，总数为clientNum个
+    private final static CountDownLatch doneSignal = new CountDownLatch(clientNum);
+
+    //任务执行超时等待时间
+    private final static long awaitTime = 10 * 1000;
+
+    public static void main(String[] args) {
+
+        //建立线程池
+        ExecutorService exec = Executors.newFixedThreadPool(threadsNum);
+        for(int i=0 ; i< clientNum; i++){
+            MyRunnable myRunnable = new MyRunnable();
+            exec.execute(myRunnable);
+            doneSignal.countDown();//调用一次countDown则计数器减1
+        }
+
+        /**
+         * 执行完任务后，正确关闭线程池的方法
+         */
+        try {
+            // 向学生传达“问题解答完毕后请举手示意！”
+            exec.shutdown();
+
+            // 向学生传达“XX分之内解答不完的问题全部带回去作为课后作业！”后老师等待学生答题
+            // 所有的任务都结束的时候，返回TRUE
+            if(!exec.awaitTermination(awaitTime, TimeUnit.SECONDS)){
+                // 超时的时候向线程池中所有的线程发出中断(interrupted)。
+                exec.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            // awaitTermination方法被中断的时候也中止线程池中全部的线程的执行。
+            System.out.println("awaitTermination interrupted: " + e);
+            exec.shutdownNow();
+        }
+    }
+
+    private static class  MyRunnable implements  Runnable{
+        @Override
+        public void run() {
+            try{
+                doneSignal.await();//阻塞在这里，直到计数器为0时继续执行
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            System.out.println("线程id="+Thread.currentThread().getId()+"获取的单例对象地址为："+SingleModel.getInstance());
+        }
+    }
+}
+```
+
+执行打印结果如图所示：<br>
+![](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-10-05-Singleton%20Pattern/1.png?raw=true)<br>
 
 
   
