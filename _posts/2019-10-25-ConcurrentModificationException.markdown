@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "集合遍历时ConcurrentModificationException异常总结"
+title:      "集合遍历时ConcurrentModificationException异常"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
 date:       2019-10-25 20:50:00
 author:     "ARTAvrilLavigne"
