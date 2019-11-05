@@ -152,9 +152,10 @@ public void remove() {
         }
 ```
 
-　　在iterator.remove()方法中，同样调用了ArrayList自身的remove方法，但是调用完之后并非就return了，而是expectedModCount = modCount重置了expectedModCount值，使二者的值继续保持相等。针对forEach循环并没有修复方案，因此在遍历过程中同时需要修改ArrayList对象，则需要采用iterator遍历。上面提出的解决方案调用的是iterator.remove()方法，如果不仅仅是想调用remove方法移除元素，还想增加元素，或者替换元素，是否可以呢？查看Iterator源码可以发现这是不行的，Iterator只提供了remove方法。但是ArrayList实现了ListIterator接口，ListIterator接口继承了Iterator接口，这些操作都是可以实现的，使用示例如下：<br>
+　　在iterator.remove()方法中，同样调用了ArrayList自身的remove方法，但是调用完之后并非就return了，而是expectedModCount = modCount重置了expectedModCount值，使二者的值继续保持相等。针对forEach循环并没有修复方案，因此在遍历过程中同时需要修改ArrayList对象，则需要`采用iterator遍历`或者`对于hashmap集合采用使用ConcurrentHashMap解决`。上面提出的解决方案调用的是iterator.remove()方法，如果不仅仅是想调用remove方法移除元素，还想增加元素，或者替换元素，是否可以呢？查看Iterator源码可以发现这是不行的，Iterator只提供了remove方法。但是ArrayList实现了ListIterator接口，ListIterator接口继承了Iterator接口，这些操作都是可以实现的，使用示例如下：<br>
 
 ```
+//对于ArrayList集合可以使用Iterator的remove方法解决
 public class Test {
     public static void main(String[] args) {
         ArrayList<Integer> arrayList = new ArrayList<>();
@@ -169,6 +170,24 @@ public class Test {
                 iterator.set(Integer.valueOf(6));
                 iterator.remove();
                 iterator.add(integer);
+            }
+        }
+    }
+}
+
+//对于HashMap集合可以使用ConcurrentHashMap解决
+public class Test1 {
+    public static void main(String[] args) {
+        ConcurrentHashMap<String, String> concurrentHashMap = new ConcurrentHashMap<>();
+        concurrentHashMap.put("aa","avrillavigne");
+        concurrentHashMap.put("bb","IU");
+        concurrentHashMap.put("cc","sasakinozomi");
+        concurrentHashMap.put("dd","SongJiHyo");
+        concurrentHashMap.put("ee","SongHyeKyo");
+        for (String key : concurrentHashMap.keySet()) {
+            System.out.println("concurrent");
+            if(key.equals("bb")){
+                concurrentHashMap.remove("bb");
             }
         }
     }
@@ -372,6 +391,40 @@ public class Test {
 
 　　这种方案本质上是将多线程通过加锁来转变为单线程操作，确保同一时间内只有一个线程去使用iterator遍历arrayList，其它线程等待，效率显然是只有单线程的效率。<br>
 
-## 四、参考博客<br>
+## 四、为什么要这样做？<br>
+
+　　Iterator 是工作在一个独立的线程中，并且拥有一个 mutex 锁。 Iterator 被创建之后会建立一个指向原来对象的单链索引表，当原来的对象数量发生变化时，这个索引表的内容不会同步改变，所以当索引指针往后移动的时候就找不到要迭代的对象，所以按照 fail-fast 原则 Iterator 会马上抛出 java.util.ConcurrentModificationException 异常。所以 Iterator 在工作的时候是不允许被迭代的对象被改变的。但你可以使用 Iterator 本身的方法 remove() 来删除对象，Iterator.remove() 方法会在删除当前迭代对象的同时维护索引的一致性。<br>
+　　如果你的 Collection / Map 对象实际只有一个元素的时候， ConcurrentModificationException 异常并不会被抛出。这也就是为什么在 javadoc 里面指出： it would be wrong to write a program that depended on this exception for its correctness: ConcurrentModificationException should be used only to detect bugs.<br>
+　　下面是 fail-fast的介绍:<br>
+　　An iterator is considered fail-fast if it throws a ConcurrentModificationException under either of the following two conditions:
+　　1.In multithreaded processing: if one thread is trying to modify a Collection while another thread is iterating over it.<br>
+
+　　2.In single-threaded or in multithreaded processing: if after the creation of the Iterator, the container is modified at any time by any method other than the Iterator's own remove or add methods.<br>
+　　Note in particular what is implied by the second condition: After we create a container's iterator, during a loop that iterates over the container we must only use the remove (and when applicable add) methods defined for the iterator and that we must NOT use the same methods defined for the container itself. To illustrate this point, suppose we declare and initialize a List in the following manner:<br>
+```
+　　　　List list = new ArrayList();
+　　　　list.add("Peter");
+　　　　list.add("Paul");
+　　　　list.add("Mary");
+```
+　　Let's say we wish to iterate over this list. We'd need to declare a ListIterator as follows:<br>
+```
+　　　　ListIterator iter = list.listIterator();
+```
+　　Having created this iterator, we could now set up a loop like: 
+```
+　　　　while(iter1.hasNext()){
+　　　　　　String str = iter1.next();
+　　　　　　// do something with str
+　　　　}
+```
+　　Because iter is fail-fast, we are not allowed to invoke List's add or remove methods inside the loop. Inside the loop, we are only allowed to use ListIterator's add and remove methods. This makes sense because it is the Iterator object that knows where it is in a List as the List is being scanned. The List object itself would have no idea of that.<br>
+  
+　　The Iterators supported by all the work-horse container classes, such as ArrayList, LinkedList, TreeSet, and HashSet, are fail-fast. The Iterator type retrofitted to the older container class Vector is also fail-fast. For associative containers, such as HashMap and the older HashTable, the Iterator type for the Collections corresponding to either the keys or the values or the <key, value> pairs are fail-fast with respect to the container itself. That means that even if you are iterating over, say, just the keys of the container, any illegal concurrent modifications to the underlying container would be detected.<br>
+
+　　One final note regarding iterators versus enumerations: It is also possible to use an Enumeration object returned by the elements() method for iterating over the older container types such as Vector. However, Enumerations do not provide a fail-fast method. On the other hand, the more modern Iterator returned by a Vector's iterator() and listIterator() methods are fail-fast. Hence, iterators are recommended over enumerations for iterating over the elements of the older container types.<br>
+  
+
+## 五、参考博客<br>
 1、https://www.cnblogs.com/snowater/p/8024776.html<br>
 2、https://www.iteye.com/blog/lz12366-675016<br>
