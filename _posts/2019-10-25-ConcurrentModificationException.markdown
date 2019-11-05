@@ -396,7 +396,7 @@ public class Test {
 　　Iterator 是工作在一个独立的线程中，并且拥有一个 mutex 锁。 Iterator 被创建之后会建立一个指向原来对象的单链索引表，当原来的对象数量发生变化时，这个索引表的内容不会同步改变，所以当索引指针往后移动的时候就找不到要迭代的对象，所以按照 fail-fast 原则 Iterator 会马上抛出 java.util.ConcurrentModificationException 异常。所以 Iterator 在工作的时候是不允许被迭代的对象被改变的。但你可以使用 Iterator 本身的方法 remove() 来删除对象，Iterator.remove() 方法会在删除当前迭代对象的同时维护索引的一致性。<br>
 　　如果你的 Collection / Map 对象实际只有一个元素的时候， ConcurrentModificationException 异常并不会被抛出。这也就是为什么在 javadoc 里面指出： it would be wrong to write a program that depended on this exception for its correctness: ConcurrentModificationException should be used only to detect bugs.<br>
 　　下面是 fail-fast的介绍:<br>
-　　An iterator is considered fail-fast if it throws a ConcurrentModificationException under either of the following two conditions:
+　　An iterator is considered fail-fast if it throws a ConcurrentModificationException under either of the following two conditions:<br>
 　　1.In multithreaded processing: if one thread is trying to modify a Collection while another thread is iterating over it.<br>
 
 　　2.In single-threaded or in multithreaded processing: if after the creation of the Iterator, the container is modified at any time by any method other than the Iterator's own remove or add methods.<br>
