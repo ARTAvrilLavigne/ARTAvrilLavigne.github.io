@@ -423,8 +423,11 @@ public class Test {
 　　The Iterators supported by all the work-horse container classes, such as ArrayList, LinkedList, TreeSet, and HashSet, are fail-fast. The Iterator type retrofitted to the older container class Vector is also fail-fast. For associative containers, such as HashMap and the older HashTable, the Iterator type for the Collections corresponding to either the keys or the values or the <key, value> pairs are fail-fast with respect to the container itself. That means that even if you are iterating over, say, just the keys of the container, any illegal concurrent modifications to the underlying container would be detected.<br>
 
 　　One final note regarding iterators versus enumerations: It is also possible to use an Enumeration object returned by the elements() method for iterating over the older container types such as Vector. However, Enumerations do not provide a fail-fast method. On the other hand, the more modern Iterator returned by a Vector's iterator() and listIterator() methods are fail-fast. Hence, iterators are recommended over enumerations for iterating over the elements of the older container types.<br>
-  
 
-## 五、参考博客<br>
+## 五、为什么ConcurrentHashMap不会出现ConcurrentModificationException异常<br>
+![](https://img2018.cnblogs.com/blog/755022/201812/755022-20181226172414182-628049042.png)<br>
+
+## 六、参考博客<br>
 1、https://www.cnblogs.com/snowater/p/8024776.html<br>
 2、https://www.iteye.com/blog/lz12366-675016<br>
+3、https://www.cnblogs.com/xiayudashan/p/10180413.html<br>
