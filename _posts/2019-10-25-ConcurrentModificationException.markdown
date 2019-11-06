@@ -430,8 +430,12 @@ public class Test {
 
 　　One final note regarding iterators versus enumerations: It is also possible to use an Enumeration object returned by the elements() method for iterating over the older container types such as Vector. However, Enumerations do not provide a fail-fast method. On the other hand, the more modern Iterator returned by a Vector's iterator() and listIterator() methods are fail-fast. Hence, iterators are recommended over enumerations for iterating over the elements of the older container types.<br>
 
+## 五、为什么ConcurrentHashMap没有抛出ConcurrentModificationException异常<br>
+
+![ConcurrentHashMap](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2019-10-25-ConcurrentModificationException/1.png?raw=true)  
 
 ## 六、参考博客<br>
+
 1、https://www.cnblogs.com/snowater/p/8024776.html<br>
 2、https://www.iteye.com/blog/lz12366-675016<br>
 3、https://www.cnblogs.com/xiayudashan/p/10180413.html<br>
