@@ -401,30 +401,34 @@ public class Test {
 
 　　2.In single-threaded or in multithreaded processing: if after the creation of the Iterator, the container is modified at any time by any method other than the Iterator's own remove or add methods.<br>
 　　Note in particular what is implied by the second condition: After we create a container's iterator, during a loop that iterates over the container we must only use the remove (and when applicable add) methods defined for the iterator and that we must NOT use the same methods defined for the container itself. To illustrate this point, suppose we declare and initialize a List in the following manner:<br>
+  
 ```
 　　　　List list = new ArrayList();
 　　　　list.add("Peter");
 　　　　list.add("Paul");
 　　　　list.add("Mary");
 ```
+
 　　Let's say we wish to iterate over this list. We'd need to declare a ListIterator as follows:<br>
+  
 ```
 　　　　ListIterator iter = list.listIterator();
 ```
+
 　　Having created this iterator, we could now set up a loop like: 
+  
 ```
 　　　　while(iter1.hasNext()){
 　　　　　　String str = iter1.next();
 　　　　　　// do something with str
 　　　　}
 ```
+
 　　Because iter is fail-fast, we are not allowed to invoke List's add or remove methods inside the loop. Inside the loop, we are only allowed to use ListIterator's add and remove methods. This makes sense because it is the Iterator object that knows where it is in a List as the List is being scanned. The List object itself would have no idea of that.<br>
   
 　　The Iterators supported by all the work-horse container classes, such as ArrayList, LinkedList, TreeSet, and HashSet, are fail-fast. The Iterator type retrofitted to the older container class Vector is also fail-fast. For associative containers, such as HashMap and the older HashTable, the Iterator type for the Collections corresponding to either the keys or the values or the <key, value> pairs are fail-fast with respect to the container itself. That means that even if you are iterating over, say, just the keys of the container, any illegal concurrent modifications to the underlying container would be detected.<br>
 
 　　One final note regarding iterators versus enumerations: It is also possible to use an Enumeration object returned by the elements() method for iterating over the older container types such as Vector. However, Enumerations do not provide a fail-fast method. On the other hand, the more modern Iterator returned by a Vector's iterator() and listIterator() methods are fail-fast. Hence, iterators are recommended over enumerations for iterating over the elements of the older container types.<br>
-
-## 五、为什么ConcurrentHashMap不会出现ConcurrentModificationException异常<br>
 
 
 ## 六、参考博客<br>
