@@ -18,7 +18,7 @@ tags:
 
 ## 二、单例模式的八种写法<br>
 
-### 2.1、饿汉式（静态常量）[可用]<br>
+### 2.1、饿汉式（静态常量）[推荐用]<br>
 
 ```
 public class Singleton {
@@ -125,7 +125,7 @@ public class Singleton {
 ```
 public class Singleton {
 
-    private static volatile Singleton singleton;
+    private static volatile Singleton singleton;//加volatile为了禁止指令重排，比如类半初始化状态时字节码指令重排，多线程执行时可能会被其他线程使用半初始化状态的对象导致出现不可预知的错误
 
     private Singleton() {}
 
