@@ -33,6 +33,15 @@ tags:
 <br>
 **第三部分:对齐填充padding**<br>
 　　**JVM要求对象的大小必须是8的整数倍，若不是，需要补位对齐**<br>
+===================================================================<br>
+　　**synchronized加锁的执行过程：** <br>
+　　1. 检测Mark Word里面是不是当前线程的ID，如果是，表示当前线程处于偏向锁。<br>
+　　2. 如果不是，则使用CAS将当前线程的ID替换Mard Word，如果成功则表示当前线程获得偏向锁，置偏向标志位1。<br>
+　　3. 如果失败，则说明发生竞争，撤销偏向锁，进而升级为轻量级锁。<br>
+　　4. 当前线程使用CAS将对象头的Mark Word替换为锁记录指针，如果成功，当前线程获得锁。<br>
+　　5. 如果失败，表示其他线程竞争锁，当前线程便尝试使用自旋来获取锁。<br>
+　　6. 如果自旋成功则依然处于轻量级状态。<br> 
+　　7. 如果自旋失败，则升级为重量级锁。<br>
 
 ## 三、栈上分配<br>
 
@@ -64,4 +73,6 @@ tags:
 [2]https://blog.csdn.net/zhaohong_bo/article/details/89419480<br>
 [3]https://blog.csdn.net/yangsnow_rain_wind/article/details/80434323<br>
 [4]https://www.cnblogs.com/BlueStarWei/p/9358757.html<br>
-[5]java同步锁：https://blog.csdn.net/lkforce/article/details/81128358<br>
+[5]java同步锁：https://www.cnblogs.com/linghu-java/p/8944784.html
+[6]java同步锁：https://blog.csdn.net/lkforce/article/details/81128358<br>
+[7]java同步锁：https://blog.csdn.net/lengxiao1993/article/details/81568130
