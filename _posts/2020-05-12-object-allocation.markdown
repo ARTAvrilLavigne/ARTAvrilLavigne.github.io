@@ -10,22 +10,23 @@ tags:
 ---
 ## 一、JAVA对象<br>
 
-　　似乎加班太多拖更好久了，最近刚好在充电，该补补作业了...Java语言中，new的对象是分配在堆空间中的，但是实际的情况是大部分的new对象会进入堆空间中，而并非是全部的对象，还有另外两个地方也可以存储new的对象，我们称之为**栈上分配**以及**TLAB**(Thread Local Allocation Buffer,即线程本地分配缓存区,这是一个线程专用的内存分配区域)。**java中对象的分配流程为：如果开启栈上分配，JVM会先进行栈上分配，如果没有开启栈上分配或则不符合条件的则会进行TLAB分配，如果TLAB分配不成功，再尝试在eden区分配，如果对象满足了直接进入老年代的条件，那就直接分配在老年代。**如下图所示：<br>
-　　　　　　　　　　　　　　![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-12-Object-Allocation/1.png?raw=true)
+　　似乎加班太多拖更好久了，最近刚好在充电，该补补作业了...Java语言中，new的对象是分配在堆空间中的，但是实际的情况是大部分的new对象会进入堆空间中，而并非是全部的对象，还有另外两个地方也可以存储new的对象，我们称之为**栈上分配**以及**TLAB**(Thread Local Allocation Buffer,即线程本地分配缓存区,这是一个线程专用的内存分配区域)。<br>
+　　**java中对象的分配流程为：如果开启栈上分配，JVM会先进行栈上分配，如果没有开启栈上分配或则不符合条件的则会进行TLAB分配，如果TLAB分配不成功，再尝试在eden区分配，如果对象满足了直接进入老年代的条件，那就直接分配在老年代。**如下图所示：<br>
+　　　　　　　　　　　　　　　　　　![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-12-Object-Allocation/1.png?raw=true)<br>
 
 ## 二、为什么不都在堆上分配<br>
 
 　　因为堆是由所有线程共享的，既然如此那它就是竞争资源，对于竞争资源，必须采取必要的同步，所以当使用new关键字在堆上分配对象时，是需要锁的。既然有锁，就必定存在锁带来的开销，而且由于是对整个堆加锁，相对而言锁的粒度还是比较大的，影响效率。而无论是TLAB还是栈都是线程私有的，私有即避免了竞争。所以对于某些特殊情况，可以采取避免在堆上分配对象的办法，以提高对象创建和销毁的效率。<br>
 　　具体的，java对象的内存布局为三部分:<br>
 **第一部分:对象头**<br>
-　　1.1、**存储对象自身的运行时数据：Mark Word（在32bit和64bit虚拟机上长度分别为32bit和64bit），包含如下信息：**<br>
-　　a、**对象hashCode**<br>
-　　b、**对象GC分代年龄**<br>
-　　c、**锁状态标志（轻量级锁、重量级锁）**<br>
-　　d、**线程持有的锁（轻量级锁、重量级锁）**<br>
-　　e、**偏向锁相关：偏向锁、自旋锁、轻量级锁以及其他的一些锁优化策略是JDK1.6加入的，这些优化使得Synchronized的性能与ReentrantLock的性能持平，在Synchronized可以满足要求的情况下，优先使用Synchronized，除非是使用一些ReentrantLock独有的功能，例如指定时间等待等。**<br>
+　　**1.1、存储对象自身的运行时数据：Mark Word（在32bit和64bit虚拟机上长度分别为32bit和64bit），包含如下信息：**<br>
+　　**a、对象hashCode**<br>
+　　**b、对象GC分代年龄**<br>
+　　**c、锁状态标志（轻量级锁、重量级锁）**<br>
+　　**d、线程持有的锁（轻量级锁、重量级锁）**<br>
+　　**e、偏向锁相关：偏向锁、自旋锁、轻量级锁以及其他的一些锁优化策略是JDK1.6加入的，这些优化使得Synchronized的性能与ReentrantLock的性能持平，在Synchronized可以满足要求的情况下，优先使用Synchronized，除非是使用一些ReentrantLock独有的功能，例如指定时间等待等。**<br>
 <br>
-　　1.2、**类型指针class pointer：对象指向类元数据的指针（32bit-->32bit，64bit-->64bit(未开启压缩指针)，32bit(开启压缩指针)）**<br>
+　　**1.2、类型指针class pointer：对象指向类元数据的指针（32bit-->32bit，64bit-->64bit(未开启压缩指针)，32bit(开启压缩指针)）**<br>
 　　**JVM通过这个指针来确定这个对象是哪个类的实例（根据对象确定其Class的指针）**<br>
 <br>
 **第二部分:实例数据instance data：对象真正存储的有效信息**<br>
