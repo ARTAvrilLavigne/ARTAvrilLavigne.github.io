@@ -73,6 +73,6 @@ tags:
 [2]https://blog.csdn.net/zhaohong_bo/article/details/89419480<br>
 [3]https://blog.csdn.net/yangsnow_rain_wind/article/details/80434323<br>
 [4]https://www.cnblogs.com/BlueStarWei/p/9358757.html<br>
-[5]java同步锁：https://www.cnblogs.com/linghu-java/p/8944784.html
+[5]java同步锁：https://www.cnblogs.com/linghu-java/p/8944784.html<br>
 [6]java同步锁：https://blog.csdn.net/lkforce/article/details/81128358<br>
-[7]java同步锁：https://blog.csdn.net/lengxiao1993/article/details/81568130
+[7]java同步锁：https://blog.csdn.net/lengxiao1993/article/details/81568130<br>
