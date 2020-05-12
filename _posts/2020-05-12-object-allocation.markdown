@@ -11,13 +11,13 @@ tags:
 ## 一、JAVA对象<br>
 
 　　似乎加班太多拖更好久了，最近刚好在充电，该补补作业了...Java语言中，new的对象是分配在堆空间中的，但是实际的情况是大部分的new对象会进入堆空间中，而并非是全部的对象，还有另外两个地方也可以存储new的对象，我们称之为**栈上分配**以及**TLAB**(Thread Local Allocation Buffer,即线程本地分配缓存区,这是一个线程专用的内存分配区域)。**java中对象的分配流程为：如果开启栈上分配，JVM会先进行栈上分配，如果没有开启栈上分配或则不符合条件的则会进行TLAB分配，如果TLAB分配不成功，再尝试在eden区分配，如果对象满足了直接进入老年代的条件，那就直接分配在老年代。**如下图所示：<br>
-![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-12-Object-Allocation/1.png?raw=true)
+　　　　　　　　　　　　　　![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-12-Object-Allocation/1.png?raw=true)
 
 ## 二、为什么不都在堆上分配<br>
 
 　　因为堆是由所有线程共享的，既然如此那它就是竞争资源，对于竞争资源，必须采取必要的同步，所以当使用new关键字在堆上分配对象时，是需要锁的。既然有锁，就必定存在锁带来的开销，而且由于是对整个堆加锁，相对而言锁的粒度还是比较大的，影响效率。而无论是TLAB还是栈都是线程私有的，私有即避免了竞争。所以对于某些特殊情况，可以采取避免在堆上分配对象的办法，以提高对象创建和销毁的效率。<br>
 　　具体的，java对象的内存布局为三部分:<br>
-**第一部分-对象头
+**第一部分-对象头<br>
 　　1.1、存储对象自身的运行时数据：Mark Word（在32bit和64bit虚拟机上长度分别为32bit和64bit），包含如下信息：<br>
 　　a、对象hashCode<br>
 　　b、对象GC分代年龄<br>
@@ -53,6 +53,13 @@ tags:
 
 　　如果Java堆中的内存并不是规整的，已使用的内存和空闲的内存相互交错，那就没有办法简单地进行指针碰撞了，虚拟机就必须维护一个列表，记录上哪些内存块是可用的，在分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新列表上的记录，这种分配方式称为“空闲列表”（Free List）。<br>
 　　选择哪种分配方式由Java堆是否规整决定，而Java堆是否规整又由所采用的垃圾收集器是否带有压缩整理功能决定。因此，在使用Serial、ParNew等带Compact过程的收集器时，系统采用的分配算法是指针碰撞，而使用CMS这种基于Mark-Sweep算法的收集器时，通常采用空闲列表。<br>
+
+## 六、参考<br>
+
+[1]https://www.jianshu.com/p/f1e5e03ed2f8<br>
+[2]https://blog.csdn.net/zhaohong_bo/article/details/89419480<br>
+[3]https://blog.csdn.net/yangsnow_rain_wind/article/details/80434323<br>
+[4]https://www.cnblogs.com/BlueStarWei/p/9358757.html<br>
 
 
 
