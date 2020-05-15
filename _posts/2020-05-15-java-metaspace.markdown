@@ -35,9 +35,9 @@ are accustomed to not configuring the permanent generation.
 
 
 ## 五、参考
-[1]https://www.cnblogs.com/duanxz/p/3520829.html
-[2]https://blog.csdn.net/pzxwhc/article/details/46722411
-[3]https://blog.csdn.net/u010515202/article/details/106056592/
-[4]https://www.cnblogs.com/xrq730/p/8688203.html
-[5]https://blog.csdn.net/q5706503/article/details/84621210
+[1]https://www.cnblogs.com/duanxz/p/3520829.html<br>
+[2]https://blog.csdn.net/pzxwhc/article/details/46722411<br>
+[3]https://blog.csdn.net/u010515202/article/details/106056592/<br>
+[4]https://www.cnblogs.com/xrq730/p/8688203.html<br>
+[5]https://blog.csdn.net/q5706503/article/details/84621210<br>
 
