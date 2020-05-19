@@ -29,6 +29,11 @@ are accustomed to not configuring the permanent generation.
   
 　　java8的内存模型总结如下图所示：<br>
 ![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-25-java-metaspace/1.jpg?raw=true)<br>
+<div>
+	   <a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-25-java-metaspace/1.jpg?raw=true">
+               <img id="alipay_qr" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-25-java-metaspace/1.jpg?raw=true" alt="Alipay"/>
+	   </a>
+</div>
   
 
 ## 二、JVM堆与本地内存区别<br>
@@ -80,11 +85,7 @@ are accustomed to not configuring the permanent generation.
 　　默认70，这个参数和上面的参数基本是相反的，是为了避免触发metaspaceGC的阈值过大，而想对这个值进行缩小。这个参数在gc之后committed的内存比较小的时候并且离触发metaspaceGC的阈值比较远的时候，调整会比较明显。<br>
 
 ## 四、元空间内存管理<br>
-<div>
-	   <a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Alipay.png?raw=true">
-               <img id="alipay_qr" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/QRpay/Alipay.png?raw=true" alt="Alipay"/>
-	   </a>
-</div>
+
 
 
 ## 五、参考
