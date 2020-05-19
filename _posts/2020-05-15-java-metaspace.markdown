@@ -28,10 +28,9 @@ are accustomed to not configuring the permanent generation.
 　　元空间的本质和永久代类似，都是对JVM规范中方法区的实现。**不过元空间与永久代之间最大的区别在于：元空间并不在虚拟机JVM内存中，而是使用本地内存。因此，默认情况下，元空间的大小仅受本地内存限制。**因此Metaspace具体大小理论上取决于32位/64位系统可用内存的大小，可见也不是无限制的，需要配置参数。在永久代移除后，常量池中的字符串常量池也不再放在永久代了，但是也没有放到元空间里，而是留在了堆中。而运行时常量池和class文件常量池则跟着移到了元空间中。<br>
   
 　　java8的内存模型总结如下图所示：<br>
-![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-25-java-metaspace/1.jpg?raw=true)<br>
 <div>
 	   <a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-25-java-metaspace/1.jpg?raw=true">
-               <img id="alipay_qr" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-25-java-metaspace/1.jpg?raw=true" alt="Alipay"/>
+               <img id="jdk8_JVM" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-25-java-metaspace/1.jpg?raw=true" alt="JVM"/>
 	   </a>
 </div>
   
