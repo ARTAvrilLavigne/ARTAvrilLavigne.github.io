@@ -44,39 +44,39 @@ are accustomed to not configuring the permanent generation.
 
 ### 3.1、metaspace的相关参数<br>
 　　如果要改变metaspace的一些行为，一般会对其相关的一些参数做调整，因为metaspace的参数本身不是很多，所以将涉及到的所有参数都做一个介绍。<br>
-1. UseLargePagesInMetaspace<br>
+**1. UseLargePagesInMetaspace**<br>
 　　默认false，这个参数是说是否在metaspace里使用LargePage，一般情况下使用4KB的page size，这个参数依赖于UseLargePages这个参数开启，不过这个参数一般不开。<br>
 
-2. InitialBootClassLoaderMetaspaceSize<br>
+**2. InitialBootClassLoaderMetaspaceSize**<br>
 　　64位下默认4M，32位下默认2200K，metasapce前面已经提到主要分了两大块，Klass Metaspace以及NoKlass Metaspace，而NoKlass Metaspace是由一块块内存组合起来的，这个参数决定了NoKlass Metaspace的第一个内存Block的大小，即2*InitialBootClassLoaderMetaspaceSize，同时为bootstrapClassLoader的第一块内存chunk分配了InitialBootClassLoaderMetaspaceSize的大小<br>
 
-3. MetaspaceSize<br>
+**3. MetaspaceSize**<br>
 　　默认20.8M左右(x86下开启c2模式)，主要是控制metaspaceGC发生的初始阈值，也是最小阈值，但是触发metaspaceGC的阈值是不断变化的，与之对比的主要是指Klass Metaspace与NoKlass Metaspace两块committed的内存和。<br>
 
-4. MaxMetaspaceSize<br>
+**4. MaxMetaspaceSize**<br>
 　　默认基本是无穷大，但是还是建议设置这个参数，因为很可能会因为没有限制而导致metaspace被无止境使用(一般是内存泄漏)而被OS Kill。这个参数会限制metaspace(包括了Klass Metaspace以及NoKlass Metaspace)被committed的内存大小，会保证committed的内存不会超过这个值，一旦超过就会触发GC，这里要注意和MaxPermSize的区别，MaxMetaspaceSize并不会在jvm启动的时候分配一块这么大的内存出来，而MaxPermSize是会分配一块这么大的内存的。<br>
 
-5. CompressedClassSpaceSize<br>
+**5. CompressedClassSpaceSize**<br>
 　　默认1G，这个参数主要是设置Klass Metaspace的大小，不过这个参数设置了也不一定起作用，前提是能开启压缩指针，假如-Xmx超过了32G，压缩指针是开启不来的。如果有Klass Metaspace，那这块内存是和Heap连着的。<br>
   
-6. MinMetaspaceExpansion<br>
+**6. MinMetaspaceExpansion**<br>
 　　MinMetaspaceExpansion和MaxMetaspaceExpansion这两个参数或许和所认识的并不一样，也许很多人会认为这两个参数不就是内存不够的时候，然后扩容的最小大小吗？其实这两个参数和扩容其实并没有直接的关系，也就是并不是为了增大committed的内存，而是为了增大触发metaspace GC的阈值。<br>
 　　这两个参数主要是在比较特殊的场景下救急使用，比如gcLocker或者should_concurrent_collect的一些场景，因为这些场景下接下来会做一次GC，相信在接下来的GC中可能会释放一些metaspace的内存，于是先临时扩大下metaspace触发GC的阈值，而有些内存分配失败其实正好是因为这个阈值触顶导致的，于是可以通过增大阈值暂时绕过去。<br>
 　　默认332.8K，增大触发metaspace GC阈值的最小要求。假如要救急分配的内存很小，没有达到MinMetaspaceExpansion，但是我们会将这次触发metaspace GC的阈值提升MinMetaspaceExpansion，之所以要大于这次要分配的内存大小主要是为了防止别的线程也有类似的请求而频繁触发相关的操作，不过如果要分配的内存超过了MaxMetaspaceExpansion，那MinMetaspaceExpansion将会是要分配的内存大小基础上的一个增量。<br>
   
-7. MaxMetaspaceExpansion<br>
+**7. MaxMetaspaceExpansion**<br>
 　　默认5.2M，增大触发metaspace GC阈值的最大要求。假如说要分配的内存超过了MinMetaspaceExpansion但是低于MaxMetaspaceExpansion，那增量是MaxMetaspaceExpansion，如果超过了MaxMetaspaceExpansion，那增量是MinMetaspaceExpansion加上要分配的内存大小。<br>
 
 　　注：每次分配只会给对应的线程一次扩展触发metaspace GC阈值的机会，如果扩展了，但是还不能分配，那就只能等着做GC了。<br>
 
-8. MinMetaspaceFreeRatio<br>
+**8. MinMetaspaceFreeRatio**<br>
 　　MinMetaspaceFreeRatio和下面的MaxMetaspaceFreeRatio，主要是影响触发metaspaceGC的阈值。<br>
 　　默认40，表示每次GC完之后，假设我们允许接下来metaspace可以继续被commit的内存占到了被commit之后总共committed的内存量的MinMetaspaceFreeRatio%，如果这个总共被committed的量比当前触发metaspaceGC的阈值要大，那么将尝试做扩容，也就是增大触发metaspaceGC的阈值，不过这个增量至少是MinMetaspaceExpansion才会做，不然不会增加这个阈值。<br>
 　　这个参数主要是为了避免触发metaspaceGC的阈值和gc之后committed的内存的量比较接近，于是将这个阈值进行扩大。一般情况下在gc完之后，如果被committed的量还是比较大的时候，换个说法就是离触发metaspaceGC的阈值比较接近的时候，这个调整会比较明显。<br>
 
 　　注：这里不用gc之后used的量来算，主要是担心可能出现committed的量超过了触发metaspaceGC的阈值，这种情况一旦发生会很危险，会不断做gc，这应该是jdk8在某个版本之后才修复的bug。<br>
 
-9. MaxMetaspaceFreeRatio<br>
+**9. MaxMetaspaceFreeRatio**<br>
 　　默认70，这个参数和上面的参数基本是相反的，是为了避免触发metaspaceGC的阈值过大，而想对这个值进行缩小。这个参数在gc之后committed的内存比较小的时候并且离触发metaspaceGC的阈值比较远的时候，调整会比较明显。<br>
 
 ## 四、元空间内存管理<br>
