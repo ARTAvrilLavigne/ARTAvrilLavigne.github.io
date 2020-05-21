@@ -26,7 +26,7 @@ tags:
 　　**d、线程持有的锁（轻量级锁、重量级锁）**<br>
 　　**e、偏向锁相关：偏向锁、自旋锁、轻量级锁以及其他的一些锁优化策略是JDK1.6加入的，这些优化使得Synchronized的性能与ReentrantLock的性能持平，在Synchronized可以满足要求的情况下，优先使用Synchronized，除非是使用一些ReentrantLock独有的功能，例如指定时间等待等。**<br>
 <br>
-　　**1.2、类型指针class pointer：对象指向类元数据的指针（32bit-->32bit，64bit-->64bit(未开启压缩指针)，32bit(开启压缩指针)）**<br>
+　　**1.2、类型指针class pointer(元数据指针Klass\*)：对象指向类元数据的指针（32bit-->32bit，64bit-->64bit(未开启压缩指针)，32bit(开启压缩指针)）**<br>
 　　**JVM通过这个指针来确定这个对象是哪个类的实例（根据对象确定其Class的指针）**<br>
 <br>
 **第二部分:实例数据instance data：对象真正存储的有效信息**<br>
