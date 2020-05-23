@@ -87,12 +87,24 @@ are accustomed to not configuring the permanent generation.
 
 ## 四、元空间内存管理<br>
 
-　　元空间的内存管理由**元空间虚拟机**来完成。<br>
+　　元空间的内存管理由**Metaspace VM**(元空间虚拟机)来完成。Metaspace VM使用一个块分配器(chunking allocator)来管理Metaspace空间的内存分配。块的大小依赖于类加载器的类型，并且Metaspace VM中有一个全局的可使用的块列表（a global free list of chunks）。<br>
 　　JDK8之前对于类的元数据我们需要不同的垃圾回收器进行处理，现在只需要执行元空间虚拟机的C++代码即可完成。在元空间中，类和其元数据的生命周期和其对应的类加载器是相同的。换句话说，只要类加载器存活，其加载的类的元数据也是存活的，因而不会被回收掉。准确的来说，每一个类加载器的存储区域都称作一个元空间，所有的元空间合在一起就是我们一直说的元空间。当一个类加载器被垃圾回收器标记为不再存活，其对应的元空间会被回收。在元空间的回收过程中没有重定位和压缩等操作，但是元空间内的元数据会进行扫描来确定java引用。<br>
 　　具体管理：元空间虚拟机负责元空间的分配，其采用的形式为组块分配。组块的大小因类加载器的类型而异，在元空间虚拟机中存在一个全局的空闲组块列表。<br>
 　　1. 当一个类加载器需要组块时，它就会从这个全局的组块列表中获取并维持一个自己的组块列表。<br>
 　　2. 当一个类加载器不再存活时，那么其持有的组块将会被释放，并返回给全局组块列表。<br>
 　　3. 类加载器持有的组块又会被分成多个块，每一个块存储一个单元的元信息，而组块中的块是线性分配（指针碰撞分配形式）。组块分配自内存映射区域，这些全局的虚拟内存映射区域以链表形式连接，一旦某个虚拟内存映射区域清空，这部分内存就会返回给操作系统。<br>
+　　当前存在的改进点：元空间虚拟机采用了组块分配的形式，同时区块的大小由类加载器类型决定。类信息并不是固定大小，因此有可能分配的空闲区块和类需要的区块大小不同，这种情况下可能导致碎片存在。元空间虚拟机目前并不支持压缩操作，所以碎片化是目前最大的问题。
+
+英文原文：
+```
+　　The Metaspace VM now employs memory management techniques to manage Metaspace. Thus moving the work from the different garbage collectors to just the one Metaspace VM that performs all of its work in C++ in the Metaspace. A theme behind the Metaspace is simply that the lifetime of classes and their metadata matches the lifetime of the class loaders’. That is, as long as the classloader is alive, the metadata remains alive in the Metaspace and can’t be freed.
+
+　　We have been using the term “Metaspace” loosely. More formally, per classloader storage area is called “a metaspace”. And these metaspaces are collectively called “the Metaspace”. The reclamation of metaspace per classloader can happen only after its classloader is no longer alive and is reported dead by the garbage collector. There is no relocation or compaction in these metaspaces. But metadata is scanned for Java references.
+
+　　The Metaspace VM manages the Metaspace allocation by employing a chunking allocator. The chunking size depends on the type of the classloader. There is a global free list of chunks. Whenever a classloader needs a chunk, it gets it out of this global list and maintains its own chunk list. When any classloader dies, its chunks are freed, and returned back to the global free list. The chunks are further divided into blocks and each block holds a unit of metadata. The allocation of blocks from chunks is linear (pointer bump). The chunks are allocated out of memory mapped (mmapped) spaces. There is a linked list of such global virtual mmapped spaces and whenever any virtual space is emptied, its returned back to the operating system.
+  
+　　As mentioned earlier, the Metaspace VM employs a chunking allocator. There are multiple chunk sizes depending on the type of classloader. Also, the class items themselves are not of a fixed size, thus there are chances that free chunks may not be of the same size as the chunk needed for a class item. All this could lead to fragmentation. The Metaspace VM doesn’t (yet) employ compaction hence fragmentation is a major concern at this moment.
+```
 
 
 ## 五、参考
@@ -101,6 +113,6 @@ are accustomed to not configuring the permanent generation.
 [3]https://blog.csdn.net/u010515202/article/details/106056592/<br>
 [4]https://www.cnblogs.com/xrq730/p/8688203.html<br>
 [5]https://blog.csdn.net/q5706503/article/details/84621210<br>
-[6]http://www.imooc.com/article/294626<br>
+[6]Monica Beckwith作者英文博客：https://www.infoq.com/articles/Java-PERMGEN-Removed/，中译：https://www.infoq.cn/article/Java-PERMGEN-Removed<br>
 [7]蚂蚁金服JVM团队：http://lovestblog.cn/blog/2016/10/29/metaspace/<br>
 
