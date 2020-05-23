@@ -36,11 +36,13 @@ are accustomed to not configuring the permanent generation.
   
 
 ## 二、JVM堆与本地内存区别<br>
+
 　　操作系统会创建一个进程来执行java程序，而每个进程都有自己的虚拟地址空间，JVM用到的内存（包括堆、栈和方法区）就是从进程的虚拟地址空间上分配的。注意JVM内存只是进程空间的一部分，除此之外进程空间内还有代码段、数据段、内存映射区、内核空间等。JVM的角度看，JVM内存之外的部分叫作本地内存，C语言程序代码在运行过程中用到的内存就是本地内存中分配的。下面我们通过一张图来理解一下:<br>
 
 ![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-25-java-metaspace/2.png?raw=true)<br>
 
 ## 三、元空间的组成<br>
+
 　　metaspace其实由两大部分组成:**Klass Metaspace**和**NoKlass Metaspace**<br>
 　　Klass Metaspace就是用来存klass的，klass是我们熟知的class文件在jvm里的运行时数据结构，不过有点要提的是我们看到的类似A.class其实是存在heap里的，是java.lang.Class的一个对象实例。这块内存是紧接着Heap的，和之前的perm一样，这块内存大小可通过-XX:CompressedClassSpaceSize参数来控制，这个参数默认是1G，但是这块内存也可以没有，假如没有开启压缩指针就不会有这块内存，这种情况下klass都会存在NoKlass Metaspace里，另外如果把-Xmx设置大于32G的话，其实也是没有这块内存的，因为这么大内存会关闭压缩指针开关。还有就是这块内存最多只会存在一块。<br>
 　　NoKlass Metaspace专门来存klass相关的其他的内容，比如method，constantPool等，这块内存是由多块内存组合起来的，所以可以认为是不连续的内存块组成的。这块内存是必须的，虽然叫做NoKlass Metaspace，但是其实也可以存klass的内容，上一段已经提到了对应场景。<br>
@@ -85,6 +87,12 @@ are accustomed to not configuring the permanent generation.
 
 ## 四、元空间内存管理<br>
 
+　　元空间的内存管理由**元空间虚拟机**来完成。<br>
+　　JDK8之前对于类的元数据我们需要不同的垃圾回收器进行处理，现在只需要执行元空间虚拟机的C++代码即可完成。在元空间中，类和其元数据的生命周期和其对应的类加载器是相同的。换句话说，只要类加载器存活，其加载的类的元数据也是存活的，因而不会被回收掉。准确的来说，每一个类加载器的存储区域都称作一个元空间，所有的元空间合在一起就是我们一直说的元空间。当一个类加载器被垃圾回收器标记为不再存活，其对应的元空间会被回收。在元空间的回收过程中没有重定位和压缩等操作，但是元空间内的元数据会进行扫描来确定java引用。<br>
+　　具体管理：元空间虚拟机负责元空间的分配，其采用的形式为组块分配。组块的大小因类加载器的类型而异，在元空间虚拟机中存在一个全局的空闲组块列表。<br>
+　　1. 当一个类加载器需要组块时，它就会从这个全局的组块列表中获取并维持一个自己的组块列表。<br>
+　　2. 当一个类加载器不再存活时，那么其持有的组块将会被释放，并返回给全局组块列表。<br>
+　　3. 类加载器持有的组块又会被分成多个块，每一个块存储一个单元的元信息，而组块中的块是线性分配（指针碰撞分配形式）。组块分配自内存映射区域，这些全局的虚拟内存映射区域以链表形式连接，一旦某个虚拟内存映射区域清空，这部分内存就会返回给操作系统。<br>
 
 
 ## 五、参考
@@ -93,4 +101,6 @@ are accustomed to not configuring the permanent generation.
 [3]https://blog.csdn.net/u010515202/article/details/106056592/<br>
 [4]https://www.cnblogs.com/xrq730/p/8688203.html<br>
 [5]https://blog.csdn.net/q5706503/article/details/84621210<br>
-[6]蚂蚁金服JVM团队：http://lovestblog.cn/blog/2016/10/29/metaspace/
+[6]http://www.imooc.com/article/294626<br>
+[7]蚂蚁金服JVM团队：http://lovestblog.cn/blog/2016/10/29/metaspace/<br>
+
