@@ -1,1 +1,13 @@
+---
+layout:     post
+title:      "JAVA对象OOP-Klass模型"
+subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
+date:       2020-06-03 22:29:00
+author:     "ARTAvrilLavigne"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - java
+---
+## 一、HotSpot的对象模型<br>
 
+　　HotSpot中采用了OOP-Klass模型，它是用来描述Java对象实例的一种模型，OOP（Ordinary Object Pointer）指的是普通对象指针，而Klass用来描述对象实例的具体类型。<br>
