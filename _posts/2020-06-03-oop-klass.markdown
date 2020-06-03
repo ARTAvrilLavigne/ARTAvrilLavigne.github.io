@@ -10,8 +10,8 @@ tags:
 ---
 ## 一、HotSpot的对象模型<br>
 
-　　HotSpot中采用了OOP-Klass模型，它是用来描述Java对象实例的一种模型，OOP（Ordinary Object Pointer）指的是普通对象指针，而Klass用来描述对象实例的具体类型。HotSpot中，用instanceOopDesc和arrayOopDesc来描述对象头，其中arrayOopDesc对象用于描述数组类型。<br>
-　　其中instanceOopDesc的代码如下所示(openjdk/hotspot/src/share/vm/oops/instanceOop.hpp)：<br>
+　　HotSpot中采用了OOP-Klass模型，它是用来描述Java对象实例的一种模型，OOP（Ordinary Object Pointer）指的是普通对象指针，而Klass用来描述对象实例的具体类型。那么为何要设计这样一个一分为二的对象模型呢？这是因为HotSopt JVM的设计者不想让每个对象中都含有一个vtable（虚函数表），所以就把对象模型拆成klass和oop，其中oop中不含有任何虚函数，而klass就含有虚函数表，可以进行method dispatch。这个模型其实是参照Strongtalk VM底层的对象模型。<br>
+　　HotSpot中，用instanceOopDesc和arrayOopDesc来描述对象头，其中arrayOopDesc对象用于描述数组类型。其中instanceOopDesc的代码如下所示(openjdk/hotspot/src/share/vm/oops/instanceOop.hpp)：<br>
 ```
 class instanceOopDesc : public oopDesc {
  public:
@@ -51,4 +51,66 @@ class oopDesc {
     ...
 }
 ```
+
+## 二、oop和klass结构定义<br>
+
+　　oop的结构定义如下所示：<br>
+```
+typedef class     oopDesc*                    oop;
+typedef class     instanceOopDesc*            instanceOop;
+typedef class     arrayOopDesc*               arrayOop;
+typedef class     objArrayOopDesc*            objArrayOop;
+typedef class     typeArrayOopDesc*           typeArrayOop;
+```
+　　由于Java8引入了Metaspace，OpenJDK 1.8里对象模型的实现与1.7有很大的不同。原先存于PermGen的数据都移至Metaspace，因此它们的C++类型都继承于 MetaspaceObj 类(定义见vm/memory/allocation.hpp )，表示元空间的数据。
+  元数据的结构定义如下所示：<br>
+```
+// The metadata hierarchy is separate from the oop hierarchy
+
+//      class MetaspaceObj
+class   ConstMethod;
+class   ConstantPoolCache;
+class   MethodData;
+//      class Metadata
+class   Method;
+class   ConstantPool;
+//      class CHeapObj
+class   CompiledICHolder;
+```
+　　klass的结构定义如下所示：<br>
+```
+// The klass hierarchy is separate from the oop hierarchy.
+
+class     Klass;
+class     InstanceKlass;
+class     InstanceMirrorKlass;
+class     InstanceClassLoaderKlass;
+class     InstanceRefKlass;
+class     ArrayKlass;
+class     ObjArrayKlass;
+class     TypeArrayKlass;
+```
+　　注意klass代表元数据，继承自Metadata类，因此像Method、ConstantPool 都会以成员变量（或指针）的形式存在于klass体系中。<br>
+
+　　以下是JDK 1.7中的类在JDK 1.8中的存在形式：<br>
+```
+klassOop -> Klass*
+klassKlass 不再需要
+methodOop -> Method*
+methodDataOop -> MethodData*
+constMethodOop -> ConstMethod*
+constantPoolOop -> ConstantPool*
+constantPoolCacheOop -> ConstantPoolCache*
+```
+
+
+
+
+
+
+
+
+
+
+
 
