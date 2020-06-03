@@ -10,4 +10,45 @@ tags:
 ---
 ## 一、HotSpot的对象模型<br>
 
-　　HotSpot中采用了OOP-Klass模型，它是用来描述Java对象实例的一种模型，OOP（Ordinary Object Pointer）指的是普通对象指针，而Klass用来描述对象实例的具体类型。<br>
+　　HotSpot中采用了OOP-Klass模型，它是用来描述Java对象实例的一种模型，OOP（Ordinary Object Pointer）指的是普通对象指针，而Klass用来描述对象实例的具体类型。HotSpot中，用instanceOopDesc和arrayOopDesc来描述对象头，其中arrayOopDesc对象用于描述数组类型。<br>
+　　其中instanceOopDesc的代码如下所示(openjdk/hotspot/src/share/vm/oops/instanceOop.hpp)：<br>
+```
+class instanceOopDesc : public oopDesc {
+ public:
+  // aligned header size.
+  static int header_size() { return sizeof(instanceOopDesc)/HeapWordSize; }
+
+  // If compressed, the offset of the fields of the instance may not be aligned.
+  static int base_offset_in_bytes() {
+    // offset computation code breaks if UseCompressedClassPointers
+    // only is true
+    return (UseCompressedOops && UseCompressedClassPointers) ?
+             klass_gap_offset_in_bytes() :
+             sizeof(instanceOopDesc);
+  }
+
+  static bool contains_field_offset(int offset, int nonstatic_field_size) {
+    int base_in_bytes = base_offset_in_bytes();
+    return (offset >= base_in_bytes &&
+            (offset-base_in_bytes) < nonstatic_field_size * heapOopSize);
+  }
+};
+```
+　　其中instanceOopDesc继承自oopDesc(openjdk/hotspot/src/share/vm/oops/oop.hpp)代码如下所示：oopDesc中包含两个数据成员：\_mark 和 \_metadata。其中markOop类型的\_mark对象指的是对象头中的Mark World。\_metadata是一个共用体，其中\_klass是普通指针，\_compressed_klass是压缩类指针，它们就是元数据指针，这两个指针都指向instanceKlass对象，用来描述对象的具体类型。<br>
+```
+class oopDesc {
+    friend class VMStructs;
+ private:
+    // 对象头(Mark Word和Klass*)
+    volatile markOop  _mark;
+    union _metadata {
+        Klass*      _klass;
+        narrowKlass _compressed_klass;
+    } _metadata;
+
+    // Fast access to barrier set.  Must be initialized.
+    static BarrierSet* _bs;
+    ...
+}
+```
+
