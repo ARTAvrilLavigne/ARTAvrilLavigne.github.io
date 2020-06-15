@@ -10,7 +10,8 @@ tags:
 ---
 ## 一、移除永久代的原因<br>
 
-　　HotSpot团队选择移除永久代，移到本地内存(native memory)的元空间(Metaspace)。如下图所示<br>
+　　首先理解方法区与永久代的区别。在Java虚拟机规范中，方法区在虚拟机启动的时候创建，虽然方法区是堆的逻辑组成部分，但是简单的虚拟机实现可以选择不在方法区实现垃圾回收与压缩。这个版本的虚拟机规范也不限定实现方法区的内存位置和编译代码的管理策略。所以不同的JVM厂商，针对自己的JVM可能有不同的方法区实现方式。在HotSpot中，设计者将方法区纳入GC分代收集。HotSpot虚拟机堆内存被分为新生代和老年代，对堆内存进行分代管理，所以HotSpot虚拟机使用者更愿意将方法区称为老年代。方法区和永久代的关系很像Java中接口和类的关系，类实现了接口，而永久代就是HotSpot虚拟机对虚拟机规范中方法区的一种实现方式。因此方法区与永久代其实是一个意思哈\~\~\~<br>
+　　进入正题：HotSpot团队选择移除永久代，移到本地内存(native memory)的元空间(Metaspace)。如下图所示<br>
 
 ![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-25-java-metaspace/3.jpg?raw=true)<br>
 
