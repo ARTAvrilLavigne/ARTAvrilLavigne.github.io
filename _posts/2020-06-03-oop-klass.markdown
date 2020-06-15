@@ -141,7 +141,7 @@ constantPoolCacheOop -> ConstantPoolCache*
   
 ## 四、oop介绍<br>
 
-　　oop类型其实是oopDesc\*。在Java程序运行的过程中，每创建一个新的对象，在JVM内部就会相应地创建一个对应类型的oop对象。各种oop类的共同基类为oopDesc类。JVM内部，一个Java对象在内存中的布局可以连续分成两部分：**instanceOopDesc**和**实例数据**。**instanceOopDesc**和　　　　**arrayOopDesc**又称为对象头。<br>
+　　oop类型其实是oopDesc\*。在Java程序运行的过程中，每创建一个新的对象，在JVM内部就会相应地创建一个对应类型的oop对象。各种oop类的共同基类为oopDesc类。JVM内部，一个Java对象在内存中的布局可以连续分成两部分：**instanceOopDesc**和**实例数据**。**instanceOopDesc**和**arrayOopDesc**又称为对象头。<br>
 　　**instanceOopDesc**对象头包含两部分信息：**Mark Word** 和 **元数据指针(klass\*)**：<br>
   
  ```
@@ -157,7 +157,7 @@ volatile markOop  _mark;
 
 ## 五、总结<br>
 
-　　最后分析一波，执行new A()的时候，JVM Native里发生了什么。首先，如果这个类没有被加载过，JVM就会进行类的加载，并在JVM内部创建一个instanceKlass对象表示这个类的运行时元数据。到初始化的时候（执行 invokespecial A::\<init\> ），JVM就会创建一个instanceOopDesc对象表示这个对象的实例，然后进行Mark Word的填充，将元数据指针指向Klass对象，并填充实例变量。即元数据——**instanceKlass**对象会存在元空间，而对象实例——**instanceOopDesc**会存在Java堆，Java虚拟机栈中会存有这个对象实例的引用。故根据OOP-Klass模型，我们就可以分析Java虚拟机是如何通过栈帧中的对象引用找到对应的对象实例，如下图所示。从图中可以看出，通过栈帧中的对象引用找到Java堆中的instanceOopDesc对象，再通过instanceOopDesc中的元数据指针来找到方法区中的instanceKlass，从而确定该对象的具体类型。<br>
+　　最后分析一波，执行new A()的时候，JVM里发生了什么。首先，如果这个类没有被加载过，JVM就会进行类的加载，并在元空间创建一个instanceKlass对象表示这个类的运行时元数据。到初始化的时候（执行 invokespecial A::\<init\> ），JVM就会创建一个instanceOopDesc对象表示这个对象的实例，然后进行Mark Word的填充，将元数据指针指向Klass对象，并填充实例变量。即元数据——**instanceKlass**对象会存在元空间，而对象实例——**instanceOopDesc**会存在Java堆，Java虚拟机栈中会存有这个对象实例的引用。故根据OOP-Klass模型，我们就可以分析Java虚拟机是如何通过栈帧中的对象引用找到对应的对象实例，如下图所示。从图中可以看出，通过栈帧中的对象引用找到Java堆中的instanceOopDesc对象，再通过instanceOopDesc中的元数据指针来找到方法区中的instanceKlass，从而确定该对象的具体类型。<br>
 
 ![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-06-15-OOP-Klass/1.png?raw=true)<br>
 
