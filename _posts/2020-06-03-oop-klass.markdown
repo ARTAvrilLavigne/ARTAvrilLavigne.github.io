@@ -2,7 +2,7 @@
 layout:     post
 title:      "JAVA对象OOP-Klass模型"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
-date:       2020-06-03 22:29:00
+date:       2020-06-15 21:23:00
 author:     "ARTAvrilLavigne"
 header-img: "img/post-bg-2015.jpg"
 tags:
@@ -62,7 +62,7 @@ typedef class     arrayOopDesc*               arrayOop;
 typedef class     objArrayOopDesc*            objArrayOop;
 typedef class     typeArrayOopDesc*           typeArrayOop;
 ```
-　　由于Java8引入了Metaspace，OpenJDK 1.8里对象模型的实现与1.7有很大的不同。原先存于PermGen的数据都移至Metaspace，因此它们的C++类型都继承于 MetaspaceObj 类(定义见vm/memory/allocation.hpp )，表示元空间的数据。
+　　由于Java8引入了Metaspace，OpenJDK 1.8里对象模型的实现与1.7有很大的不同。原先存于PermGen的数据都移至Metaspace，因此它们的C++类型都继承于 MetaspaceObj 类(定义见vm/memory/allocation.hpp )，表示元空间的数据。<br>
   元数据的结构定义如下所示：<br>
 ```
 // The metadata hierarchy is separate from the oop hierarchy
@@ -103,14 +103,67 @@ constantPoolOop -> ConstantPool*
 constantPoolCacheOop -> ConstantPoolCache*
 ```
 
+## 三、klass介绍<br>
 
+　　一个klass对象代表一个类的元数据(相当于java.lang.Class对象)。它提供：<br>
+　　1、language level class object (method dictionary etc.)<br>
+　　2、provide vm dispatch behavior for the object.<br>
+　　所有的函数都被整合到一个C++类中。klass对象的继承关系： xxxKlass 继承于=> Klass 继承于=> Metadata 继承于=> MetaspaceObj<br>
+　　klass对象的布局如下：<br>
+  ```
+//    Klass layout:
+//    [C++ vtbl ptr  ] (contained in Metadata)
+//    [layout_helper ]
+//    [super_check_offset   ] for fast subtype checks
+//    [name          ]
+//    [secondary_super_cache] for fast subtype checks
+//    [secondary_supers     ] array of 2ndary supertypes
+//    [primary_supers 0]
+//    [primary_supers 1]
+//    [primary_supers 2]
+//    ...
+//    [primary_supers 7]
+//    [java_mirror   ]
+//    [super         ]
+//    [subklass      ] first subclass
+//    [next_sibling  ] link to chain additional subklasses
+//    [next_link     ]
+//    [class_loader_data]
+//    [modifier_flags]
+//    [access_flags  ]
+//    [last_biased_lock_bulk_revocation_time] (64 bits)
+//    [prototype_header]
+//    [biased_lock_revocation_count]
+//    [_modified_oops]
+//    [_accumulated_modified_oops]
+//    [trace_id]
+  ```
+  
+## 四、oop介绍<br>
 
+　　oop类型其实是oopDesc\*。在Java程序运行的过程中，每创建一个新的对象，在JVM内部就会相应地创建一个对应类型的oop对象。各种oop类的共同基类为oopDesc类。JVM内部，一个Java对象在内存中的布局可以连续分成两部分：**instanceOopDesc**和**实例数据**。**instanceOopDesc**和　　　　**arrayOopDesc**又称为对象头。<br>
+　　**instanceOopDesc**对象头包含两部分信息：**Mark Word** 和 **元数据指针(klass\*)**：<br>
+  
+ ```
+volatile markOop  _mark;
+  union _metadata {
+    Klass*        _klass;
+    narrowKlass   _compressed_klass;
+  } _metadata;
+```
+　　分别来看一下：<br>
+　　1、**Mark Word**：instanceOopDesc中的 \_mark 成员。它用于存储对象的运行时记录信息，如哈希值、GC分代年龄(Age)、锁状态标志（偏向锁、轻量级锁、重量级锁）、线程持有的锁、偏向线程ID、偏向时间戳等，并且Mark Word允许压缩。<br>
+　　2、**元数据指针**：instanceOopDesc中的 \_metadata 成员，它是联合体，可以表示未压缩的Klass指针( \_klass )和压缩的Klass指针。对应的klass指针指向一个存储类的元数据的Klass对象。<br>
 
+## 五、总结<br>
 
+　　最后分析一波，执行new A()的时候，JVM Native里发生了什么。首先，如果这个类没有被加载过，JVM就会进行类的加载，并在JVM内部创建一个instanceKlass对象表示这个类的运行时元数据。到初始化的时候（执行 invokespecial A::\<init\> ），JVM就会创建一个instanceOopDesc对象表示这个对象的实例，然后进行Mark Word的填充，将元数据指针指向Klass对象，并填充实例变量。即元数据——**instanceKlass**对象会存在元空间，而对象实例——**instanceOopDesc**会存在Java堆，Java虚拟机栈中会存有这个对象实例的引用。故根据OOP-Klass模型，我们就可以分析Java虚拟机是如何通过栈帧中的对象引用找到对应的对象实例，如下图所示。从图中可以看出，通过栈帧中的对象引用找到Java堆中的instanceOopDesc对象，再通过instanceOopDesc中的元数据指针来找到方法区中的instanceKlass，从而确定该对象的具体类型。<br>
 
+![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-06-15-OOP-Klass/1.png?raw=true)<br>
 
+## 六、参考<br>
 
-
-
-
+1、https://www.tuicool.com/articles/ryQv2iB<br>
+2、https://www.cnblogs.com/ganchuanpu/p/6217342.html<br>
+3、https://blog.csdn.net/CodeFarmer__/article/details/102491986<br>
 
