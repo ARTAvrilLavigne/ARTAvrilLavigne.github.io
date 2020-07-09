@@ -131,30 +131,31 @@ public final int getAndAddInt(Object o, long offset, int delta) {
 <table>
 	<thead>
 		<tr>
-			<th align=center>锁状态</th>
+			<th>锁状态</th>
 			<th>存储内容</th>
-			<th align=center>存储内容</th>
+			<th>存储内容</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td align=center>无锁</td>
+			<td>无锁</td>
 			<td>对象的hashCode、对象分代年龄、是否是偏向锁（0）</td>
-			<td align=center>01</td>
+			<td>01</td>
 		</tr>
 		<tr>
-			<td align=center>偏向锁</td>
+			<td>偏向锁</td>
 			<td>偏向线程ID、偏向时间戳、对象分代年龄、是否是偏向锁（1）</td>
-			<td align=center>01</td>
+			<td>01</td>
 		</tr>
 		<tr>
-			<td align=center>轻量级锁</td>
+			<td>轻量级锁</td>
 			<td>指向栈中锁记录的指针</td>
-			<td align=center>00</td></tr>
+			<td>00</td>
+		</tr>
 		<tr>
-			<td align=center>重量级锁</td>
+			<td>重量级锁</td>
 			<td>指向互斥量（重量级锁）的指针</td>
-			<td align=center>10</td>
+			<td>10</td>
 		</tr>
 	</tbody>
 </table>
