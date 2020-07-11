@@ -20,12 +20,16 @@
 
     {{ content }}
 
-    <!-- 我添加的二维码扫描html -->
+    <!-- 我添加的二维码扫描html start -->
     {% include QR.html %}
+    <!-- 我添加的二维码扫描html end -->
     
     {% include footer.html %}
 
-
+    <!-- 长者F12控制台log打印 start -->
+    <script src="/js/hamo.js"></script>
+    <!-- 长者F12控制台log打印 end -->
+    
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>
