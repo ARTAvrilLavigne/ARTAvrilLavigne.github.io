@@ -3,7 +3,7 @@
             "scale":1,
 			"hHeadPos":0.5,
 			"vHeadPos":0.618,
-            "jsonPath":"https://voidmaker69.github.io/live2dw/assets/hijiki.model.json"  // 加载模型的json路径
+            "jsonPath":"https://artavrillavigne.github.io/live2dw/assets/hijiki.model.json"  // 加载模型的json路径
         },
         "display":{
             "superSample":2,      // 超采样等级
