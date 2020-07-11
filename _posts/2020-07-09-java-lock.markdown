@@ -181,6 +181,60 @@ public final int getAndAddInt(Object o, long offset, int delta) {
 
 ## 五、公平锁 VS 非公平锁<br>
 
+　　**公平锁**是指多个线程按照申请锁的顺序来获取锁，线程直接进入队列中排队，队列中的第一个线程才能获得锁。公平锁的优点是等待锁的线程不会饿死。缺点是整体吞吐效率相对非公平锁要低，等待队列中除第一个线程以外的所有线程都会阻塞，CPU唤醒阻塞线程的开销比非公平锁大。<br>
+　　**非公平锁**是多个线程加锁时直接尝试获取锁，获取不到才会到等待队列的队尾等待。但如果此时锁刚好可用，那么这个线程可以无需阻塞直接获取到锁，所以非公平锁有可能出现后申请锁的线程先获取锁的场景。非公平锁的优点是可以减少唤起线程的开销，整体的吞吐效率高，因为线程有几率不阻塞直接获得锁，CPU不必唤醒所有线程。缺点是处于等待队列中的线程可能会饿死，或者等很久才会获得锁。<br>
+　　如下图所示，用一个例子来讲述一下公平锁和非公平锁：<br>
+![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-07-09-java-lock/7.png?raw=true)<br>
+　　如上图所示，假设有一口水井，有管理员看守，管理员有一把锁，只有拿到锁的人才能够打水，打完水要把锁还给管理员。每个过来打水的人都要管理员的允许并拿到锁之后才能去打水，如果前面有人正在打水，那么这个想要打水的人就必须排队。管理员会查看下一个要去打水的人是不是队伍里排最前面的人，如果是的话，才会给你锁让你去打水；如果你不是排第一的人，就必须去队尾排队，这就是公平锁。<br>
+　　但是对于如下图所示的非公平锁，管理员对打水的人没有要求。即使等待队伍里有排队等待的人，但如果在上一个人刚打完水把锁还给管理员而且管理员还没有允许等待队伍里下一个人去打水时，刚好来了一个插队的人，这个插队的人是可以直接从管理员那里拿到锁去打水，不需要排队，原本排队等待的人只能继续等待。<br>
+![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-07-09-java-lock/8.png?raw=true)<br>
+　　接下来我们通过ReentrantLock的源码来讲解公平锁和非公平锁，如下图所示：<br>
+![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-07-09-java-lock/9.png?raw=true)<br>
+　　根据代码可知，ReentrantLock里面有一个内部类Sync，Sync继承AQS队列同步器（AbstractQueuedSynchronizer），添加锁和释放锁的大部分操作实际上都是在Sync中实现的。它有公平锁FairSync和非公平锁NonfairSync两个子类。ReentrantLock默认使用非公平锁，也可以通过构造器来显示的指定使用公平锁。下面我们来看一下公平锁与非公平锁的加锁方法的源码，如下图所示:<br>
+![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-07-09-java-lock/10.png?raw=true)<br>
+　　通过上图中的源代码对比，我们可以明显的看出公平锁与非公平锁的lock()方法唯一的区别就在于公平锁在获取同步状态时多了一个限制条件：hasQueuedPredecessors()。<br>
+![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-07-09-java-lock/11.png?raw=true)<br>
+　　再进入hasQueuedPredecessors()，可以看到该方法主要做一件事情：主要是判断当前线程是否位于同步队列中的第一个等待获取锁的线程。如果是则返回true，否则返回false。(注：该方法是在判断同步队列中有没有等待获取锁的线程，如果有线程在排队，那么当前线程肯定获取锁失败（因为AQS的设计的原则是FIFO，既然前面有人已经在排队了，你就不能插队，老老实实去后面排队去），那么tryAcquire()方法会返回false。如果同步队列中没有线程排队，那么就让当前线程对state进行CAS操作，如果设置成功，就表示当前获取到锁了，返回true；如果CAS失败，表示在这一瞬间，锁被其他线程抢走了，那么当前线程就获取锁失败，就返回false。)<br>
+　　**综上，公平锁就是通过同步队列来实现多个线程按照申请锁的顺序来获取锁，从而实现公平的特性。非公平锁加锁时不考虑排队等待问题，直接尝试获取锁，所以存在后申请却先获得锁的情况。**<br>
+
+## 六、可重入锁 VS 非可重入锁<br>
+
+　　是
+  
+  
+  
+
+## 七、独享锁 VS 共享锁<br>
+
+　　是
+
+
+## 八、参考文献<br>
+
+[1]美团技术团队https://tech.meituan.com/2018/11/15/java-lock.html<br>
+[2]AQS源码分析https://www.jianshu.com/p/cbf7017c0452<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
