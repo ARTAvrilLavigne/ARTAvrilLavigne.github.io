@@ -2,7 +2,7 @@
 layout:     post
 title:      "JAVAの锁"
 subtitle:   " \"welcome to ARTAvrilLavigne Blog\""
-date:       2020-07-12 13:49:00
+date:       2020-07-09 20:49:00
 author:     "ARTAvrilLavigne"
 header-img: "img/post-bg-2015.jpg"
 tags:
@@ -11,8 +11,11 @@ tags:
 ## 一、JAVA的各种锁<br>
 
 　　Java提供了种类丰富的锁，每种锁因其特性的不同，在适当的场景下能够展现出非常高的效率。Java中往往是按照是否含有某一特性来定义锁，通过特性将锁进行分组归类，再使用对比的方式进行介绍(本文中的源码来自JDK 8和Netty 3.10.6)。下面给出本文内容的总体分类目录：<br>
-  
-![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-07-09-java-lock/1.png?raw=true)<br>
+<div>
+	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-07-09-java-lock/1.png?raw=true">
+            <img id="java_lock" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-07-09-java-lock/1.png?raw=true" alt="lock"/>
+	</a>
+</div>
 
 ## 二、乐观锁 VS 悲观锁<br>
 
