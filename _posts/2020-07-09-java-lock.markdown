@@ -305,6 +305,12 @@ protected final int tryAcquireShared(int unused) {
 
 [1]美团技术团队https://tech.meituan.com/2018/11/15/java-lock.html<br>
 [2]AQS源码分析https://www.jianshu.com/p/cbf7017c0452<br>
-
-
-
+[3]https://blog.csdn.net/u013256816/article/details/51204385<br>
+[4]https://juejin.im/post/5a73cbbff265da4e807783f5<br>
+[5]https://juejin.im/post/5b42c2546fb9a04f8751eabc<br>
+[6]https://zhuanlan.zhihu.com/p/29866981<br>
+[7]http://www.infoq.com/cn/articles/java-se-16-synchronized<br>
+[8]https://blog.csdn.net/qq_19431333/article/details/70568478<br>
+[9]https://www.cnblogs.com/twoheads/p/9635309.html<br>
+[10]https://my.oschina.net/adan1/blog/158107<br>
+[11]https://mrdear.cn/2018/06/23/java/java--readwritelock<br>
