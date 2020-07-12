@@ -227,8 +227,8 @@ public class Widget {
 ## 七、独享锁 VS 共享锁<br>
 
 　　独享锁和共享锁同样是一种概念。我们先介绍一下具体的概念，然后通过ReentrantLock和ReentrantReadWriteLock的源码来介绍独享锁和共享锁。<br>
-　　**独享锁也叫排他锁，是指该锁一次只能被一个线程所持有。**如果线程T对数据A加上排它锁后，则其他线程不能再对A加任何类型的锁。获得排它锁的线程即能读数据又能修改数据。JDK中的synchronized和JUC中Lock的实现类就是互斥锁。<br>
-　　**共享锁是指该锁可被多个线程所持有。**如果线程T对数据A加上共享锁后，则其他线程只能对A再加共享锁，不能加排它锁。**获得共享锁的线程只能读数据，不能修改数据。**<br>
+　　**独享锁也叫排他锁，是指该锁一次只能被一个线程所持有**。如果线程T对数据A加上排它锁后，则其他线程不能再对A加任何类型的锁。获得排它锁的线程即能读数据又能修改数据。JDK中的synchronized和JUC中Lock的实现类就是互斥锁。<br>
+　　**共享锁是指该锁可被多个线程所持有**。如果线程T对数据A加上共享锁后，则其他线程只能对A再加共享锁，不能加排它锁。**获得共享锁的线程只能读数据，不能修改数据**。<br>
 　　独享锁与共享锁也是通过AQS来实现的，通过实现不同的方法，来实现独享或者共享。下图为ReentrantReadWriteLock的部分源码：<br>
 ![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-07-09-java-lock/15.png?raw=true)<br>
 　　我们看到**ReentrantReadWriteLock有两把锁：ReadLock和WriteLock**，由词知意，一个读锁一个写锁，合称“读写锁”。再进一步观察可以发现ReadLock和WriteLock是靠内部类Sync实现的锁。Sync是AQS的一个子类，这种结构在CountDownLatch、ReentrantLock、Semaphore里面也都存在。<br>
@@ -296,10 +296,10 @@ protected final int tryAcquireShared(int unused) {
     return fullTryAcquireShared(current);
 }
 ```
-　　可以看到在tryAcquireShared(int unused)方法中，**如果$\color{red}{其他线程}$已经获取了写锁，则$\color{red}{当前线程}$获取读锁失败，进入等待状态。如果$\color{red}{当前线程}$获取了写锁或者写锁未被获取，则$\color{red}{当前线程}$（线程安全，依靠CAS保证）增加读状态，成功获取读锁。**读锁的每次释放（线程安全的，可能有多个读线程同时释放读锁）均减少读状态，减少的值是“1<<16”。所以**读写锁才能实现读读的过程共享，而读写、写读、写写的过程互斥。**<br>
+　　可以看到在tryAcquireShared(int unused)方法中，**如果$\\color{red}{其他线程}$已经获取了写锁，则$\\color{red}{当前线程}$获取读锁失败，进入等待状态。如果$\\color{red}{当前线程}$获取了写锁或者写锁未被获取，则$\\color{red}{当前线程}$（线程安全，依靠CAS保证）增加读状态，成功获取读锁。**读锁的每次释放（线程安全的，可能有多个读线程同时释放读锁）均减少读状态，减少的值是“1<<16”。所以**读写锁才能实现读读的过程共享，而读写、写读、写写的过程互斥。**<br>
 　　此时，我们再回头看一下第4小节中互斥锁ReentrantLock中公平锁和非公平锁的加锁源码：<br>
 ![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-07-09-java-lock/17.png?raw=true)<br>
-　　我们发现**第4小节中的ReentrantLock虽然有公平锁和非公平锁两种，但是它们添加的都是独享锁。**根据源码所示，当某一个线程调用lock方法获取锁时，如果同步资源没有被其他线程锁住，那么当前线程在使用CAS更新state成功后就会成功抢占该资源。而如果公共资源被占用且不是被当前线程占用，那么就会加锁失败。所以可以确定ReentrantLock无论读操作还是写操作，添加的锁都是都是独享锁。
+　　我们发现**第4小节中的ReentrantLock虽然有公平锁和非公平锁两种，但是它们添加的都是独享锁**。根据源码所示，当某一个线程调用lock方法获取锁时，如果同步资源没有被其他线程锁住，那么当前线程在使用CAS更新state成功后就会成功抢占该资源。而如果公共资源被占用且不是被当前线程占用，那么就会加锁失败。所以可以确定ReentrantLock无论读操作还是写操作，添加的锁都是都是独享锁。
 
 ## 八、参考文献<br>
 
