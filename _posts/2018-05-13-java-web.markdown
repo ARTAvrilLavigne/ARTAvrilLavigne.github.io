@@ -93,7 +93,7 @@ tags:
 	　　注意:生成的方式是追加而不是覆盖,所以不可以重复生成,重复生成的文件有问题.<br>
 		　　如果想重复生成将原来生成的文件删除<br>
 	
-## 二、mybatis使用步骤总结<br>
+## 二、mybatis最初原始使用步骤总结<br>
 
 * 1)配置mybatis-config.xml 全局的配置文件 (1、数据源，2、外部的mapper)<br>
 * 2)创建SqlSessionFactory<br>
