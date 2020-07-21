@@ -756,7 +756,7 @@ public User login(@Param("userName") String userName, @Param("password") String 
     select * from tb_user where user_name = #{userName} and password = #{password}
 </select>
 ```
-**通常在方法的参数列表上加上一个注释@Param(“xxxx”) 显式指定参数的名字，然后通过${“xxxx”}或#{“xxxx”}**<br>
+**通常在方法的参数列表上加上一个注释@Param(“xxxx”) 显式指定参数的名字，然后通过${}或#{}**<br>
 **sql语句动态生成的时候，使用${}**<br>
 **sql语句中某个参数进行占位的时候#{}**<br>
 <br>
@@ -784,8 +784,14 @@ User queryUserListByName2(@Param("username2") String username2);
     select * from tb_user WHERE user_name='${username2}'//手动加了引号
 </select>
 ```
+### 5.2、resultMap用法<br>
+resultMap是mybatis中最重要的元素，使用resultMap可以解决两大问题：<br>
+* POJO属性名和表结构字段名不一致的问题(有些情况下也不是标准的驼峰格式)<br>
+* 完成高级查询，比如说：一对一、一对多、多对多<br>
 
-
+解决表字段名和属性名不一致的问题有两种方法：
+1、如果是驼峰似的命名规则可以在mybatis配置文件中设置<setting name="mapUnderscoreToCamelCase" value="true"/><br>
+2、使用resultMap解决
 
 
 
