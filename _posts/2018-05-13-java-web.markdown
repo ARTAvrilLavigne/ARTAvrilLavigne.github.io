@@ -8,7 +8,7 @@ header-img: "img/post-bg-2015.jpg"
 tags:
     - javaee
 ---
-## mybatis知识总结<br>
+## 一、mybatis知识总结<br>
 
 　　**pojo**:不按mvc分层,只是java bean有一些属性,还有get、set方法<br>
 　　**domain**:不按mvc分层,只是java bean有一些属性,还有get、set方法<br>
@@ -93,3 +93,446 @@ tags:
 	　　注意:生成的方式是追加而不是覆盖,所以不可以重复生成,重复生成的文件有问题.<br>
 		　　如果想重复生成将原来生成的文件删除<br>
 	
+## 二、mybatis使用步骤总结<br>
+
+* 1)配置mybatis-config.xml 全局的配置文件 (1、数据源，2、外部的mapper)<br>
+* 2)创建SqlSessionFactory<br>
+* 3)通过SqlSessionFactory创建SqlSession对象<br>
+* 4)通过SqlSession操作数据库 CRUD<br>
+* 5)调用session.commit()提交事务<br>
+* 6)调用session.close()关闭会话<br>
+
+### 2.1、引入依赖（pom.xml）<br>
+```
+<dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis</artifactId>
+    <version>3.2.8</version>
+</dependency>
+```
+### 2.2、全局配置文件（mybatis-config.xml）<br>
+```
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 根标签 -->
+<configuration>
+<properties>
+	<property name="driver" value="com.mysql.jdbc.Driver"/>
+	<property name="url" value="jdbc:mysql://127.0.0.1:3306/mybatis-110?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true"/>
+	<property name="username" value="root"/>
+    	<property name="password" value="123456"/>
+   </properties>
+
+   <!-- 环境，可以配置多个，default：指定采用哪个环境 -->
+   <environments default="test">
+      <!-- id：唯一标识 -->
+      <environment id="test">
+         <!-- 事务管理器，JDBC类型的事务管理器 -->
+         <transactionManager type="JDBC" />
+         <!-- 数据源，池类型的数据源 -->
+         <dataSource type="POOLED">
+            <property name="driver" value="com.mysql.jdbc.Driver" />
+            <property name="url" value="jdbc:mysql://127.0.0.1:3306/mybatis-110" />
+            <property name="username" value="root" />
+            <property name="password" value="123456" />
+         </dataSource>
+      </environment>
+      <environment id="development">
+         <!-- 事务管理器，JDBC类型的事务管理器 -->
+         <transactionManager type="JDBC" />
+         <!-- 数据源，池类型的数据源 -->
+         <dataSource type="POOLED">
+            <property name="driver" value="${driver}" /> <!-- 配置了properties，所以可以直接引用 -->
+            <property name="url" value="${url}" />
+            <property name="username" value="${username}" />
+            <property name="password" value="${password}" />
+         </dataSource>
+      </environment>
+   </environments>
+  </configuration>
+```
+### 2.3、配置Map.xml（MyMapper.xml）<br>
+```
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="MyMapper">
+   <!-- statement，内容：sql语句。id：唯一标识，随便写，在同一个命名空间下保持唯一
+      resultType：sql语句查询结果集的封装类型,tb_user即为数据库中的表
+    -->
+   <select id="selectUser" resultType="com.zpc.mybatis.User">
+      select * from tb_user where id = #{id}
+   </select>
+</mapper>
+```
+### 2.4、修改全局配置文件（mybatis-config.xml）<br>
+引入MyMapper.xml<br>
+```
+<configuration>
+   <!-- 环境，可以配置多个，default：指定采用哪个环境 -->
+   <environments default="test">
+      <!-- id：唯一标识 -->
+      <environment id="test">
+         <!-- 事务管理器，JDBC类型的事务管理器 -->
+         <transactionManager type="JDBC" />
+         <!-- 数据源，池类型的数据源 -->
+         <dataSource type="POOLED">
+            <property name="driver" value="com.mysql.jdbc.Driver" />
+            <property name="url" value="jdbc:mysql://127.0.0.1:3306/ssmdemo" />
+            <property name="username" value="root" />
+            <property name="password" value="123456" />
+         </dataSource>
+      </environment>
+   </environments>
+   <!-- 引入MyMapper.xml -->
+   <mappers>
+     <mapper resource="mappers/MyMapper.xml" />
+   </mappers>
+</configuration>
+```
+### 2.5、构建sqlSessionFactory（MybatisTest.java）<br>
+```
+// 指定全局配置文件
+String resource = "mybatis-config.xml";
+// 读取配置文件
+InputStream inputStream = Resources.getResourceAsStream(resource);
+// 构建sqlSessionFactory
+SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+```
+### 2.6、打开sqlSession会话，并执行sql（MybatisTest.java）<br>
+```
+// 获取sqlSession
+SqlSession sqlSession = sqlSessionFactory.openSession();
+// 操作CRUD，第一个参数：指定statement，规则：命名空间+“.”+statementId
+// 第二个参数：指定传入sql的参数：这里是用户id
+User user = sqlSession.selectOne("MyMapper.selectUser", 1);
+System.out.println(user);
+```
+**MybatisTest.java完整代码：**<br>
+```
+import com.zpc.test.pojo.User;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+import java.io.InputStream;
+
+public class MybatisTest {
+   public static void main(String[] args) throws Exception {
+      // 指定全局配置文件
+      String resource = "mybatis-config.xml";
+      // 读取配置文件
+      InputStream inputStream = Resources.getResourceAsStream(resource);
+      // 构建sqlSessionFactory
+      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+      // 获取sqlSession
+      SqlSession sqlSession = sqlSessionFactory.openSession();
+      try {
+         // 操作CRUD，第一个参数：指定statement，规则：命名空间+“.”+statementId
+         // 第二个参数：指定传入sql的参数：这里是用户id
+         User user = sqlSession.selectOne("MyMapper.selectUser", 1);
+         System.out.println(user);
+      } finally {
+         sqlSession.close();
+      }
+   }
+}
+```
+**User.java**<br>
+```
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class User {
+    private String id;
+    private String userName;
+    private String password;
+    private String name;
+    private Integer age;
+    private Integer sex;
+    private Date birthday;
+    private String created;
+    private String updated;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
+    public String getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(String updated) {
+        this.updated = updated;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", sex=" + sex +
+                ", birthday='" + new SimpleDateFormat("yyyy-MM-dd").format(birthday) + '\'' +
+                ", created='" + created + '\'' +
+                ", updated='" + updated + '\'' +
+                '}';
+    }
+}
+```
+
+## 三、完整的CRUD操作<br>
+
+3.1、创建UserDao接口<br>
+```
+import com.zpc.mybatis.pojo.User;
+import java.util.List;
+
+public interface UserDao {
+
+    /**
+     * 根据id查询用户信息
+     *
+     * @param id
+     * @return
+     */
+    public User queryUserById(String id);
+
+    /**
+     * 查询所有用户信息
+     *
+     * @return
+     */
+    public List<User> queryUserAll();
+
+    /**
+     * 新增用户
+     *
+     * @param user
+     */
+    public void insertUser(User user);
+
+    /**
+     * 更新用户信息
+     *
+     * @param user
+     */
+    public void updateUser(User user);
+
+    /**
+     * 根据id删除用户信息
+     *
+     * @param id
+     */
+    public void deleteUser(String id);
+}
+```
+
+3.2、创建UserDaoImpl<br>
+```
+import com.zpc.mybatis.dao.UserDao;
+import com.zpc.mybatis.pojo.User;
+import org.apache.ibatis.session.SqlSession;
+import java.util.List;
+
+public class UserDaoImpl implements UserDao {
+    public SqlSession sqlSession;
+
+    public UserDaoImpl(SqlSession sqlSession) {
+        this.sqlSession = sqlSession;
+    }
+
+    @Override
+    public User queryUserById(String id) {
+        return this.sqlSession.selectOne("UserDao.queryUserById", id);
+    }
+
+    @Override
+    public List<User> queryUserAll() {
+        return this.sqlSession.selectList("UserDao.queryUserAll");
+    }
+
+    @Override
+    public void insertUser(User user) {
+        this.sqlSession.insert("UserDao.insertUser", user);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        this.sqlSession.update("UserDao.updateUser", user);
+    }
+
+    @Override
+    public void deleteUser(String id) {
+        this.sqlSession.delete("UserDao.deleteUser", id);
+    }
+
+}
+```
+
+3.3、编写UserDao对应的UserDaoMapper.xml<br>
+```
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="UserDao">
+    <!-- statement，内容：sql语句。id：唯一标识，随便写，在同一个命名空间下保持唯一
+       resultType：sql语句查询结果集的封装类型,tb_user即为数据库中的表
+     -->
+    <!--<select id="queryUserById" resultType="com.zpc.mybatis.pojo.User">-->
+    <!--select * from tb_user where id = #{id}-->
+    <!--</select>-->
+
+    <!--使用别名-->
+    <select id="queryUserById" resultType="com.zpc.mybatis.pojo.User">
+      select
+       tuser.id as id,
+       tuser.user_name as userName,
+       tuser.password as password,
+       tuser.name as name,
+       tuser.age as age,
+       tuser.birthday as birthday,
+       tuser.sex as sex,
+       tuser.created as created,
+       tuser.updated as updated
+       from
+       tb_user tuser
+       where tuser.id = #{id};
+   </select>
+
+    <select id="queryUserAll" resultType="com.zpc.mybatis.pojo.User">
+        select * from tb_user;
+    </select>
+
+    <!--插入数据-->
+    <insert id="insertUser" parameterType="com.zpc.mybatis.pojo.User">
+        INSERT INTO tb_user (
+        user_name,
+        password,
+        name,
+        age,
+        sex,
+        birthday,
+        created,
+        updated
+        )
+        VALUES
+        (
+        #{userName},
+        #{password},
+        #{name},
+        #{age},
+        #{sex},
+        #{birthday},
+        now(),
+        now()
+        );
+    </insert>
+
+    <update id="updateUser" parameterType="com.zpc.mybatis.pojo.User">
+        UPDATE tb_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName!=null">user_name = #{userName},</if>
+            <if test="password!=null">password = #{password},</if>
+            <if test="name!=null">name = #{name},</if>
+            <if test="age!=null">age = #{age},</if>
+            <if test="sex!=null">sex = #{sex},</if>
+            <if test="birthday!=null">birthday = #{birthday},</if>
+            updated = now(),
+        </trim>
+        WHERE
+        (id = #{id});
+    </update>
+
+    <delete id="deleteUser">
+        delete from tb_user where id=#{id}
+    </delete>
+</mapper>
+```
+然后需要在mybatis-config.xml中添加配置：<br>
+```
+<mappers>
+    <!-- 第一种方式：使用相对于类路径的资源引用 -->
+    <mapper resource="mappers/UserDaoMapper.xml"/>
+    <!-- 第二种方式：注解方式可以使用如下配置方式 -->
+    <mapper class="com.zpc.mybatis.dao.UserMapper"/>
+</mappers>
+```
+
+
+
+
+
+
+
+
+
