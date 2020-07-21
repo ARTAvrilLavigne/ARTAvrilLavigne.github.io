@@ -530,7 +530,7 @@ public class UserDaoImpl implements UserDao {
 
 ## 四、动态代理Mapper实现类(推荐)<br>
 **动态代理总结：**<br>
-使用mapper接口不用写接口实现类即可完成数据库操作，使用非常简单，也是官方所推荐的使用方法。使用mapper接口的必须具备以下几个条件：<br>
+　　使用mapper接口不用写接口实现类即可完成数据库操作，使用非常简单，也是官方所推荐的使用方法。使用mapper接口的必须具备以下几个条件：<br>
 * Mapper的namespace必须和mapper接口的全路径一致<br>
 * Mapper接口的方法名必须和sql定义的id一致<br>
 * Mapper接口中方法的输入参数类型必须和sql定义的parameterType一致<br>
@@ -794,11 +794,11 @@ User queryUserListByName2(@Param("username2") String username2);
 ```
 
 ### 5.2、resultMap用法<br>
-resultMap是mybatis中最重要的元素，使用resultMap可以解决两大问题：<br>
+　　resultMap是mybatis中最重要的元素，使用resultMap可以解决两大问题：<br>
 * POJO属性名和表结构字段名不一致的问题(有些情况下也不是标准的驼峰格式)<br>
 * 完成高级查询，比如说：一对一、一对多、多对多<br>
 
-解决表字段名和属性名不一致的问题有两种方法：
+　　解决表字段名和属性名不一致的问题有两种方法：<br>
 1、如果是驼峰似的命名规则可以在mybatis配置文件中设置<setting name="mapUnderscoreToCamelCase" value="true"/><br>
 2、使用resultMap解决
 
