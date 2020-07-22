@@ -793,20 +793,268 @@ User queryUserListByName2(@Param("username2") String username2);
 </select>
 ```
 
-### 5.2、resultMap用法<br>
+### 5.2、like模糊查询用法<br>
+　　mybatis中对于使用like来进行模糊查询的几种方式：<br>
+```
+方式一：使用'%${xxxxx}%'
+<select id="queryUsersLikeUserName" resultType="User">
+	select * from tb_user where user_name like '%${userName}%'
+</select>
+注意：由于$是参数直接注入的，导致这种写法大括号里面不能注明jdbcType(如：'%${userName,jdbcType=VARCHAR}%')，不然会报错
+缺点：可能会引起sql的注入，平时尽量避免使用${...}
+```
+
+```
+方式二：使用"%"#{userName}"%"
+<select id="queryUsersLikeUserName" resultType="User">
+	select * from tb_user where user_name like "%"#{userName}"%"
+</select>
+注意：因为#{xxx}解析成sql语句时候，会在变量外侧自动加单引号''，所以这里 % 需要使用双引号""，不能使用单引号''，不然会查不到任何结果
+```
+
+```
+方式三：使用CONCAT()函数连接参数形式
+<select id="queryUsersLikeUserName" resultType="User">
+	select * from tb_user where user_name like CONCAT('%',#{userName},'%')
+</select>
+```
+
+### 5.3、resultMap用法<br>
 　　resultMap是mybatis中最重要的元素，使用resultMap可以解决两大问题：<br>
 * POJO属性名和表结构字段名不一致的问题(有些情况下也不是标准的驼峰格式)<br>
 * 完成高级查询，比如说：一对一、一对多、多对多<br>
 
 　　解决表字段名和属性名不一致的问题有两种方法：<br>
 1、如果是驼峰似的命名规则可以在mybatis配置文件中设置<setting name="mapUnderscoreToCamelCase" value="true"/><br>
-2、使用resultMap解决
+2、使用resultMap解决<br>
+
+```
+<!--
+type：返回的结果集对应的java的实体类型
+id：resultMap的唯一标识
+autoMapping：默认完成映射，如果已开启驼峰匹配，可以解决驼峰匹配
+-->
+<resultMap type="User" id="resultUser" autoMapping="true">
+   <!--
+   指定主键
+   cloumn：数据库中的列名
+   property：java实体类中的属性名
+   -->
+   <id column="id" property="id"/>
+   <!-- 使用result配置数据库列名和java实体类中的属性名对应 -->
+   <result column="user_name" property="userName"/>
+</resultMap>
+
+======使用======
+<select id="queryUserById" resultMap="resultUser">
+   select * from tb_user where id = #{id}
+</select>
+```
+
+### 5.4、sql抽取使用<br>
+格式：<br>
+```
+<sql id="xxxx"></sql>
+<include refId="xxxx" />
+```
+例如：在UserMapper.xml中定义如下片段：<br>
+```
+<sql id="commonSql">
+		id,
+		user_name,
+		password,
+		name,
+		age,
+		sex,
+		birthday,
+		created,
+		updated	
+</sql>
+
+则可以在UserMapper.xml中使用它：
+<select id="queryUserById" resultMap="userResultMap">
+	select <include refid="commonSql"></include> from tb_user where id = #{id}
+</select>
+
+<select id="queryUsersLikeUserName" resultType="User">
+	select <include refid="commonSql"></include> from tb_user where user_name like "%"#{userName}"%"
+</select>
+```
+
+## 六、动态sql<br>
+　　动态sql用法有：<br>
+* if标签<br>
+* choose、when、otherwise标签<br>
+* where、set标签<br>
+* foreach标签<br>
+* trim标签<br>
+
+### 6.1、if标签<br>
+
+```
+字符串String类型：
+<select id="queryUserList" resultType="com.zpc.mybatis.pojo.User">
+    select * from tb_user WHERE sex=1
+    <if test="name!=null and name.trim()!=''">
+      and name like '%${name}%'
+    </if>
+</select>
+
+<select id="queryUserList" resultType="com.zpc.mybatis.pojo.User">
+    select * from tb_user WHERE sex=1
+    <if test="name!=null and name!=''">
+      and name=#{name}
+    </if>
+</select>
+
+整型int类型：
+<select id="queryUserList" resultType="com.zpc.mybatis.pojo.User">
+    select * from tb_user WHERE sex=1
+    <if test="taskId!=null and taskId!=''">
+      and taskId=#{taskId}
+    </if>
+</select>
+注意：当传入的taskId为0时，此if条件语句是进不去的。因为Mybatis中if标签中比较传入数字taskId和字符串''时，会把这个字符串''转换成数字0,然后再和这个数字taskId判断，因此该if条件语句进不去
+
+解决：如果存在taskId为0的情况，则改为如下所示：
+<select id="queryUserList" resultType="com.zpc.mybatis.pojo.User">
+    select * from tb_user WHERE sex=1
+    <if test="taskId!=null and taskId!='' or taskId==0">
+      and taskId=#{taskId}
+    </if>
+</select>
+```
+
+### 6.2、choose、when、otherwise标签<br>
+
+```
+<select id="queryUserListByNameOrAge" resultType="com.zpc.mybatis.pojo.User">
+    select * from tb_user where sex=1
+    <!--
+    1.一旦有条件成立的when，后续的when则不会执行
+    2.当所有的when都不执行时,才会执行otherwise
+    -->
+    <choose>
+        <when test="name!=null and name!=''">
+            and name like '%${name}%'
+        </when>
+        <when test="age!=null">
+            and age = #{age}
+        </when>
+        <otherwise>
+            and name='李知恩'
+        </otherwise>
+    </choose>
+</select>
+```
+
+### 6.3、where和set标签<br>
+where标签使用：<br>
+```
+<!--
+<where>标签的作用：如果该便签包含的元素中有返回值，就插入一个where
+当if条件不满足的时候，where元素中没有任何内容，所以SQL中不会出现where
+-->
+<select id="queryUserListByNameAndAge" resultType="com.zpc.mybatis.pojo.User">
+    select * from tb_user
+    <!--如果多出一个and，会自动去除，如果缺少and或者多出多个and则会报错-->
+    <where>
+        <if test="name!=null and name.trim()!=''">
+            and name like '%${name}%'
+        </if>
+        <if test="age!=null">
+            and age = #{age}
+        </if>
+    </where>
+</select>
+```
+set标签两种使用(一般用在update语句中)：<br>
+```
+方式一：推荐(加上trim标签)
+<!--
+1、某个属性若不符合if条件则那个属性不会被更新修改
+2、<trim prefix="set" suffixOverrides=",">会去除多余的逗号
+3、now()表示当前时间
+-->
+<update id="updateUser" parameterType="com.zpc.mybatis.pojo.User">
+    UPDATE tb_user
+    <trim prefix="set" suffixOverrides=",">
+        <if test="userName!=null">user_name = #{userName},</if>
+        <if test="password!=null">password = #{password},</if>
+        <if test="name!=null and name.length()>0">name = #{name},</if>
+        <if test="age!=null">age = #{age},</if>
+        <if test="sex!=null">sex = #{sex},</if>
+	date = now(),
+        <if test="birthday!=null">birthday = #{birthday},</if>
+    </trim>
+    where id = #{id}
+</update>
+
+方式二：
+<!--
+<set>标签的作用：如果该标签包含的元素中有返回值，就插入一个set
+如果set后面的字符串是以逗号结尾的，就将最后这个逗号去除
+-->
+<update id="updateUser" parameterType="com.zpc.mybatis.pojo.User">
+    UPDATE tb_user
+    <set>
+        <if test="userName!=null">user_name = #{userName},</if>
+        <if test="password!=null">password = #{password},</if>
+        <if test="name!=null and name.length()>0">name = #{name},</if>
+        <if test="age!=null">age = #{age},</if>
+        <if test="sex!=null">sex = #{sex},</if>
+	date = now(),
+        <if test="birthday!=null">birthday = #{birthday},</if>
+    </set>
+    where id = #{id}
+</update>
+```
+
+### 6.4、foreach标签<br>
+
+```
+<select id="queryUserListByIds" resultType="com.zpc.mybatis.pojo.User">
+    select * from tb_user where id in
+    <foreach collection="idList" item="id" open="(" close=")" separator=",">
+        #{id}
+    </foreach>
+</select>
+```
+
+### 6.5、trim标签<br>
+
+```
+        <where>和<set>标签都可以用trim标签实现，并且底层就是通过TrimSqlNode实现的
+        
+        <where>标签对应的trim实现：
+            <trim prefix="where" prefixOverride="AND | OR ">
+            
+        <set>标签对应的trim实现：
+            <trim prefix="set" suffixOverrides=",">
+        
+        提示：
+            prefixOverride中AND和OR后面的空格不能省略，为了避免匹配到andes或
+            orders等单词。实际上prefixOverride包含"AND""OR""AND\n""OR\n"
+            "AND\r""OR\r""AND\t""OR\t"
+            
+        <trim>标签的四个属性：
+            prefix：当trim元素包含内容时，会给内容增加prefix指定的前缀
+            prefixOverride：当trim元素包含内容时，会把内容中匹配的前缀字符串去掉
+            suffix：当trim元素包含内容时，会给内容增加prefix指定的后缀
+            suffixOverride：当trim元素包含内容时，会把内容中匹配的后缀字符串去掉
+```
 
 
 
 
 
 
+
+
+## 总结：<br>
+[1]https://www.cnblogs.com/diffx/p/10611082.html
+[2]https://blog.csdn.net/zhenwei1994/article/details/81876278
+[3]https://blog.csdn.net/wang852575989/article/details/100173875
 
 
 
