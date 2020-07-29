@@ -1194,13 +1194,55 @@ association来实现多对一的映射：
        FROM person
        WHERE age <![CDATA[ > ]]> 23 and id <![CDATA[ <= ]]> 100
  </select>
+ 
+注意：
+　　(1) 不允许嵌套使用 
+　　(2) "]]>"这部分不能包含空格或者换行
 ```
 
-## 九、缓存和延迟加载<br>
+## 九、缓存机制<br>
+　　**Mybatis缓存机制分为一级缓存和二级缓存**<br>
+　　在mybatis中，一级缓存默认是开启的，并且一直无法关闭。一级缓存是sqlSession级的，即利用同一个sqlSession执行查询相同的SQL，数据会直接从缓存中取。一个sqlSession会对应new一个调度器Excutor对象，每次Excutor去执行SQL前都会去缓存里看一下是不是之前执行过了，当然了本质上就是从一个Map里面找key的操作，执行过了就直接去缓存里取，没有则访问数据库。<br>
+　　二级缓存是Mapper级别的，可以这么理解只要是执行了同一个mapper.xml中的同一个SQL，都会直接从缓存里取，不管是不是同一个sqlSession。二级缓存需要去自己开启，在mapper.xml中写<cache>标签或者也可以在配置文件里配置cacheEnabled=true，如果开启了二级缓存，查询数据的循序为二级缓存--->一级缓存--->数据库。即可以二级缓存和一级缓存同时开启，不存在选择一个的关系。<br>
 
+**一级缓存注意：**<br>
+* MyBatis的一级缓存最大范围是SqlSession内部，有多个SqlSession或者分布式的环境下，数据库写操作会引起脏数据<br>
+* MyBatis一级缓存的生命周期和SqlSession一致<br>
+* MyBatis一级缓存内部设计简单，只是一个没有容量限定的HashMap，在缓存的功能性上有所欠缺<br>
+* mybatis和spring整合后进行mapper代理开发，不支持一级缓存<br>
 
+**二级缓存注意：**<br>
+* MyBatis的二级缓存相对于一级缓存来说，实现了SqlSession之间缓存数据的共享，同时粒度更加的细，能够到namespace级别，通过Cache接口实现类不同的组合，对Cache的可控性也更强<br>
+* MyBatis在多表查询时，极大可能会出现脏数据，有设计上的缺陷，安全使用二级缓存的条件比较苛刻<br>
+* 在分布式环境下，由于默认的MyBatis Cache实现都是基于本地的，分布式环境下必然会出现读取到脏数据，需要使用集中式缓存将MyBatis的Cache接口实现，有一定的开发成本，直接使用Redis,Memcached等分布式缓存可能成本更低，安全性也更高<br>
 
+二级缓存的脏读：<br>
+1、脏读的产生<br>
+Mybatis的二级缓存是和命名空间绑定的，所以通常情况下每一个Mapper映射文件都有自己的二级缓存，不同的mapper的二级缓存互不影响。这样的设计一不注意就会引起脏读，从而导致数据一致性的问题。引起脏读的操作通常发生在多表关联操作中，比如在两个不同的mapper中都涉及到同一个表的增删改查操作，当其中一个mapper对这张表进行查询操作，此时另一个mapper进行了更新操作刷新缓存，然后第一个mapper又查询了一次，那么这次查询出的数据是脏数据。出现脏读的原因是他们的操作的缓存并不是同一个。<br>
 
+2、脏读的避免<br>
+* mapper中的操作以单表操作为主，避免在关联操作中使用mapper<br>
+* 在关联操作的mapper中配置参照缓存<br>
+
+3、避免脏读的配置<br>
+Mapper接口和XML配置使用的是同一个命名空间。因此他们只能使用同一个缓存。<br>
+法一：<br>
+```
+在Mapper接口中配置缓存然后在XML使用参照缓存
+@CacheNarnespaceRef(RoleMapper.class) public interface RoleMapper { }
+
+<!--那么在XML中只能使用参照缓存-->
+<cache-ref narnespace="com.huawei.mapper.RoleMapper"/>
+```
+法二：<br>
+```
+或者可以配置XML然后Mapper接口使用参照缓存
+@CacheNarnespaceRef(RoleMapper.class) public interface RoleMapper { }
+
+<mapper narnespace="com.huawei.mapper.RoleMapper"> 
+      <cache eviction="FIFO" flushinterval="60000" Size＝"512" readOnly="false"/>
+</mapper>
+```
 
 
 ## 总结：<br>
@@ -1208,9 +1250,8 @@ association来实现多对一的映射：
 [2]https://blog.csdn.net/zhenwei1994/article/details/81876278<br>
 [3]https://blog.csdn.net/wang852575989/article/details/100173875<br>
 [4]https://blog.csdn.net/yangbaggio/article/details/89711259<br>
-[5]https://www.cnblogs.com/songsongblue/p/10185569.html
-
-
-
-
+[5]https://www.cnblogs.com/songsongblue/p/10185569.html<br>
+[6]https://blog.csdn.net/weixin_42447959/article/details/90746328<br>
+[7]https://tech.meituan.com/2018/01/19/mybatis-cache.html<br>
+[8]https://www.cnblogs.com/lanqi/p/9283516.html<br>
 
