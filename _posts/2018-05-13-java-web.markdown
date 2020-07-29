@@ -1045,10 +1045,156 @@ set标签两种使用(一般用在update语句中)：<br>
 ```
 
 ## 七、高级查询<br>
+* 关联-association：用于一对一和多对一的关系<br>
+* 集合-collection：用于一对多的关系<br>
+```
+例如：
+public class Person{
+	private id;
+	private name;
+	private age;
+	// 身份证对象
+	private IDCard card;                -->Person的resultMap中使用association
+	// 银行卡集合
+	private List<BankCard> cardList;    -->Person的resultMap中使用collection
 
+}
+```
+
+**一对一的例子：**<br>
+```
+人和身份证的关系是一对一
+public class Card {
+	private Integer id;
+	private String code;
+	
+	// 省略get、set方法
+}
+
+public class User {
+	private Integer id;
+	private String name;
+	private Integer age;
+	private Card card;
+	
+	//省略get、set方法
+}
+
+<mapper namespace="com.huawei.mapper.PersonMapper">
+	<resultMap type="com.huawei.pojo.Person" id="personMapper">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="age" column="age"/>
+		<association property="card" column="card_id" 
+			select="com.huawei.mapper.CardMapper.selectCardById"
+			javaType="com.huawei.pojo.Card">
+		</association>
+	</resultMap>
+	<select id="selectPersonById" parameterType="int" resultMap="personMapper">
+		select * from tb_person where id = #{id}
+	</select>
+</mapper>
+	
+<mapper namespace="com.huawei.mapper.CardMapper">
+	<select id="selectCardById" parameterType="int" resultType="com.huawei.pojo.Card">
+		select * from tb_card where id = #{id} 
+	</select>
+</mapper>
+```
+
+**一对多的例子：**<br>
+```
+班级和学生是一对多的关系
+public class Clazz {
+	private Integer id;
+	private String code;
+	private String name;
+    	// 班级与学生是一对多的关系
+	private List<Student> studentList;
+	
+	// 省略set/get方法
+}
+
+public class Student {
+	private Integer id;
+	private String name;
+	// 学生与班级是多对一的关系
+	private Clazz clazz;
+	
+	// 省略set/get方法
+}
+
+collection来实现一对多的映射：
+<mapper namespace="com.huawei.mapper.ClazzMapper">
+	<select id="selectClazzById" parameterType="int" resultMap="clazzResultMap">
+		select * from tb_clazz where id = #{id}
+	</select>
+	<resultMap type="com.huawei.pojo.Clazz" id="clazzResultMap">
+		<id property="id" column="id"/>
+		<result property="code" column="code"/>
+		<result property="name" column="name"/>
+		<!-- property: 指的是集合属性的值, ofType：指的是List集合中元素的类型, fetchType：设置lazy懒加载, javaType：集合类型 -->
+		<collection property="studentList" ofType="com.huawei.pojo.Student"
+		column="id" javaType="ArrayList"
+		fetchType="lazy" select="com.huawei.mapper.StudentMapper.selectStudentByClazzId">
+			<id property="id" column="id"/>
+			<result property="name" column="name"/>
+		</collection>
+	</resultMap>
+</mapper>
+
+```
+
+**多对一的例子：**<br>
+```
+association来实现多对一的映射：
+<mapper namespace="com.huawei.mapper.StudentMapper">
+	<select id="selectStudentById" parameterType="int" resultMap="studentResultMap">
+		select * from tb_clazz c,tb_student s where c.id = s.id and s.id = #{id}
+	</select>
+	<select id="selectStudentByClazzId" parameterType="int" resultMap="studentResultMap">
+		select * from tb_student where clazz_id = #{id}
+	</select>
+	<resultMap type="com.huawei.pojo.Student" id="studentResultMap">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<!--  property：定义对象的属性名   javaType：属性的类型 -->
+		<association property="clazz" javaType="com.huawei.pojo.Clazz">
+			<id property="id" column="id"/>
+			<result property="code" column="code"/>
+			<result property="name" column="name"/>
+		</association>
+	</resultMap>
+</mapper>
+```
 
 ## 八、sql语句中特殊字符'<'处理<br>
+在xml中，"<"、">"、"&"等字符是不能直接存入的，否则xml语法检查时会报错，如果想在xml中使用这些符号，必须将其转义。<br>
+**方法一：使用xml中的字符实体转义替代**<br>
+```
+&　　　&amp;       和号
+<　　　&lt;        小于
+>　　　&gt;        大于
+"　　　&quot;      双引号
+'　　　&apos;      单引号
 
+如：<if test="startDateTime!=null"> and mm.ttime &gt; to_date(#{startDateTime},'yyyy-mm-dd hh24:mi:ss')</if>
+注意：
+　　(1) 转义序列字符之间不能有空格
+　　(2) 转义序列必须以";"结束
+　　(3) 单独出现的"&"不会被认为是转义的开始
+　　(4) 区分大小写
+```
+
+**方法二：使用<\!\[CDATA\[\]\]>这个标记将包含的内容将表示为纯文本**<br>
+```
+例如：
+<select id="query" parameterType="Entity"  resultType="java.util.HashMap">
+       SELECT id, name, age 
+       FROM person
+       WHERE age <![CDATA[ > ]]> 23 and id <![CDATA[ <= ]]> 100
+ </select>
+```
 
 ## 九、缓存和延迟加载<br>
 
@@ -1061,8 +1207,8 @@ set标签两种使用(一般用在update语句中)：<br>
 [1]https://www.cnblogs.com/diffx/p/10611082.html<br>
 [2]https://blog.csdn.net/zhenwei1994/article/details/81876278<br>
 [3]https://blog.csdn.net/wang852575989/article/details/100173875<br>
-
-
+[4]https://blog.csdn.net/yangbaggio/article/details/89711259<br>
+[5]https://www.cnblogs.com/songsongblue/p/10185569.html
 
 
 
