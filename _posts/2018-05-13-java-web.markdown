@@ -1047,6 +1047,7 @@ set标签两种使用(一般用在update语句中)：<br>
 ## 七、高级查询<br>
 * 关联-association：用于一对一和多对一的关系<br>
 * 集合-collection：用于一对多的关系<br>
+
 ```
 例如：
 public class Person{
@@ -1062,6 +1063,7 @@ public class Person{
 ```
 
 **一对一的例子：**<br>
+
 ```
 人和身份证的关系是一对一
 public class Card {
@@ -1103,6 +1105,7 @@ public class User {
 ```
 
 **一对多的例子：**<br>
+
 ```
 班级和学生是一对多的关系
 public class Clazz {
@@ -1146,6 +1149,7 @@ collection来实现一对多的映射：
 ```
 
 **多对一的例子：**<br>
+
 ```
 association来实现多对一的映射：
 <mapper namespace="com.huawei.mapper.StudentMapper">
@@ -1171,6 +1175,7 @@ association来实现多对一的映射：
 ## 八、sql语句中特殊字符'<'处理<br>
 在xml中，"<"、">"、"&"等字符是不能直接存入的，否则xml语法检查时会报错，如果想在xml中使用这些符号，必须将其转义。<br>
 **方法一：使用xml中的字符实体转义替代**<br>
+
 ```
 &　　　&amp;       和号
 <　　　&lt;        小于
@@ -1187,6 +1192,7 @@ association来实现多对一的映射：
 ```
 
 **方法二：使用<\!\[CDATA\[\]\]>这个标记将包含的内容将表示为纯文本**<br>
+
 ```
 例如：
 <select id="query" parameterType="Entity"  resultType="java.util.HashMap">
@@ -1227,6 +1233,7 @@ Mybatis的二级缓存是和命名空间绑定的，所以通常情况下每一�
 3、避免脏读的配置<br>
 Mapper接口和XML配置使用的是同一个命名空间。因此他们只能使用同一个缓存。<br>
 法一：<br>
+
 ```
 在Mapper接口中配置缓存然后在XML使用参照缓存
 @CacheNarnespaceRef(RoleMapper.class) public interface RoleMapper { }
@@ -1235,6 +1242,7 @@ Mapper接口和XML配置使用的是同一个命名空间。因此他们只能�
 <cache-ref narnespace="com.huawei.mapper.RoleMapper"/>
 ```
 法二：<br>
+
 ```
 或者可以配置XML然后Mapper接口使用参照缓存
 @CacheNarnespaceRef(RoleMapper.class) public interface RoleMapper { }
