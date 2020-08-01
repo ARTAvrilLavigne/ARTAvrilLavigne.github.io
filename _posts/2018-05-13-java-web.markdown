@@ -103,8 +103,12 @@ tags:
 * 6)调用session.close()关闭会话<br>
 
 mybatis整体架构如下：<br>
-![mybatis](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2018-05-13-java-web/1.png?raw=true)<br>
-![mybatis](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2018-05-13-java-web/2.png?raw=true)<br>
+<div>
+	   <a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-05-25-java-metaspace/1.jpg?raw=true">
+               <img id="mybatis" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2018-05-13-java-web/1.png?raw=true" alt="mybatis"/>
+	       <img id="mybatis" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2018-05-13-java-web/2.png?raw=true" alt="mybatis"/>
+	   </a>
+</div>
 
 
 ### 2.1、引入依赖（pom.xml）<br>
