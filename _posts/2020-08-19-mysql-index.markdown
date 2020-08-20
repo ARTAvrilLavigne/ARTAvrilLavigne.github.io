@@ -26,4 +26,81 @@ tags:
 * 创建索引和维护索引需要空间成本，每一条索引都要占据数据库的物理存储空间，数据量越大，占用空间也越大（数据表占据的是数据库的数据空间）<br>
 * 会降低表的增删改的效率，因为每次增删改索引需要进行动态维护，导致时间变长<br>
 
+## 二、索引的分类与创建<br>
+
+### 2.1、基本索引类型<br>
+
+　　基本索引类型包括普通索引（单列索引）、复合索引（组合索引）、唯一索引、主键索引、全文索引<br>
+
+### 2.2、创建句法格式<br>
+
+```
+CREATE TABLE table_name[col_name data type]
+[unique|fulltext][index|key][index_name](col_name[length])[asc|desc]
+```
+* unique|fulltext为可选参数，分别表示唯一索引、全文索引<br>
+* index和key为同义词，两者作用相同，用来指定创建索引<br>
+* col_name为需要创建索引的字段列，该列必须从数据表中该定义的多个列中选择<br>
+* index_name指定索引的名称，为可选参数，如果不指定，默认col_name为索引值<br>
+* length为可选参数，表示索引的长度，只有字符串类型的字段才能指定索引长度<br>
+* asc或desc指定升序或降序的索引值存储<br>
+
+### 2.3、索引创建语句写法<br>
+
+1、普通索引（单列索引）：单列索引是最基本的索引，它没有任何限制。<br>
+
+```
+直接创建索引:
+CREATE INDEX index_name ON table_name(col_name);
+
+修改表结构的方式添加索引:
+ALTER TABLE table_name ADD INDEX index_name(col_name);
+
+创建表的时候同时创建索引:
+CREATE TABLE `news` (
+    `id` int(11) NOT NULL AUTO_INCREMENT ,
+    `title` varchar(255)  NOT NULL ,
+    `content` varchar(255)  NULL ,
+    `time` varchar(20) NULL DEFAULT NULL ,
+    PRIMARY KEY (`id`),
+    INDEX index_name (title(255))
+)
+
+删除索引:
+DROP INDEX index_name ON table_name;
+或者
+alter table `表名` drop index 索引名;
+```
+
+2、复合索引：复合索引是在多个字段上创建的索引。**复合索引遵守“最左前缀”原则，即在查询条件中使用了复合索引的第一个字段，索引才会被使用。**因此，在复合索引中索引列的顺序至关重要。<br>
+
+```
+创建一个复合索引:
+create index index_name on table_name(col_name1,col_name2,...); 
+
+修改表结构的方式添加索引:
+alter table table_name add index index_name(col_name,col_name2,...);
+```
+
+3、
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
