@@ -38,7 +38,7 @@ tags:
 CREATE TABLE table_name[col_name data type]
 [unique|fulltext][index|key][index_name](col_name[length])[asc|desc]
 ```
-
+<br>
 * unique|fulltext为可选参数，分别表示唯一索引、全文索引<br>
 * index和key为同义词，两者作用相同，用来指定创建索引<br>
 * col_name为需要创建索引的字段列，该列必须从数据表中该定义的多个列中选择<br>
