@@ -175,8 +175,9 @@ CREATE FULLTEXT INDEX index_fulltext_content ON table_name(col_name)
 
 　　MySQL全文搜索只是一个临时方案，对于全文搜索场景，更专业的做法是使用全文搜索引擎，例如ElasticSearch或Solr。<br>
 
-
 ## 三、索引的查询和删除<br>
+
+索引的查询和删除语句为:<br>
 
 ```
 #查看:
@@ -188,16 +189,140 @@ show keys from `表名`;
 alter table `表名` drop index 索引名;
 ```
 
+查看索引使用情况:<br>
 
+```
+show status like 'Handler_read%';
 
+其中：
+handler_read_key:这个值越高越好，越高表示使用索引查询到的次数
+handler_read_rnd_next:这个值越高，说明查询低效
+```
 
+## 四、常见索引失效情况<br>
 
+　　创建一个students表，其中stud_id为主键。<br>
+  
+```
+  DROP TABLE IF EXISTS `students`;
+  CREATE TABLE `students` (
+  `stud_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `phone` varchar(1) NOT NULL,
+  `create_date` date DEFAULT NULL,
+  PRIMARY KEY (`stud_id`)
+ 
+)
 
+INSERT INTO `learn_mybatis`.`students` (`stud_id`, `name`, `email`, `phone`, `create_date`) VALUES ('1', 'admin', 'student1@gmail.com', '12345678', '1988-08-08');
+INSERT INTO `learn_mybatis`.`students` (`stud_id`, `name`, `email`, `phone`, `create_date`) VALUES ('2', 'root', '123456@gmail.com', '2', '1999-08-08');
+INSERT INTO `learn_mybatis`.`students` (`stud_id`, `name`, `email`, `phone`, `create_date`) VALUES ('3', '888', '654321@gmail.com', '3dsad', '2020-08-23');
+```
 
+使用explain查看索引是否生效,[explain用法](https://blog.csdn.net/u010648555/article/details/81106983)<br>
 
+1、在where后使用or，导致索引可能会失效（尽量少用or）<br>
 
+**存在索引生效的条件为：需要保证or两边的列都有索引，并且有一个列是主键。**<br>
 
+```
+创建两个普通索引:email和phone
+CREATE INDEX index_name_email ON students(email);
+CREATE INDEX index_name_phone ON students(phone);
+================================================
+使用下面查询sql:
+# 使用了索引
+EXPLAIN select * from students where stud_id='1' or phone='12345678'
+# 使用了索引
+EXPLAIN select * from students where stud_id='2' or email='123456@gmail.com'
+#--------------------------
+# 没有使用索引
+EXPLAIN select * from students where phone='12345678' or email='student1@gmail.com'
+# 没有使用索引
+EXPLAIN select * from students where stud_id='1' or phone='12345678' or email='student1@gmail.com'
+```
 
+2、使用like ，like查询是以%开头<br>
+　　在1的基础上，还是使用index_name_email索引<br>
 
+```
+# 使用了index_name_email索引
+EXPLAIN select * from students where email like '12345678@gmail.com%'
 
+# 没有使用index_name_email索引，索引失效
+EXPLAIN select * from students where email like '%12345678@gmail.com'
+
+# 没有使用index_name_email索引，索引失效
+EXPLAIN select * from students where email like '%12345678@gmail.com%'
+```
+
+3、复合索引遵守“最左前缀”原则，即在查询条件中使用了复合索引的第一个字段，索引才会被使用<br>
+　　删除1的基础创建的index_name_email和index_name_phone索引。重新创建一个复合索引：create index index_email_phone on students(email,phone);<br>
+
+```
+# 使用了 index_email_phone 索引
+EXPLAIN select * from students where email='12345678@gmail.com' and  phone='12345678'
+
+# 使用了 index_email_phone 索引
+EXPLAIN select * from students where phone='12345678' and  email='12345678@gmail.com'
+
+# 使用了 index_email_phone 索引
+EXPLAIN select * from students where email='12345678@gmail.com' and name='admin'
+
+# 没有使用index_email_phone索引，复合索引失效
+EXPLAIN select * from students where phone='12345678' and name='admin'
+```
+
+4、如果列类型是字符串，那一定要在条件中将数据使用引号引用起来,否则不使用索引<br>
+
+```
+给name创建一个索引:
+CREATE INDEX index_name ON students(name);
+==========================================
+# 使用索引
+EXPLAIN select * from students where name='888'
+
+# 没有使用索引
+EXPLAIN select * from students where name=888
+```
+
+5、使用in导致索引失效<br>
+
+```
+# 使用索引
+EXPLAIN select * from students where name='admin'
+
+# 没有使用索引
+EXPLAIN SELECT * from students where name in ('admin')
+```
+
+6、DATE_FORMAT()格式化时间，格式化后的时间再去比较，可能会导致索引失效<br>
+
+　　删除students上的创建的索引，重新在create_date创建一个索引:CREATE INDEX index_create_date ON students(create_date);<br>
+```
+# 使用索引
+EXPLAIN SELECT * from students where create_date >= '1999-08-08'
+
+# 没有使用索引
+EXPLAIN SELECT * from students where DATE_FORMAT(create_date,'%Y-%m-%d') >= '1999-08-08'
+```
+
+7、对于order by、group by、union、distinct中的字段出现在where条件中时，才会利用索引<br>
+
+更多索引请参考[索引的使用](https://www.cnblogs.com/duanxz/p/5244703.html)<br>
+
+## 五、总结<br>
+
+　　MySQL改善查询性能改善的最好方式，就是通过数据库中合理地使用索引。一般当数据量较大的时候，遇到sql查询性能问题，首先想到的应该是查询的sql时候使用了索引，如果使用了索引性能还是提高不大，就要检查索引是否使用正确，索引是否在sql查询中生效了。如果索引生效了，并且索引的使用也是合理的，最后sql性能还是不高，那就考虑重新优化sql语句。<br>
+
+## 参考文献<br>
+[1]https://www.jianshu.com/p/6ea21b739c67<br>
+[2]https://blog.csdn.net/u010648555/article/details/81106983<br>
+[3]https://www.cnblogs.com/duanxz/p/5244703.html<br>
+[4]https://www.cnblogs.com/digdeep/p/4975977.html<br>
+[5]https://www.cnblogs.com/yuerdongni/p/4255395.html<br>
+[6]https://blog.csdn.net/suifeng3051/article/details/52669644/<br>
+[7]https://mp.weixin.qq.com/s/oHDmnG_J1j3UWLOwUA5HOw<br>
+[8]https://www.2cto.com/database/201803/726894.html<br>
 
