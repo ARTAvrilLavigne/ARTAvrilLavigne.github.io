@@ -202,7 +202,7 @@ handler_read_rnd_next:这个值越高，说明查询低效
 
 ## 四、常见索引失效情况<br>
 
-　　创建一个students表，其中stud_id为主键。<br>
+创建一个students表，其中stud_id为主键。<br>
   
 ```
   DROP TABLE IF EXISTS `students`;
