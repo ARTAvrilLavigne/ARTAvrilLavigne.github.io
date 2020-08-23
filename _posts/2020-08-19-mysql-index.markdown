@@ -72,7 +72,7 @@ DROP INDEX index_name ON table_name;
 alter table `表名` drop index 索引名;
 ```
 
-2、复合索引：复合索引是在多个字段上创建的索引。**复合索引遵守“最左前缀”原则，即在查询条件中使用了复合索引的第一个字段，索引才会被使用。**因此，在复合索引中索引列的顺序至关重要。<br>
+2、复合索引：复合索引是在多个字段上创建的索引。**复合索引遵守"最左前缀"原则，即在查询条件中使用了复合索引的第一个字段，索引才会被使用。**因此，在复合索引中索引列的顺序至关重要。<br>
 
 ```
 创建一个复合索引:
@@ -82,14 +82,111 @@ create index index_name on table_name(col_name1,col_name2,...);
 alter table table_name add index index_name(col_name,col_name2,...);
 ```
 
-3、
+3、唯一索引：唯一索引和普通索引类似，主要的区别在于，唯一索引限制列的值必须唯一，但允许存在空值（只允许存在一条空值）。如果在已经有数据的表上添加唯一性索引的话：<br>
+* 如果添加索引的列的值存在两个或者两个以上的空值，则不能创建唯一性索引会失败。（一般在创建表的时候，要对自动设置唯一性索引，需要在字段上加上 not null）<br>
+* 如果添加索引的列的值存在两个或者两个以上的null值，还是可以创建唯一性索引，只是后面创建的数据不能再插入null值 ，并且严格意义上此列并不是唯一的，因为存在多个null值。<br>
+
+　　对于多个字段创建唯一索引规定列值的组合必须唯一。比如：在order表创建orderId字段和productId字段的唯一性索引，那么这两列的组合值必须唯一。<br>
+
+```
+"空值"和"NULL"的概念： 
+1：空值是不占用空间的.
+2: MySQL中的NULL其实是占用空间的.
+长度验证：注意空值的之间是没有空格的。
+
+> select length(''),length(null),length(' ');
++------------+--------------+-------------+
+| length('') | length(null) | length(' ') |
++------------+--------------+-------------+
+|          0 |         NULL |           1 |
++------------+--------------+-------------+
+
+```
+
+```
+创建唯一索引:
+# 创建单个索引
+CREATE UNIQUE INDEX index_name ON table_name(col_name);
+# 创建多个索引
+CREATE UNIQUE INDEX index_name on table_name(col_name,...);
+=======================
+修改表结构:
+# 单个
+ALTER TABLE table_name ADD UNIQUE index index_name(col_name);
+# 多个
+ALTER TABLE table_name ADD UNIQUE index index_name(col_name,...);
+=======================
+创建表的时候直接指定索引:
+CREATE TABLE `news` (
+    `id` int(11) NOT NULL AUTO_INCREMENT ,
+    `title` varchar(255)  NOT NULL ,
+    `content` varchar(255)  NULL ,
+    `time` varchar(20) NULL DEFAULT NULL ,
+    PRIMARY KEY (`id`),
+    UNIQUE index_name_unique(title)
+)
+```
+
+4、主键索引:一种特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般是在建表的时候同时创建主键索引。<br>
+
+```
+主键索引(创建表时添加):
+CREATE TABLE `news` (
+    `id` int(11) NOT NULL AUTO_INCREMENT ,
+    `title` varchar(255)  NOT NULL ,
+    `content` varchar(255)  NULL ,
+    `time` varchar(20) NULL DEFAULT NULL ,
+    PRIMARY KEY (`id`)
+)
+
+主键索引(创建表后添加):
+CREATE TABLE `order` (
+    `orderId` varchar(36) NOT NULL,
+    `productId` varchar(36)  NOT NULL ,
+    `time` varchar(20) NULL DEFAULT NULL
+)
+
+alter table `order` add primary key(`orderId`);
+```
+
+5、全文索引：在一般情况下，模糊查询都是通过`like`的方式进行查询。但是对于海量数据，这并不是一个好办法，在 like "value%" 可以使用索引，但是对于 like "%value%" 这样的方式，执行全表查询，这在数据量小的表，不存在性能问题，但是对于海量数据，全表扫描是非常可怕的事情,所以like进行模糊匹配性能很差。<br>
+　　这种情况下，需要考虑使用全文搜索的方式进行优化。全文搜索在MySQL中是一个FULLTEXT类型索引。FULLTEXT索引在MySQL5.6版本之后支持InnoDB，而之前的版本只支持MyISAM表。<br>
+　　全文索引主要用来查找文本中的关键字，而不是直接与索引中的值相比较。fulltext索引跟其它索引大不相同，它更像是一个搜索引擎，而不是简单的where语句的参数匹配。fulltext索引配合match against操作使用，而不是一般的where语句加like。目前只有char、varchar，text列上可以创建全文索引。<br>
+　　小技巧：在数据量较大时候，先将数据放入一个没有全局索引的表中，然后再用CREATE index创建fulltext索引，要比先为一张表建立fulltext然后再将数据写入的速度快很多。<br>
+　　注意：默认MySQL不支持中文全文检索！<br>
+
+```
+创建表的适合添加全文索引:
+CREATE TABLE `news` (
+    `id` int(11) NOT NULL AUTO_INCREMENT ,
+    `title` varchar(255)  NOT NULL ,
+    `content` text  NOT NULL ,
+    `time` varchar(20) NULL DEFAULT NULL ,
+     PRIMARY KEY (`id`),
+    FULLTEXT (content)
+)
+
+修改表结构添加全文索引:
+ALTER TABLE table_name ADD FULLTEXT index_fulltext_content(col_name)
+
+直接创建索引:
+CREATE FULLTEXT INDEX index_fulltext_content ON table_name(col_name)
+```
+
+　　MySQL全文搜索只是一个临时方案，对于全文搜索场景，更专业的做法是使用全文搜索引擎，例如ElasticSearch或Solr。<br>
 
 
+## 三、索引的查询和删除<br>
 
-
-
-
-
+```
+#查看:
+show indexes from `表名`;
+#或者
+show keys from `表名`;
+ 
+#删除
+alter table `表名` drop index 索引名;
+```
 
 
 
