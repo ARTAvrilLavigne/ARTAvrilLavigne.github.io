@@ -15,6 +15,7 @@
                         </a>
                     </li>
                     {% endif %}
+		    <!-- 推特 -->
                     {% if site.twitter_username %}
                     <li>
                         <a href="https://twitter.com/{{ site.twitter_username }}">
@@ -27,6 +28,7 @@
                     {% endif %}
 
                     <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+		    <!-- 知乎 -->
                     {% if site.zhihu_username %}
                     <li>
                         <a target="_blank" href="https://www.zhihu.com/people/{{ site.zhihu_username }}">
@@ -37,6 +39,7 @@
                         </a>
                     </li>
                     {% endif %}
+		    <!-- 微博 -->
                     {% if site.weibo_username %}
                     <li>
                         <a target="_blank" href="https://weibo.com/{{ site.weibo_username }}">
@@ -47,8 +50,7 @@
                         </a>
                     </li>
                     {% endif %}
-
-
+		    <!-- 脸书 -->
                     {% if site.facebook_username %}
                     <li>
                         <a target="_blank" href="https://www.facebook.com/{{ site.facebook_username }}">
@@ -59,23 +61,24 @@
                         </a>
                     </li>
                     {% endif %}
+		    <!-- instagram -->
+	            {% if site.instagram_username %}
+                    <li>
+                        <a target="_blank" href="https://www.instagram.com/{{ site.instagram_username }}">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    {% endif %}
+		    <!-- github -->
                     {% if site.github_username %}
                     <li>
                         <a target="_blank" href="https://github.com/{{ site.github_username }}">
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-                    {% endif %}
-                    <!-- instagram -->
-			        {% if site.instagram_username %}
-                    <li>
-                        <a target="_blank" href="https://www.instagram.com/{{ site.instagram_username }}">
-                            <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
