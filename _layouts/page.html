@@ -22,11 +22,11 @@ layout: default
 	<div class="row">
         {% if site.sidebar == false %}
 <!-- NO SIDEBAR -->
-    <!-- Post Container -->
+    <!-- Post Container文章内容部分 -->
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 post-container">
                 {{ content }}
             </div>
-    <!-- Sidebar Container -->
+    <!-- Sidebar Container侧边栏部分 -->
             <div class="
                 col-lg-8 col-lg-offset-2
                 col-md-10 col-md-offset-1
@@ -108,7 +108,7 @@ layout: default
                         {% if site.sidebar-about-description %}
                             <p>{{site.sidebar-about-description}}</p>
                         {% endif %}
-                        <!-- SNS Link -->
+                        <!-- SNS Link外部链接图标引用部分 -->
                         <ul class="list-inline">
                             {% if site.RSS %}
                             <li>
@@ -120,6 +120,7 @@ layout: default
                                 </a>
                             </li>
                             {% endif %}
+			    <!-- 推特 -->
                             {% if site.twitter_username %}
                             <li>
                                 <a href="https://twitter.com/{{ site.twitter_username }}">
@@ -130,6 +131,7 @@ layout: default
                                 </a>
                             </li>
                             {% endif %}
+			    <!-- 知乎 -->
                             {% if site.zhihu_username %}
                             <li>
                                 <a target="_blank" href="https://www.zhihu.com/people/{{ site.zhihu_username }}">
@@ -140,6 +142,7 @@ layout: default
                                 </a>
                             </li>
                             {% endif %}
+			    <!-- 微博 -->
                             {% if site.weibo_username %}
                             <li>
                                 <a target="_blank" href="https://weibo.com/{{ site.weibo_username }}">
@@ -150,6 +153,7 @@ layout: default
                                 </a>
                             </li>
                             {% endif %}
+			    <!-- 脸书 -->
                             {% if site.facebook_username %}
                             <li>
                                 <a target="_blank" href="https://www.facebook.com/{{ site.facebook_username }}">
@@ -160,12 +164,24 @@ layout: default
                                 </a>
                             </li>
                             {% endif %}
+			    <!-- github -->
                             {% if site.github_username %}
                             <li>
                                 <a target="_blank" href="https://github.com/{{ site.github_username }}">
                                     <span class="fa-stack fa-lg">
                                         <i class="fa fa-circle fa-stack-2x"></i>
                                         <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            {% endif %}
+			    <!-- instagram -->
+			    {% if site.instagram_username %}
+                            <li>
+                                <a target="_blank" href="https://www.instagram.com//{{ site.instagram_username }}">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
                                     </span>
                                 </a>
                             </li>
