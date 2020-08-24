@@ -4,7 +4,7 @@ SEOTitle: ART的博客 | ART Blog
 header-img: img/home-bg.jpg
 email: ARTAvrilLavigne@gmail.com
 description: "Avril Lavigne的个人博客，与你一起发现更大的世界。"
-keyword: "互联网, Web, Java, hadoop,spark,storm"
+keyword: "互联网, Web, Java, hadoop, spark, storm"
 url: "http://ARTAvrilLavigne.github.io"              # your host, for absolute URL
 baseurl: ""         # for example, '/blog' if your blog hosted on 'host/blog'
 
