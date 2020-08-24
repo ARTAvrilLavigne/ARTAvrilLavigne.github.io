@@ -10,7 +10,7 @@ tags:
 ---
 ## 一、创建线程的方法<br>
 
-　　首先
+　　常见的四种创建线程的方式：Thread、Runnable、线程池、Callable
   
 ## 二、Callable接口与Futrue接口<br>
 
