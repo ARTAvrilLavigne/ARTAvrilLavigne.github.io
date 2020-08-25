@@ -56,7 +56,7 @@ public interface Future<V> {
   
 ## 三、使用方法<br>
 
-　　使用Callable和Future来获取任务结果的用法例子如下：<br>
+　　使用Callable和Future来获取任务结果的两种常用写法例子如下：<br>
 
 ```
 public class TestMain {
@@ -81,7 +81,7 @@ public class TestMain {
 	// =======================分割线=======================
 	
 	
-        // 方式二：使用FutureTask来处理任务。FutureTask类同时又实现了Runnable接口，所以可以直接提交给Executor执行
+        // 方式二：使用FutureTask来处理任务。FutureTask类除了实现Future接口外还实现了Runnable接口，所以可以直接提交给Executor执行
 	
 	// 定义线程池，可以为多种不同类型线程池
         ExecutorService executor = Executors.newCachedThreadPool();
@@ -103,7 +103,7 @@ public class TestMain {
 }
 
 
-// 线程执行的任务类
+// 线程执行的任务类，此处换成实现Runnable接口重写run方法也是一样的用法也可以通过Future取得线程执行完后的结果
 class AddNumberTask implements Callable<String> {
     public AddNumberTask() {
         // 可通过构造传参在call方法中使用 do something
