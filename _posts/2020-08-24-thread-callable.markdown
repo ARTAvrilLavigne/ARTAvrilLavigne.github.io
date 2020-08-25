@@ -11,10 +11,10 @@ tags:
 ## 一、创建线程的方法<br>
 
 　　常见的四种创建线程的方式：Thread、Runnable接口、线程池、Callable接口<br>
-* 1、**通过继承Thread类实现。**特点：多个线程之间无法共享该线程类的实例变量<br>
-* 2、**实现Runnable接口。**特点：较继承Thread类，避免继承的局限性，适合资源共享。需要实现不返回任何内容的run()方法<br>
-* 3、**创建线程池实现。**特点：线程池提供了一个线程队列，队列中保存所有等待状态的线程，避免创建与销毁额外开销，提高了响应速度<br>
-* 4、**实现Callable接口。**特点：方法中可以有返回值，并且抛出异常。此方式需要配合Future接口使用，实现在完成时返回结果的call()方法。**使用Callable和Future来实现获取任务结果的操作。Callable用来执行任务，产生结果，而Future用来获得结果**<br>
+* 1、`通过继承Thread类实现` 特点：多个线程之间无法共享该线程类的实例变量<br>
+* 2、`实现Runnable接口` 特点：较继承Thread类，避免继承的局限性，适合资源共享。需要实现不返回任何内容的run()方法<br>
+* 3、`创建线程池实现` 特点：线程池提供了一个线程队列，队列中保存所有等待状态的线程，避免创建与销毁额外开销，提高了响应速度<br>
+* 4、`实现Callable接口` 特点：方法中可以有返回值，并且抛出异常。此方式需要配合Future接口使用，实现在完成时返回结果的call()方法。**使用Callable和Future来实现获取任务结果的操作。Callable用来执行任务产生结果，而Future用来获得结果**<br>
   
 ## 二、Callable接口与Futrue接口定义<br>
 
@@ -52,7 +52,7 @@ public interface Future<V> {
   
 ## 三、使用方法<br>
 
-　　使用Callable和Future来获取任务结果的用法：<br>
+　　使用Callable和Future来获取任务结果的用法例子如下：<br>
 
 ```
 public class TestMain {
@@ -72,7 +72,7 @@ public class TestMain {
     }
 
 }
-
+// 线程执行的任务类
 class AddNumberTask implements Callable<String> {
     public AddNumberTask() {
         // 可通过构造传参在call方法中使用 do something
@@ -80,6 +80,7 @@ class AddNumberTask implements Callable<String> {
     // 返回类型由实现Callable接口的泛型决定
     @Override
     public String call() throws Exception {
+    	// 具体执行的业务逻辑
         System.out.println(">>>" + taskNum + "任务启动");
         Date dateTmp1 = new Date();
         Thread.sleep(1000);
