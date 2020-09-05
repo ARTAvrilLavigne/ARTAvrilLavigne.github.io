@@ -15,11 +15,11 @@ tags:
 　　DCF现金流量贴现法(Discounted Cash Flow Method)，即把企业未来特定期间内的预期现金流量还原为当前现值。由于企业价值的真髓还是它未来盈利的能力，只有当企业具备这种能力，它的价值才会被市场认同，因此理论界通常把现金流量贴现法作为企业价值评估的首选方法，在评估实践中也得到了大量的应用，并且已经日趋完善和成熟。<br>
 　　定义公式如下：<br>
 ![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-09-05-economy/1.jpg?raw=true)<br>
-　　其中，value为企业的估值，n为企业的寿命，CashFlow_t为企业在t时刻产生的现金流(n年内自由现金流的年增长Before_Cash_Flow_Rate)，r为反映预期现金流的折现率。
+　　其中，value为企业的估值，n为企业的寿命，CashFlow_t为企业在t时刻产生的现金流(n年内自由现金流的年增长Before_Cash_Flow_Rate)，r为反映预期现金流的折现率。<br>
 　　简单示例如下图所示：<br>
 ![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-09-05-economy/2.jpg?raw=true)<br>
 　　实际运用中，通常会采用两阶段价值模型(Two Stage Growth Model)，第一阶段是超常增长，第二阶段是永续增长。首先，逐年计算出第一阶段的自由现金流及其折现，然后对其第二阶段，估算一个永续价值，两阶段的折现值加总得出企业的估值，即预测期价值+后续期价值。定义公式如下：<br>
-![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-09-05-economy/3.jpg?raw=true)<br>
+![object](https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-09-05-economy/3.png?raw=true)<br>
 　　其中，g为n年后自由现金增长率After_Cash_Flow_Rate。<br>
   
 ### 1.2、DCF模型优缺点<br>
