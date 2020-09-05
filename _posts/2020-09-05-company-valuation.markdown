@@ -152,7 +152,7 @@ public class ZTESimulateValue {
 [1]https://www.wallstreetprep.com/knowledge/dcf-model-training-6-steps-building-dcf-model-excel/<br>
 [2]https://en.wikipedia.org/wiki/Discounted_cash_flow<br>
 [3]https://xueqiu.com/2157290832/72323357<br>
-[4]http://www.iwencai.com/stockpick/search?typed=1&preParams=&ts=1&f=3&qs=pc_%7Esoniu%7Estock%7Estock%7Eimagine%7Equery&selfsectsn=&querytype=stock&searchfilter=&tid=stockpick&w=%E4%B8%AD%E5%85%B4%E9%80%9A%E8%AE%AF<br>
+[4]http://www.iwencai.com/stockpick/search<br>
 [5]https://res-www.zte.com.cn/mediares/zte/Investor/20200828/C3.pdf<br>
 [6]https://pdf.dfcfw.com/pdf/H2_AN202003271377073499_1.pdf<br>
 [7]https://en.wikipedia.org/wiki/Price%E2%80%93earnings_ratio<br>
