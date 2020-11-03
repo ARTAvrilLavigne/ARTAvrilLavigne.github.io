@@ -20,7 +20,7 @@ tags:
 
 ### 1.3、解决<br>
 
-　　解决办法就是不用星号通配符，将报表模块mybatis-config.xml中classpath配置改为classpath:xxxxx/\reportVoMapper.xml，使用具体的xml文件名即可。
+　　解决办法就是不用星号通配符，将报表模块mybatis-config.xml中classpath配置改为classpath:xxxxx/reportVoMapper.xml，使用具体的xml文件名即可。
 
 
 
