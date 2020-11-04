@@ -15,6 +15,9 @@ tags:
 　　这两周做维保平台的报表记录模块的需求，遇到mybatis的一个隐藏的大坑BUG。一一检查数据库以及mybatis的xml配置与mapper文件都是正确的，并且别人写的配置查询模块的sql方法都正常执行，我写的报表模块就是出问题，在断点下运行到执行mapper的sql方法时一直都是报错，不管是增删改查的方法都会报错，报错记录例如为：org.apache.ibatis.binding.BindingException:Invalid  bound  statement  (not found):  com.huawei.neteco.reportManagement.ds.reportVoMapper.insert<br>
 
 ```
+dao_services.xml中配置数据库mapper、数据源以及事务管理等信息
+mybatis-config.xml中配置数据库连接插件
+
 mybatis-config.xml为：
 <configuration>
     <settings>
