@@ -14,6 +14,30 @@ tags:
 
 　　这两周做维保平台的报表记录模块的需求，遇到mybatis的一个隐藏的大坑BUG。一一检查数据库以及mybatis的xml配置与mapper文件都是正确的，并且别人写的配置查询模块的sql方法都正常执行，我写的报表模块就是出问题，在断点下运行到执行mapper的sql方法时一直都是报错，不管是增删改查的方法都会报错，报错记录例如为：org.apache.ibatis.binding.BindingException:Invalid  bound  statement  (not found):  com.huawei.neteco.reportManagement.ds.reportVoMapper.insert<br>
 
+```
+mybatis-config.xml为：
+<configuration>
+    <settings>
+        <setting name="callSettersOnNulls" value="true"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <plugins>
+        <plugin interceptor="com.huawei.neteco.plat.persistence.plugin.mybatis.DasInterceptor"></plugin>
+    </plugins>
+
+</configuration>
+
+dao_services.xml为：
+    <bean id="reportDataSource" class="com.huawei.bsp.mybatis.datasource.BspDataSource"></bean>
+
+    <bean id="reportSqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="reportDataSource"/>
+        <property name="configLocation" value="classpath:META-INF/mybatis/mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath:META-INF/mybatis/zenith/*.xml"/>
+    </bean>
+```
+
 ### 1.2、问题原因<br>
 
 　　网上直接查找这种报错相关很多博客五花八门，试了很多都没有解决。最终在有经验的同事的帮助下，找到了问题的原因，由于项目工程是maven构建的多模块工程，mybatis配置文件没有选择集中配置在service模块或者deployment模块中，而是选择分别在两个子业务模块报表模块和配置查询模块中各自配置mybatis的mapper类与mapper.xml和mybatis-config.xml，问题就出在mybatis-config.xml中配置的classpath路径问题，在报表模块中此处配置的是classpath:xxxxx/\*.xml扫描此模块中resource路径下的各mapper.xml文件，但是另一个配置查询模块也是这样配置的。但这两处classpath配置在微服务运行后，报表模块就是会出问题扫描不到该模块的mapper.xml文件导致运行一直报错找不到有效语句。<br>
