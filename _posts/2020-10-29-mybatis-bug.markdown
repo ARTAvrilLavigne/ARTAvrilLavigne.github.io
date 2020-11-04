@@ -19,6 +19,9 @@ dao_services.xml中配置数据库mapper、数据源以及事务管理等信息
 mybatis-config.xml中配置数据库连接插件
 
 mybatis-config.xml为：
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL MAP Config 3.1//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <settings>
         <setting name="callSettersOnNulls" value="true"/>
@@ -30,15 +33,42 @@ mybatis-config.xml为：
     </plugins>
 
 </configuration>
-
+===============================================================================================
 dao_services.xml为：
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd" default-lazy-init="false" default-autowire="byName">
+
     <bean id="reportDataSource" class="com.huawei.bsp.mybatis.datasource.BspDataSource"></bean>
 
     <bean id="reportSqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="reportDataSource"/>
         <property name="configLocation" value="classpath:META-INF/mybatis/mybatis-config.xml"/>
-        <property name="mapperLocations" value="classpath:META-INF/mybatis/zenith/*.xml"/>
+        <property name="mapperLocations" value="classpath:META-INF/mybatis/zenith/ReportTaskVoMapper.xml"/>
     </bean>
+
+    <bean id="reportSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="reportSqlSessionFactoryBean"/>
+    </bean>
+
+    <bean id="reportTaskVoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.huawei.neteco.warranty.reportmanagement.ds.mapper.ReportTaskVoMapper"/>
+        <property name="sqlSessionTemplate" ref="reportSqlSessionTemplate"/>
+    </bean>
+
+
+    <!--事务管理-->
+    <bean id="reportTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="reportDataSource"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="reportTransactionManager"/>
+
+</beans>
 ```
 
 ### 1.2、问题原因<br>
@@ -47,7 +77,7 @@ dao_services.xml为：
 
 ### 1.3、问题解决<br>
 
-　　解决办法就是不用星号通配符，将报表模块mybatis-config.xml中classpath配置改为classpath:xxxxx/reportVoMapper.xml，使用具体的xml文件名即可。
+　　解决办法就是不用星号通配符，将报表模块mybatis-config.xml中classpath配置改为classpath:META-INF/mybatis/zenith/ReportTaskVoMapper.xml，使用具体的xml文件名即可。
 
 ## 参考文献<br>
 [1]https://blog.csdn.net/baidu_41885330/article/details/82110686<br>
