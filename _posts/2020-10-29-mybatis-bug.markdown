@@ -77,7 +77,12 @@ dao_services.xml为：
 
 ### 1.3、问题解决<br>
 
-　　解决办法就是不用星号通配符，将报表模块mybatis-config.xml中classpath配置改为classpath:META-INF/mybatis/zenith/ReportTaskVoMapper.xml，使用具体的xml文件名即可。
+　　解决办法就是不用星号通配符，将报表模块mybatis-config.xml中classpath配置改为classpath:META-INF/mybatis/zenith/ReportTaskVoMapper.xml，使用具体的xml文件名即可。<br>
+　　我又继续尝试将两个子模块的dao_services.xml中classpath后增加一个星号使用通配符格式成功执行了，说明应该是子模块加载时配置查询模块先加载其路径下mapper.xml后续下一个模块就不生效了，因为classpath后没有星号只扫描该模块导致出现这种情况，如下所示：<br>
+
+```
+<property name="mapperLocations" value="classpath*:META-INF/mybatis/zenith/*"/>
+```
 
 ## 参考文献<br>
 [1]https://blog.csdn.net/baidu_41885330/article/details/82110686<br>
