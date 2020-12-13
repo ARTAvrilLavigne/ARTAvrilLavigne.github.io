@@ -19,6 +19,6 @@ tags:
 
 ## 参考文献<br>
 
-[1]https://www.jianshu.com/p/9ea61d204559<br>
-[2]https://www.cnblogs.com/wyq178/p/11415877.html<br>
-[3]https://blog.csdn.net/whp404/article/details/81412417<br>
+[1].https://www.jianshu.com/p/9ea61d204559<br>
+[2].https://www.cnblogs.com/wyq178/p/11415877.html<br>
+[3].https://blog.csdn.net/whp404/article/details/81412417<br>
