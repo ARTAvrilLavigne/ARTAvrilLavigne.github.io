@@ -21,7 +21,7 @@ tags:
 　　为了能够很好地理解 Bean 加载流程，省略一些异常、日志和分支处理和一些特殊条件的判断，流程图如下所示：<br>
 <div>
 	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/1.png?raw=true">
-            <img id="java_lock" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/1.png?raw=true" alt="lock"/>
+            <img id="springBean" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/1.png?raw=true" alt="springBean"/>
 	</a>
 </div>
 
@@ -38,7 +38,63 @@ tags:
   
 ## 三、细节分析<br>
 
-　　S艾
+### 3.1、转化BeanName<br>
+
+　　解析完配置文件后创建的Map，使用的是 beanName 作为 key。如下DefaultListableBeanFactory：<br>
+  
+```
+/** Map of bean definition objects, keyed by bean name */
+private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>(256);
+```
+
+　　BeanFactory.getBean 中传入的 name，有可能是这几种情况：<br>
+* `bean name`，可以直接获取到定义 BeanDefinition。<br>
+* `alias name`，别名，需要转化。<br>
+* `factorybean name, 带 & 前缀`，通过它获取 BeanDefinition 的时候需要去除 & 前缀。<br>
+
+　　为了能够获取到正确的BeanDefinition，需要先对 name 做一个转换，得到 beanName。如下所示：<br>
+<div>
+	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/2.png?raw=true">
+            <img id="beanName" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/2.png?raw=true" alt="beanName"/>
+	</a>
+</div>
+
+转化类：AbstractBeanFactory.doGetBean如下所示：<br>
+
+```
+protected <T> T doGetBean ... {
+    ...
+    
+    // 转化工作 
+    final String beanName = transformedBeanName(name);
+    ...
+}
+```
+
+如果是`alias name`，在解析阶段，alias name 和 bean name 的映射关系被注册到 SimpleAliasRegistry 中。从该注册器中取到 beanName。如下SimpleAliasRegistry.canonicalName：<br>
+
+```
+public String canonicalName(String name) {
+    ...
+    resolvedName = this.aliasMap.get(canonicalName);
+    ...
+}
+```
+
+如果是`factorybean name`，表示这是个工厂 bean，有携带前缀修饰符 & 的，直接把前缀去掉。如下BeanFactoryUtils.transformedBeanName：<br>
+
+```
+public static String transformedBeanName(String name) {
+    Assert.notNull(name, "'name' must not be null");
+    String beanName = name;
+    while (beanName.startsWith(BeanFactory.FACTORY_BEAN_PREFIX)) {
+        beanName = beanName.substring(BeanFactory.FACTORY_BEAN_PREFIX.length());
+    }
+    return beanName;
+}
+```
+
+
 
 
 
