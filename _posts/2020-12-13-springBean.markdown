@@ -94,7 +94,82 @@ public static String transformedBeanName(String name) {
 }
 ```
 
+### 3.2、合并RootBeanDefinition<br>
 
+　　从配置文件读取到的 BeanDefinition 是 GenericBeanDefinition。它的记录了一些当前类声明的属性或构造参数，但是对于父类只用了一个`parentName`来记录。<br>
+
+```
+public class GenericBeanDefinition extends AbstractBeanDefinition {
+    ...
+    private String parentName;
+    ...
+}
+```
+
+　　接下来会发现一个问题，在后续实例化 Bean 的时候，使用的 BeanDefinition 是 RootBeanDefinition 类型而非 GenericBeanDefinition。这是为什么？<br>
+　　答案很明显，GenericBeanDefinition 在有继承关系的情况下，定义的信息不足：<br>
+
+* 如果不存在继承关系，GenericBeanDefinition 存储的信息是完整的，可以直接转化为 RootBeanDefinition。<br>
+* 如果存在继承关系，GenericBeanDefinition 存储的是 增量信息 而不是 全量信息。<br>
+
+　　为了能够正确初始化对象，需要完整的信息才行。需要递归`合并父类的定义`：<br>
+<div>
+	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/3.png?raw=true">
+            <img id="BeanDefinition" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/3.png?raw=true" alt="BeanDefinition"/>
+	</a>
+</div>
+
+　　如下`AbstractBeanFactory.doGetBean`：<br>
+
+```
+protected <T> T doGetBean ... {
+    ...
+    
+    // 合并父类定义
+    final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+        
+    ...
+        
+    // 使用合并后的定义进行实例化
+    bean = getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);
+        
+    ...
+}
+```
+
+　　在判断`parentName`存在的情况下，说明存在父类定义，启动合并。如果父类还有父类怎么办？递归调用，继续合并。如下`AbstractBeanFactory.getMergedBeanDefinition`方法：<br>
+
+```
+    protected RootBeanDefinition getMergedBeanDefinition(
+            String beanName, BeanDefinition bd, BeanDefinition containingBd)
+            throws BeanDefinitionStoreException {
+
+        ...
+        
+        String parentBeanName = transformedBeanName(bd.getParentName());
+
+        ...
+        
+        // 递归调用，继续合并父类定义
+        pbd = getMergedBeanDefinition(parentBeanName);
+        
+        ...
+
+        // 使用合并后的完整定义，创建 RootBeanDefinition
+        mbd = new RootBeanDefinition(pbd);
+        
+        // 使用当前定义，对 RootBeanDefinition 进行覆盖
+        mbd.overrideFrom(bd);
+
+        ...
+        return mbd;
+    
+    }
+```
+
+　　每次合并完父类定义后，都会调用`RootBeanDefinition.overrideFrom`对父类的定义进行覆盖，获取到当前类能够正确实例化的**全量信息**。<br>
+
+### 3.3、处理循环依赖<br>
 
 
 
