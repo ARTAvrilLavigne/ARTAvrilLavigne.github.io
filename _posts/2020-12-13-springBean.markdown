@@ -171,7 +171,161 @@ protected <T> T doGetBean ... {
 
 ### 3.3、处理循环依赖<br>
 
+　　循环依赖概念：如下图所示例子，这里有三个类 A、B、C，然后 A 关联 B，B 关联 C，C 又关联 A，这就形成了一个循环依赖。如果是方法调用是不算循环依赖的，循环依赖必须要持有引用。<br>
+<div>
+	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/4.png?raw=true">
+            <img id="BeanDefinition" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/4.png?raw=true" alt="BeanDefinition"/>
+	</a>
+</div>
 
+　　循环依赖根据注入的时机分成两种类型：<br>
+* `构造器循环依赖`：依赖的对象是通过构造器传入的，发生在实例化 Bean 的时候。<br>
+* `设值循环依赖`：依赖的对象是通过 setter 方法传入的，对象已经实例化，发生属性填充和依赖注入的时候。<br>
+
+　　**如果是构造器循环依赖，本质上是无法解决的。**比如我们调用 A 的构造器，发现依赖 B，于是去调用 B 的构造器进行实例化，发现又依赖 C，于是调用 C 的构造器去初始化，结果依赖 A，整个形成一个死结，导致 A 无法创建。<br>
+　　**如果是设值循环依赖，Spring 框架只支持单例下的设值循环依赖。**Spring 通过对还在创建过程中的单例，缓存并提前暴露该单例，使得其他实例可以引用该依赖。<br>
+
+### 3.3.1、原型模式的循环依赖<br>
+
+　　**Spring不支持原型模式的任何循环依赖。**检测到循环依赖会直接抛出 BeanCurrentlyInCreationException 异常。<br>
+　　使用了一个ThreadLocal变量`prototypesCurrentlyInCreation`来记录当前线程正在创建中的 Bean 对象，见`AbtractBeanFactory#prototypesCurrentlyInCreation`：<br>
+
+```
+/** Names of beans that are currently in creation */
+
+private final ThreadLocal<Object> prototypesCurrentlyInCreation =
+            new NamedThreadLocal<Object>("Prototype beans currently in creation");
+```
+
+　　在 Bean 创建前进行记录，在 Bean 创建后删除记录。见`AbstractBeanFactory.doGetBean`：<br>
+
+```
+...
+if (mbd.isPrototype()) {
+    // It's a prototype -> create a new instance.
+    Object prototypeInstance = null;
+    try {
+    
+        // 添加记录
+        beforePrototypeCreation(beanName);
+        prototypeInstance = createBean(beanName, mbd, args);
+    }
+    finally {
+        // 删除记录
+        afterPrototypeCreation(beanName);
+    }
+    bean = getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);
+}
+...     
+```
+
+其中`AbtractBeanFactory.beforePrototypeCreation`的记录操作：<br>
+
+```
+    protected void beforePrototypeCreation(String beanName) {
+        Object curVal = this.prototypesCurrentlyInCreation.get();
+        if (curVal == null) {
+            this.prototypesCurrentlyInCreation.set(beanName);
+        }
+        else if (curVal instanceof String) {
+            Set<String> beanNameSet = new HashSet<String>(2);
+            beanNameSet.add((String) curVal);
+            beanNameSet.add(beanName);
+            this.prototypesCurrentlyInCreation.set(beanNameSet);
+        }
+        else {
+            Set<String> beanNameSet = (Set<String>) curVal;
+            beanNameSet.add(beanName);
+        }
+    }
+```
+
+而`AbtractBeanFactory.beforePrototypeCreation`的删除记录操作：<br>
+
+```
+    protected void afterPrototypeCreation(String beanName) {
+        Object curVal = this.prototypesCurrentlyInCreation.get();
+        if (curVal instanceof String) {
+            this.prototypesCurrentlyInCreation.remove();
+        }
+        else if (curVal instanceof Set) {
+            Set<String> beanNameSet = (Set<String>) curVal;
+            beanNameSet.remove(beanName);
+            if (beanNameSet.isEmpty()) {
+                this.prototypesCurrentlyInCreation.remove();
+            }
+        }
+    }
+```
+
+　　为了节省内存空间，在单个元素时 prototypesCurrentlyInCreation 只记录 String 对象，在有多个依赖元素时改用 Set 集合。这里是 Spring 使用的一个节约内存的小技巧。接着看看读取以及判断循环的方式。这里要分两种情况讨论。<br>
+* 构造函数循环依赖。<br>
+* 设置循环依赖。<br>
+
+　　1、如果是构造函数依赖的，比如 A 的构造函数依赖了 B，会有这样的情况。实例化 A 的阶段中，匹配到要使用的构造函数，发现构造函数有参数 B，会使用 BeanDefinitionValueResolver 来检索 B 的实例。如下`BeanDefinitionValueResolver.resolveReference`：我们发现这里继续调用`beanFactory.getBean`去加载 B。<br>
+
+```
+private Object resolveReference(Object argName, RuntimeBeanReference ref) {
+
+    ...
+    Object bean = this.beanFactory.getBean(refName);
+    ...
+}
+```
+
+　　2、如果是设值循环依赖的，比如我们这里不提供构造函数，并且使用了 @Autowired 的方式(还有其他设值方式就不一一举例了)注解依赖：<br>
+
+```
+public class A {
+    @Autowired
+    private B b;
+    ...
+}
+```
+
+　　加载过程中，找到无参数构造函数，不需要检索构造参数的引用，实例化成功。接着执行下去，进入到属性填充阶段`AbtractBeanFactory.populateBean`，在这里会进行 B 的依赖注入。为了能够获取到 B 的实例化后的引用，最终会通过检索类 DependencyDescriptor 中去把依赖读取出来，如下`DependencyDescriptor.resolveCandidate`：发现`beanFactory.getBean`方法又被调用到了。<br>
+
+```
+public Object resolveCandidate(String beanName, Class<?> requiredType, BeanFactory beanFactory)
+            throws BeansException {
+    return beanFactory.getBean(beanName, requiredType);
+}
+```
+
+　　**在这里，两种循环依赖达成了统一。**无论是构造函数的循环依赖还是设置循环依赖，在需要注入依赖的对象时，会继续调用`beanFactory.getBean`去加载对象，形成一个递归操作。而每次调用` beanFactory.getBean`进行实例化前后，都使用了 prototypesCurrentlyInCreation 这个变量做记录。按照这里的思路走，整体效果等同于**建立依赖对象的构造链。**其中原型模式的循环依赖之
+prototypesCurrentlyInCreation 中的值的变化如下：<br>
+<div>
+	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/5.png?raw=true">
+            <img id="BeanDefinition" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/5.png?raw=true" alt="BeanDefinition"/>
+	</a>
+</div>
+
+　　调用判定的地方在`AbstractBeanFactory.doGetBean`中，所有对象的实例化均会从这里启动。如下所示：<br>
+
+```
+// Fail if we're already creating this bean instance:
+// We're assumably within a circular reference.
+
+if (isPrototypeCurrentlyInCreation(beanName)) {
+    throw new BeanCurrentlyInCreationException(beanName);
+}
+```
+
+　　判定的实现方法为如下所示`AbstractBeanFactory.isPrototypeCurrentlyInCreation`：<br>
+
+```
+protected boolean isPrototypeCurrentlyInCreation(String beanName) {
+    Object curVal = this.prototypesCurrentlyInCreation.get();
+    return (curVal != null &&
+        (curVal.equals(beanName) || (curVal instanceof Set && ((Set<?>) curVal).contains(beanName))));
+}
+```
+
+　　所以在原型模式下，构造函数循环依赖和设值循环依赖，本质上使用同一种方式检测出来。Spring 无法解决，直接抛出 BeanCurrentlyInCreationException 异常。<br>
+  
+  
+  
+  
 
 
 ## 参考文献<br>
