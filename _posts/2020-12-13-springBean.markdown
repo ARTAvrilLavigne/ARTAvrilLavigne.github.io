@@ -375,7 +375,82 @@ public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 * 加载 C，记录 singletonsCurrentlyInCreation = [a, b, c]，构造依赖 A，又开始加载 A。<br>
 * 加载 A，执行到 DefaultSingletonBeanRegistry.beforeSingletonCreation ，singletonsCurrentlyInCreation 中 a 已经存在了，检测到构造循环依赖，直接抛出异常结束操作。<br>
 
+### 3.3.3、单例模式的设值循环依赖<br>
 
+　　**单例模式下，构造函数的循环依赖无法解决，但设值循环依赖是可以解决的。**<br>
+　　这里有一个重要的设计：**提前暴露创建中的单例**。拿上面的 A、B、C 的的设值依赖做分析，如下所示：<br>
+* => 1. A 创建 -> A 构造完成，开始注入属性，发现依赖 B，启动 B 的实例化<br>
+* => 2. B 创建 -> B 构造完成，开始注入属性，发现依赖 C，启动 C 的实例化<br>
+* => 3. C 创建 -> C 构造完成，开始注入属性，发现依赖 A<br>
+　　重点来了，在我们的阶段 1中， A 已经构造完成，Bean 对象在堆中也分配好内存了，即使后续往 A 中填充属性（比如填充依赖的 B 对象），也不会修改到 A 的引用地址。所以，这个时候是否可以`提前拿 A 实例的引用来先注入到 C `，去完成 C 的实例化，于是流程变成如下这样:<br>
+* => 3. C 创建 -> C 构造完成，开始注入依赖，发现依赖 A，发现 A 已经构造完成，直接引用，完成 C 的实例化。<br>
+* => 4. C 完成实例化后，B 注入 C 也完成实例化，A 注入 B 也完成实例化。<br>
+　　这就是 Spring 解决单例模式设值循环依赖应用的技巧。单例模式创建流程图如下所示为：<br>
+<div>
+	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/7.png?raw=true">
+            <img id="BeanDefinition" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/7.png?raw=true" alt="BeanDefinition"/>
+	</a>
+</div>
+　　为了能够实现单例的提前暴露。Spring 使用了三级缓存，如下`DefaultSingletonBeanRegistry`：<br>
+
+```
+/** Cache of singleton objects: bean name --> bean instance */
+private final Map<String, Object> singletonObjects = new ConcurrentHashMap<String, Object>(256);
+
+/** Cache of singleton factories: bean name --> ObjectFactory */
+private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<String, ObjectFactory<?>>(16);
+
+/** Cache of early singleton objects: bean name --> bean instance */
+private final Map<String, Object> earlySingletonObjects = new HashMap<String, Object>(16);
+```
+
+　　这三个缓存的区别如下：<br>
+* `singletonObjects`，单例缓存，存储已经实例化完成的单例。<br>
+* `singletonFactories`，生产单例的工厂的缓存，存储工厂。<br>
+* `earlySingletonObjects`，提前暴露的单例缓存，这时候的单例刚刚创建完，但还会注入依赖。<br>
+
+　　从`getBean("a")`开始，添加的 SingletonFactory 具体实现如下：<br>
+
+```
+protected Object doCreateBean ...  {
+
+    ...
+    addSingletonFactory(beanName, new ObjectFactory<Object>() {
+        @Override
+        public Object getObject() throws BeansException {
+            return getEarlyBeanReference(beanName, mbd, bean);
+        }
+    });
+    ...
+}
+```
+
+　　可以看到如果使用该 SingletonFactory 获取实例，使用的是`getEarlyBeanReference`方法，返回一个未初始化的引用。<br>
+　　读取缓存的地方如下`DefaultSingletonBeanRegistry`:<br>
+
+```
+protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+    Object singletonObject = this.singletonObjects.get(beanName);
+    if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
+        synchronized (this.singletonObjects) {
+            singletonObject = this.earlySingletonObjects.get(beanName);
+            if (singletonObject == null && allowEarlyReference) {
+                ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
+                if (singletonFactory != null) {
+                    singletonObject = singletonFactory.getObject();
+                    this.earlySingletonObjects.put(beanName, singletonObject);
+                    this.singletonFactories.remove(beanName);
+                }
+            }
+        }
+    }
+    return (singletonObject != NULL_OBJECT ? singletonObject : null);
+}
+```
+
+　　先尝试从`singletonObjects`和`singletonFactory`读取，没有数据，然后尝试`singletonFactories`读取`singletonFactory`，执行`getEarlyBeanReference`获取到引用后，存储到` earlySingletonObjects`中。<br>
+　　这个`earlySingletonObjects`的好处是，如果此时又有其他地方尝试获取未初始化的单例，可以从`earlySingletonObjects`直接取出而不需要再调用`getEarlyBeanReference`。<br>
+　　从流程图上看，实际上注入 C 的 A 实例，还在填充属性阶段，并没有完全地初始化。等递归回溯回去，A 顺利拿到依赖 B，才会真实地完成 A 的加载。<br>
 
 
 
