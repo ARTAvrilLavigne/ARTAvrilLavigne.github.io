@@ -185,7 +185,7 @@ protected <T> T doGetBean ... {
 　　**如果是构造器循环依赖，本质上是无法解决的。**比如我们调用 A 的构造器，发现依赖 B，于是去调用 B 的构造器进行实例化，发现又依赖 C，于是调用 C 的构造器去初始化，结果依赖 A，整个形成一个死结，导致 A 无法创建。<br>
 　　**如果是设值循环依赖，Spring 框架只支持单例下的设值循环依赖。**Spring 通过对还在创建过程中的单例，缓存并提前暴露该单例，使得其他实例可以引用该依赖。<br>
 
-### 3.3.1、原型模式的循环依赖<br>
+#### 3.3.1、原型模式的循环依赖<br>
 
 　　**Spring不支持原型模式的任何循环依赖。**检测到循环依赖会直接抛出 BeanCurrentlyInCreationException 异常。<br>
 　　使用了一个ThreadLocal变量`prototypesCurrentlyInCreation`来记录当前线程正在创建中的 Bean 对象，见`AbtractBeanFactory#prototypesCurrentlyInCreation`：<br>
@@ -323,7 +323,7 @@ protected boolean isPrototypeCurrentlyInCreation(String beanName) {
 
 　　所以在原型模式下，构造函数循环依赖和设值循环依赖，本质上使用同一种方式检测出来。Spring无法解决，直接抛出 BeanCurrentlyInCreationException 异常。<br>
   
-### 3.3.2、单例模式的构造循环依赖<br>
+#### 3.3.2、单例模式的构造循环依赖<br>
 
 　　**Spring也不支持单例模式的构造循环依赖。**检测到构造循环依赖也会抛出 BeanCurrentlyInCreationException 异常。<br>
 　　和原型模式相似，单例模式也用了一个数据结构来记录正在创建中的 beanName。如下`DefaultSingletonBeanRegistry`:<br>
@@ -375,7 +375,7 @@ public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 * 加载 C，记录 singletonsCurrentlyInCreation = [a, b, c]，构造依赖 A，又开始加载 A。<br>
 * 加载 A，执行到 DefaultSingletonBeanRegistry.beforeSingletonCreation ，singletonsCurrentlyInCreation 中 a 已经存在了，检测到构造循环依赖，直接抛出异常结束操作。<br>
 
-### 3.3.3、单例模式的设值循环依赖<br>
+#### 3.3.3、单例模式的设值循环依赖<br>
 
 　　**单例模式下，构造函数的循环依赖无法解决，但设值循环依赖是可以解决的。**<br>
 　　这里有一个重要的设计：**提前暴露创建中的单例**。拿上面的 A、B、C 的的设值依赖做分析，如下所示：<br>
@@ -452,11 +452,303 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 　　这个`earlySingletonObjects`的好处是，如果此时又有其他地方尝试获取未初始化的单例，可以从`earlySingletonObjects`直接取出而不需要再调用`getEarlyBeanReference`。<br>
 　　从流程图上看，实际上注入 C 的 A 实例，还在填充属性阶段，并没有完全地初始化。等递归回溯回去，A 顺利拿到依赖 B，才会真实地完成 A 的加载。<br>
 
+### 3.4、创建实例<br>
+
+　　**获取到完整的 RootBeanDefintion 后，就可以拿这份定义信息来实例具体的 Bean。**<br>
+　　具体实例创建见`AbstractAutowireCapableBeanFactory.createBeanInstance`，返回 Bean 的包装类 BeanWrapper，一共有三种策略如下：<br>
+* `使用工厂方法创建`，instantiateUsingFactoryMethod 。<br>
+* `使用有参构造函数创建`，autowireConstructor。<br>
+* `使用无参构造函数创建`，instantiateBean。<br>
+
+　　1、使用工厂方法创建，会先使用 getBean 获取工厂类，然后通过参数找到匹配的工厂方法，调用实例化方法实现实例化，具体如下`ConstructorResolver.instantiateUsingFactoryMethod`：<br>
+
+```
+public BeanWrapper instantiateUsingFactoryMethod ... (
+    ...
+    String factoryBeanName = mbd.getFactoryBeanName();
+    ...
+    factoryBean = this.beanFactory.getBean(factoryBeanName);
+    ...
+    // 匹配正确的工厂方法
+    ...
+    beanInstance = this.beanFactory.getInstantiationStrategy().instantiate(...);
+    ...
+    bw.setBeanInstance(beanInstance);
+    return bw;
+}
+```
+
+　　2、使用有参构造函数创建，整个过程比较复杂，涉及到参数和构造器的匹配。为了找到匹配的构造器，Spring花了大量的工作，如下`ConstructorResolver.autowireConstructor`：<br>
+
+```
+public BeanWrapper autowireConstructor ... {
+    ...
+    Constructor<?> constructorToUse = null;
+    ...
+    // 匹配构造函数的过程
+    ...
+    beanInstance = this.beanFactory.getInstantiationStrategy().instantiate(...);
+    ...
+    bw.setBeanInstance(beanInstance);
+    return bw;
+}           
+```
+
+　　3、使用无参构造函数创建是最简单的方式，如下`AbstractAutowireCapableBeanFactory.instantiateBean`:<br>
+
+```
+protected BeanWrapper instantiateBean ... {
+    ...
+    beanInstance = getInstantiationStrategy().instantiate(...);
+    ...
+    BeanWrapper bw = new BeanWrapperImpl(beanInstance);
+    initBeanWrapper(bw);
+    return bw;
+    ...
+}
+```
+
+　　我们发现这三种实例化方式，最后都会走`getInstantiationStrategy().instantiate(...)`，如下实现类`impleInstantiationStrategy.instantiate`：<br>
+
+```
+public Object instantiate ... {
+    if (bd.getMethodOverrides().isEmpty()) {
+        ...
+        return BeanUtils.instantiateClass(constructorToUse);
+    }
+    else {
+        // Must generate CGLIB subclass.
+        return instantiateWithMethodInjection(bd, beanName, owner);
+    }
+}
+```
+
+　　虽然拿到了构造函数，并没有立即实例化。因为用户使用了 replace 和 lookup 的配置方法，用到了动态代理加入对应的逻辑。如果没有的话，直接使用反射来创建实例。<br>
+　　创建实例后，就可以开始注入属性和初始化等操作。<br>
+　　但这里的 Bean 还不是最终的 Bean。返回给调用方使用时，如果是 FactoryBean 的话需要使用 getObject 方法来创建实例。如下`AbstractBeanFactory.getObjectFromBeanInstance`，会执行到 `doGetObjectFromFactoryBean`：<br>
+
+```
+private Object doGetObjectFromFactoryBean ... {
+    ...
+    object = factory.getObject();
+    ...
+    return object;
+}
+```
+
+### 3.5、注入属性<br>
+
+　　实例创建完后开始进行属性的注入，如果涉及到外部依赖的实例，会自动检索并关联到该当前实例。<br>
+　　Ioc 思想体现出来了。正是有了这一步操作，Spring 降低了各个类之间的耦合。属性填充的入口方法在如下所示`AbstractAutowireCapableBeanFactory.populateBean`。<br>
+
+```
+protected void populateBean ... {
+    PropertyValues pvs = mbd.getPropertyValues();
+    
+    ...
+    // InstantiationAwareBeanPostProcessor 前处理
+    for (BeanPostProcessor bp : getBeanPostProcessors()) {
+        if (bp instanceof InstantiationAwareBeanPostProcessor) {
+            InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+            if (!ibp.postProcessAfterInstantiation(bw.getWrappedInstance(), beanName)) {
+                continueWithPropertyPopulation = false;
+                break;
+            }
+        }
+    }
+    ...
+    
+    // 根据名称注入
+    if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_NAME) {
+        autowireByName(beanName, mbd, bw, newPvs);
+    }
+
+    // 根据类型注入
+    if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_TYPE) {
+        autowireByType(beanName, mbd, bw, newPvs);
+    }
+
+    ... 
+    // InstantiationAwareBeanPostProcessor 后处理
+    for (BeanPostProcessor bp : getBeanPostProcessors()) {
+        if (bp instanceof InstantiationAwareBeanPostProcessor) {
+            InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+            pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
+            if (pvs == null) {
+                return;
+            }
+        }
+    }
+    
+    ...
+    
+    // 应用属性值
+    applyPropertyValues(beanName, mbd, bw, pvs);
+}
+```
+
+可以看到主要的处理环节有：<br>
+* 应用`InstantiationAwareBeanPostProcessor`处理器，在属性注入前后进行处理。**假设我们使用了 @Autowired 注解，这里会调用到 AutowiredAnnotationBeanPostProcessor 来对依赖的实例进行检索和注入的**，它是 InstantiationAwareBeanPostProcessor 的子类。<br>
+* 根据名称或者类型进行自动注入，存储结果到 PropertyValues 中。<br>
+* 应用 PropertyValues，填充到 BeanWrapper。这里在检索依赖实例的引用的时候，会递归调用 BeanFactory.getBean 来获得。<br>
+
+### 3.6、初始化<br>
+
+#### 3.6.1、触发Aware<br>
+
+　　如果我们的 Bean 需要容器的一些资源该怎么办？比如需要获取到 BeanFactory、ApplicationContext 等等。Spring 提供了 Aware 系列接口来解决这个问题。比如有这样的 Aware：<br>
+* BeanFactoryAware，用来获取 BeanFactory。<br>
+* ApplicationContextAware，用来获取 ApplicationContext。<br>
+* ResourceLoaderAware，用来获取 ResourceLoaderAware。<br>
+* ServletContextAware，用来获取 ServletContext。<br>
+
+　　Spring 在初始化阶段，如果判断 Bean 实现了这几个接口之一，就会往 Bean 中注入它关心的资源。如下`AbstractAutowireCapableBeanFactory.invokeAwareMethos`:<br>
+
+```
+private void invokeAwareMethods(final String beanName, final Object bean) {
+    if (bean instanceof Aware) {
+        if (bean instanceof BeanNameAware) {
+            ((BeanNameAware) bean).setBeanName(beanName);
+        }
+        if (bean instanceof BeanClassLoaderAware) {
+            ((BeanClassLoaderAware) bean).setBeanClassLoader(getBeanClassLoader());
+        }
+        if (bean instanceof BeanFactoryAware) {
+            ((BeanFactoryAware) bean).setBeanFactory(AbstractAutowireCapableBeanFactory.this);
+        }
+    }
+}
+```
+
+#### 3.6.2、触发BeanPostProcessor<br>
 
 
+　　在 Bean 的初始化前或者初始化后，我们如果需要进行一些增强操作怎么办？<br>
+　　这些增强操作比如打日志、做校验、属性修改、耗时检测等等。Spring 框架提供了 BeanPostProcessor 来达成这个目标。比如我们使用注解 @Autowired 来声明依赖，就是使用 `AutowiredAnnotationBeanPostProcessor`来实现依赖的查询和注入的。接口定义如下：<br>
 
+```
+public interface BeanPostProcessor {
 
+    // 初始化前调用
+    Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException;
 
+    // 初始化后调用
+    Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException;
+
+}
+```
+
+　　实现该接口的 Bean 都会被 Spring 注册到 beanPostProcessors 中，如下`AbstractBeanFactory`:<br>
+
+```
+/** BeanPostProcessors to apply in createBean */
+private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
+```
+
+　　只要 Bean 实现了 BeanPostProcessor 接口，加载的时候会被 Spring 自动识别这些 Bean，自动注册，非常方便。然后在 Bean 实例化前后，Spring 会去调用我们已经注册的 beanPostProcessors 把处理器都执行一遍。<br>
+
+```
+public abstract class AbstractAutowireCapableBeanFactory ... {
+        
+    ...
+    
+    @Override
+    public Object applyBeanPostProcessorsBeforeInitialization ... {
+
+        Object result = existingBean;
+        for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
+            result = beanProcessor.postProcessBeforeInitialization(result, beanName);
+            if (result == null) {
+                return result;
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Object applyBeanPostProcessorsAfterInitialization ... {
+
+        Object result = existingBean;
+        for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
+            result = beanProcessor.postProcessAfterInitialization(result, beanName);
+            if (result == null) {
+                return result;
+            }
+        }
+        return result;
+    }
+    
+    ...
+}
+```
+
+　　这里使用了责任链模式，Bean 会在处理器链中进行传递和处理。当我们调用`BeanFactory.getBean`的后，执行到 Bean 的初始化方法`AbstractAutowireCapableBeanFactory.initializeBean`会启动这些处理器。<br>
+
+```
+protected Object initializeBean ... {   
+    ...
+    wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
+    ...
+    // 触发自定义 init 方法
+    invokeInitMethods(beanName, wrappedBean, mbd);
+    ...
+    wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
+    ...
+}
+```
+
+#### 3.6.3、触发自定义init<br>
+
+　　自定义初始化有两种方式可以选择：<br>
+* 实现 InitializingBean。提供了一个很好的机会，在属性设置完成后再加入自己的初始化逻辑。<br>
+* 定义 init 方法。自定义的初始化逻辑。<br>
+
+　　如下`AbstractAutowireCapableBeanFactory.invokeInitMethods`:<br>
+
+```
+    protected void invokeInitMethods ... {
+
+        boolean isInitializingBean = (bean instanceof InitializingBean);
+        if (isInitializingBean && (mbd == null || !mbd.isExternallyManagedInitMethod("afterPropertiesSet"))) {
+            ...
+            
+            ((InitializingBean) bean).afterPropertiesSet();
+            ...
+        }
+
+        if (mbd != null) {
+            String initMethodName = mbd.getInitMethodName();
+            if (initMethodName != null && !(isInitializingBean && "afterPropertiesSet".equals(initMethodName)) &&
+                    !mbd.isExternallyManagedInitMethod(initMethodName)) {
+                invokeCustomInitMethod(beanName, bean, mbd);
+            }
+        }
+    }
+```
+
+### 3.7、类型转换<br>
+
+　　Bean 已经加载完毕，属性也填充好了，初始化也完成了。在返回给调用者之前，还留有一个机会对 Bean 实例进行类型的转换。如下`AbstractBeanFactory.doGetBean`：<br>
+
+```
+protected <T> T doGetBean ... {
+    ...
+    if (requiredType != null && bean != null && !requiredType.isInstance(bean)) {
+        ...
+        return getTypeConverter().convertIfNecessary(bean, requiredType);
+        ...
+    }
+    return (T) bean;
+}
+
+```
+
+## 四、总结<br>
+
+　　抛开一些细节处理和扩展功能，一个 Bean 的创建过程无非是：<br>
+`获取完整定义 -> 实例化 -> 依赖注入 -> init初始化 -> 类型转换`<br>
+
+　　作为一个完善的框架，Spring 需要考虑到各种可能性，还需要考虑到接入的扩展性。所以有了复杂的循环依赖的解决，复杂的有参数构造器的匹配过程，有了 BeanPostProcessor 来对实例化或初始化的 Bean 进行扩展修改。先有个整体设计的思维，再逐步击破针对这些特殊场景的设计，整个 Bean 加载流程迎刃而解。<br>
 
 
 ## 参考文献<br>
