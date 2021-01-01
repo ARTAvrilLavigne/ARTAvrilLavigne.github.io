@@ -321,11 +321,67 @@ protected boolean isPrototypeCurrentlyInCreation(String beanName) {
 }
 ```
 
-　　所以在原型模式下，构造函数循环依赖和设值循环依赖，本质上使用同一种方式检测出来。Spring 无法解决，直接抛出 BeanCurrentlyInCreationException 异常。<br>
+　　所以在原型模式下，构造函数循环依赖和设值循环依赖，本质上使用同一种方式检测出来。Spring无法解决，直接抛出 BeanCurrentlyInCreationException 异常。<br>
   
-  
-  
-  
+### 3.3.2、单例模式的构造循环依赖<br>
+
+　　**Spring也不支持单例模式的构造循环依赖。**检测到构造循环依赖也会抛出 BeanCurrentlyInCreationException 异常。<br>
+　　和原型模式相似，单例模式也用了一个数据结构来记录正在创建中的 beanName。如下`DefaultSingletonBeanRegistry`:<br>
+
+```
+/** Names of beans that are currently in creation */
+private final Set<String> singletonsCurrentlyInCreation =
+            Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>(16));
+```
+
+　　这会在创建前进行记录，创建化后删除记录。如下`DefaultSingletonBeanRegistry.getSingleton`:<br>
+
+```
+public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
+        ...
+        
+        // 记录正在加载中的 beanName
+        beforeSingletonCreation(beanName);
+        ...
+        // 通过 singletonFactory 创建 bean
+        singletonObject = singletonFactory.getObject();
+        ...
+        // 删除正在加载中的 beanName
+        afterSingletonCreation(beanName);
+        
+}
+```
+
+　　记录和判定的方式如下`DefaultSingletonBeanRegistry.beforeSingletonCreation`：<br>
+
+```
+    protected void beforeSingletonCreation(String beanName) {
+        if (!this.inCreationCheckExclusions.contains(beanName) && !this.singletonsCurrentlyInCreation.add(beanName)) {
+            throw new BeanCurrentlyInCreationException(beanName);
+        }
+    }
+```
+
+
+　　这里会尝试往`singletonsCurrentlyInCreation`记录当前实例化的 bean。我们知道 singletonsCurrentlyInCreation 的数据结构是 Set，是不允许重复元素的，所以一旦前面记录了，这里的 add 操作将会返回失败。<br> 
+　　比如加载 A 的单例，和原型模式类似，单例模式也会调用匹配到要使用的构造函数，发现构造函数有参数 B，然后使用 BeanDefinitionValueResolver 来检索 B 的实例，根据上面的分析，继续调用 beanFactory.getBean 方法。所以拿 A，B，C 的例子来举例 singletonsCurrentlyInCreation 的变化，这里可以看到和原型模式的循环依赖判断方式的算法是一样：<br>
+<div>
+	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/6.png?raw=true">
+            <img id="BeanDefinition" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2020-12-13-springBean/6.png?raw=true" alt="BeanDefinition"/>
+	</a>
+</div>
+* 加载 A。记录 singletonsCurrentlyInCreation = [a]，构造依赖 B，开始加载 B。<br>
+* 加载 B，记录 singletonsCurrentlyInCreation = [a, b]，构造依赖 C，开始加载 C。<br>
+* 加载 C，记录 singletonsCurrentlyInCreation = [a, b, c]，构造依赖 A，又开始加载 A。<br>
+* 加载 A，执行到 DefaultSingletonBeanRegistry.beforeSingletonCreation ，singletonsCurrentlyInCreation 中 a 已经存在了，检测到构造循环依赖，直接抛出异常结束操作。<br>
+
+
+
+
+
+
+
+
 
 
 ## 参考文献<br>
