@@ -47,7 +47,7 @@ xxxxxxx
 public class Point {
 
 	private double x, y;
-	
+	// 定义StampedLock锁
 	private final StampedLock stampedLock = new StampedLock();
 	
 	// 方法一：写锁的使用
@@ -92,9 +92,9 @@ public class Point {
 			while (x == 0.0 && y == 0.0) {
 			        // 读锁转换为写锁
 				long ws = stampedLock.tryConvertToWriteLock(stamp); 
-				// 条件判断转换成功
+				// 条件判断是否转换成功
 				if (ws != 0L) { 
-					// 票据更新
+					// 锁升级
 					stamp = ws; 
 					x = newX;
 					y = newY;
