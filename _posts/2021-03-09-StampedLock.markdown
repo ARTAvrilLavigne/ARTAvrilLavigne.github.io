@@ -21,6 +21,12 @@ tags:
 
 ## 二、StampedLock实现思想<br>
 
+<div>
+	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2021-03-09-StampedLock/1.png?raw=true">
+            <img id="StampedLock" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2021-03-09-StampedLock/1.png?raw=true" alt="StampedLock"/>
+	</a>
+</div>
+
 　　在StampedLock中使用了CLH自旋锁，如果发生了读失败，不立刻把读线程挂起，锁当中维护了一个等待线程队列。所有申请锁但是没有成功的线程都会记录到这个队列中，每一个节点（一个节点表示一个线程）保存一个标记位（locked），用于判断当前线程是否已经释放锁。当一个未标记到队列中的线程试图获得锁时，会取得当前等待队列尾部的节点作为其前序节点，并使用类似如下代码（一个空的死循环）判断前序节点是否已经成功的释放了锁：<br>
 
 ```
