@@ -18,6 +18,12 @@ tags:
 
 ### 2.1、按设计方法分类<br>
 
+<div>
+	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2021-03-10-Test-Method/1.png?raw=true">
+            <img id="testMethod" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2021-03-10-Test-Method/1.png?raw=true" alt="testMethod"/>
+	</a>
+</div>
+
 　　**黑盒测试：**黑盒测试是把测试对象看做一个黑盒子，利用黑盒测试法进行动态测试时，需要测试软件产品已经实现的功能是否符合功能设计要求，不需测试软件产品的内部结构和处理过程。黑盒测试注重于测试软件的功能性需求，也即黑盒测试使软件工程师派生出执行程序所有功能需求的输入条件。黑盒测试并不是白盒测试的替代品，而是用于辅助白盒测试发现其他类型的错误。<br>  
 <br>
 　　**白盒测试：**设计者可以看到软件系统的内部结构，并且使用软件的内部知识来指导测试数据及方法的选择。白盒测试通常被认为是单元测试与集成测试，期中有六种测试方法：语句覆盖、判定覆盖、条件覆盖、判定/条件覆盖、条件组合覆盖。<br>  
