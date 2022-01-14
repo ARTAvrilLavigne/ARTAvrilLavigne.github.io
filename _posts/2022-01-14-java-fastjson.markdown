@@ -90,7 +90,7 @@ public void putDeserializer(Type type, ObjectDeserializer deserializer) {
             String code = res.getCode();
 ```
 
-　　由此引发的问题：首先项目启动服务执行后，代码中先解析new TypeReference<Response>() ，走了getDeserializer的第一个if，这样putDeserializer方法里放入的是Response。接着执行到抛出异常的这个方法时进行解析new TypeReference<Response<List<JobZoneInfo>>>()，这个时候走了getDeserializer 的第二个if，结果rawType是Response，所以直接从缓存中返回了第一次解析的结果。这样就相当于丢失了泛型类型List<JobZoneInfo>，导致最后类型转换失败为JSONArray。
+　　由此引发的问题：首先项目启动服务执行后，代码中先解析new TypeReference<Response>() ，走了`getDeserializer`的第一个if，这样`putDeserializer`方法里放入的是Response。接着执行到抛出异常的这个方法时进行解析new TypeReference<Response<List<JobZoneInfo>>>()，这个时候走了`getDeserializer`的第二个if，结果rawType是Response，所以直接从缓存中返回了第一次解析的结果。这样就相当于丢失了泛型类型List<JobZoneInfo>，导致最后类型转换失败为JSONArray。
 
 
 ## 二、解决办法<br>
