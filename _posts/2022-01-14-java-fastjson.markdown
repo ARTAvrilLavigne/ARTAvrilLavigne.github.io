@@ -95,7 +95,7 @@ public void putDeserializer(Type type, ObjectDeserializer deserializer) {
 
 ## 二、解决办法<br>
 
-　　项目开发中统一使用泛型类型，项目中不允许没有泛型类型的Response进行解析即可。<br>
+　　项目开发中统一必须带上泛型类型，项目中不允许没有泛型类型的Response进行解析即可。<br>
 　　如下所示将前一处方法中未带具体泛型的代码修改为，然后抛出异常的方法报错位置即可解析正确：<br>
 
 ```
@@ -111,3 +111,7 @@ public void putDeserializer(Type type, ObjectDeserializer deserializer) {
 
 ## 参考文献<br>
 [1].https://blog.csdn.net/ykdsg/article/details/50432494<br>
+[2].https://www.cnblogs.com/eoooxy/p/6186205.html<br>
+[3].https://blog.csdn.net/weixin_34319640/article/details/93507385<br>
+[4].https://www.cnblogs.com/nizuimeiabc1/p/9397985.html<br>
+
