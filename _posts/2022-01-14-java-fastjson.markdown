@@ -14,8 +14,8 @@ tags:
 
 　　代码开发过程中，继续新增方法利用fastjson泛型转换API接口的响应字符串为对象后获取元素抛异常为com.alibaba.fastjson.JSONObject cannot be cast to com.xxxx.JobZoneInfo.<br>
 <div>
-	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2021-03-10-Test-Method/1.png?raw=true">
-            <img id="exception" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2021-03-10-Test-Method/1.png?raw=true" alt="exception"/>
+	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2022-01-14-java-fastjson/1.png?raw=true">
+            <img id="exception" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2022-01-14-java-fastjson/1.png?raw=true" alt="exception"/>
 	</a>
 </div>
 
@@ -30,8 +30,8 @@ tags:
 
 　　debug断点调试发现JSONObject利用TypeReference泛型转换出来的data不是List类型而是JSONArray类型导致下面获取时抛异常，如下所示：<br>
 <div>
-	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2021-03-10-Test-Method/1.png?raw=true">
-            <img id="成功前" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2021-03-10-Test-Method/1.png?raw=true" alt="exception"/>
+	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2022-01-14-java-fastjson/2.png?raw=true">
+            <img id="beforeSuccess" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2022-01-14-java-fastjson/2.png?raw=true" alt="beforeSuccess"/>
 	</a>
 </div>
 
@@ -83,7 +83,7 @@ public void putDeserializer(Type type, ObjectDeserializer deserializer) {
 
 ```
 
-查看项目代码，发现在抛异常的方法执行之前另一个方法执行过程中也使用fastjson泛型转换，但是没有加上具体的泛型处理，因为那一处API返回的响应中data为null，代码如下：<br>
+　　查看项目代码，发现在抛异常的方法执行之前另一个方法执行过程中也使用fastjson泛型转换，但是没有加上具体的泛型处理，因为那一处API返回的响应中data为null，代码如下：<br>
 
 ```
             Response res = JSONObject.parseObject(result, new TypeReference<Response>() {});
@@ -96,7 +96,7 @@ public void putDeserializer(Type type, ObjectDeserializer deserializer) {
 ## 二、解决办法<br>
 
 　　项目开发中统一使用泛型类型，项目中不允许没有泛型类型的Response进行解析即可。<br>
-　　如下所示将前一处方法中未带具体泛型的代码修改为，然后抛出异常的方法报错位置就解析正确了<br>
+　　如下所示将前一处方法中未带具体泛型的代码修改为，然后抛出异常的方法报错位置即可解析正确<br>
 
 ```
             Response<Object> res = JSONObject.parseObject(result, new TypeReference<Response<Object>>() {});
@@ -104,8 +104,8 @@ public void putDeserializer(Type type, ObjectDeserializer deserializer) {
 ```
 
 <div>
-	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2021-03-10-Test-Method/1.png?raw=true">
-            <img id="成功后" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2021-03-10-Test-Method/1.png?raw=true" alt="exception"/>
+	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2022-01-14-java-fastjson/3.png?raw=true">
+            <img id="afterSuccess" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2022-01-14-java-fastjson/3.png?raw=true" alt="afterSuccess"/>
 	</a>
 </div>
 
