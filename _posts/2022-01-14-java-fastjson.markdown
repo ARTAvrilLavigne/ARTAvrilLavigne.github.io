@@ -12,7 +12,7 @@ tags:
 
 ### 1.1、现象简述<br>
 
-　　代码开发过程中，继续新增方法利用fastjson泛型转换API接口的响应字符串为对象后获取元素抛异常为com.alibaba.fastjson.JSONObject cannot be cast to com.xxxx.JobZoneInfo.<br>
+　　项目代码开发过程中，继续新增方法利用fastjson泛型转换API接口的响应字符串为对象后获取元素抛异常为com.alibaba.fastjson.JSONObject cannot be cast to com.xxxx.JobZoneInfo.<br>
 <div>
 	<a class="fancybox_mydefine" rel="group" href="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2022-01-14-java-fastjson/1.png?raw=true">
             <img id="exception" src="https://github.com/ARTAvrilLavigne/ARTAvrilLavigne.github.io/blob/master/myblog/2022-01-14-java-fastjson/1.png?raw=true" alt="exception"/>
