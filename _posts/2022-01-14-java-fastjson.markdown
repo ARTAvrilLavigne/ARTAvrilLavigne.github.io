@@ -96,7 +96,7 @@ public void putDeserializer(Type type, ObjectDeserializer deserializer) {
 ## 二、解决办法<br>
 
 　　项目开发中统一使用泛型类型，项目中不允许没有泛型类型的Response进行解析即可。<br>
-　　如下所示将前一处方法中未带具体泛型的代码修改为，然后抛出异常的方法报错位置即可解析正确<br>
+　　如下所示将前一处方法中未带具体泛型的代码修改为，然后抛出异常的方法报错位置即可解析正确：<br>
 
 ```
             Response<Object> res = JSONObject.parseObject(result, new TypeReference<Response<Object>>() {});
